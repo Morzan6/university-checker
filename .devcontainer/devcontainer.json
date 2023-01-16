@@ -12,12 +12,14 @@
   "customizations": {
     "codespaces": {
       "openFiles": [
-        "hello_world/templates/index.html"
+        "predprof/templates/index.html"
       ]
     },
     "vscode": {
       "extensions": [
-        "ms-python.python"
+        "ms-python.python",
+        "alexcvzz.vscode-sqlite",
+        "esbenp.prettier-vscode"
       ]
     }
   },
