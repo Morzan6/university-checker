@@ -57,12 +57,12 @@ MIDDLEWARE = [
 
 X_FRAME_OPTIONS = "ALLOW-FROM preview.app.github.dev"
 
-ROOT_URLCONF = "hello_world.urls"
+ROOT_URLCONF = "predprof.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "hello_world" / "templates"],
+        "DIRS": [BASE_DIR / "predprof" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "hello_world.wsgi.application"
+WSGI_APPLICATION = "predprof.wsgi.application"
 
 
 # Database
@@ -124,7 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATICFILES_DIRS = [
-    BASE_DIR / "hello_world" / "static",
+    BASE_DIR / "predprof" / "static",
 ]
 
 STATIC_URL = "static/"
