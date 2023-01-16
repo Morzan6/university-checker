@@ -19,7 +19,13 @@
       "extensions": [
         "ms-python.python",
         "alexcvzz.vscode-sqlite",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "alexcvzz.vscode-sqlite",
+        "bradlc.vscode-tailwindcss",
+        "naumovs.color-highlight",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "christian-kohler.path-intellisense",
+        "SimonSiefke.svg-preview",
       ]
     }
   },
