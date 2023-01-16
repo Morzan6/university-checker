@@ -20,7 +20,7 @@
         "ms-python.python",
         "alexcvzz.vscode-sqlite",
         "esbenp.prettier-vscode",
-        "alexcvzz.vscode-sqlite",
+        "qwtel.sqlite-viewer", 
         "bradlc.vscode-tailwindcss",
         "naumovs.color-highlight",
         "VisualStudioExptTeam.vscodeintellicode",
