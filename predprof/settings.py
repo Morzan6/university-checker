@@ -136,3 +136,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 os.environ['DJANGO_SETTINGS_MODULE']='predprof.settings'
+
+LOGIN_REDIRECT_URL = '/'

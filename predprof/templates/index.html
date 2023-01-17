@@ -9,19 +9,21 @@
     <link rel="stylesheet" href="{% static 'main.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 <body>
+    {% if user.is_authenticated %}
     <div class="App">
         <header class="App-header">
-            <img src="{% static 'Octocat.png' %}" class="App-logo" alt="logo" />
-            <p>
-                GitHub Codespaces<span class="heart">♥️</span> HI
-            </p>
-            <p class="small">
-                Edit <code>predprof/templates/index.html</code> and see changes live!
-                <div class="text-neutral-200">TEST__1</div>
-                HI
-            </p>
+            Вы вошли в аккаунт
+            <a class="underline underline-offset-1" href="logout/">Выйти</a>
         </header>
     </div>
+    {% else %}
+    <div class="">
+        Надо залогинится
+        <br/>
+        <a class="underline underline-offset-1" href="signup/">Зарегистрироваться</a>
+        <a class="underline underline-offset-1" href="login/">Войти</a>
+    </div>
+    {% endif %}
 </body>
 
 </html>

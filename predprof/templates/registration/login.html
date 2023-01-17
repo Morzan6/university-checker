@@ -1,0 +1,9 @@
+<form method="post" action={% url 'auth' %} onSubmit = "return checkPassword(this)">
+    {% csrf_token %}
+    <p>Имя пользователя:<br> <input name="username" /></p>
+    <p>Пароль:<br> <input name="password" /></p>
+    <input type="submit" value="Отправить"/>
+    <input type="hidden" name="next" value="{{ next }}"/>
+</form>
+<!-- <a href="">Забыли пароль?</a> -->
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Registration</title>
+    <script>
+        function checkPassword(form) {
+                password = form.password.value;
+                password_repeat = form.password_repeat.value;
+  
+                // Если пароли не введены
+                if (password == '') {
+                    alert ("Введите пароль");
+                    return false;
+                }     
+                // Если пароль не подтвержден
+                else if (password_repeat == '') {
+                    alert ("Подтвердите пароль");
+                    return false;
+                }     
+                // Если пароли не равны    
+                else if (password != password_repeat) {
+                    alert ("\nПароли не совпадают: Попробуйте снова...")
+                    return false;
+                }
+  
+                // Если равны = true
+                else{
+                    
+                    return true;
+                }
+            }
+    </script>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <h2>Вы уже вошли в аккаунт</h2>
+    {% else %}
+    <h2>Регистрация</h2>
+    <form method="post" action={% url 'create_user' %} onSubmit = "return checkPassword(this)">
+        {% csrf_token %}
+        <p>Имя пользователя:<br> <input name="username" /></p>
+        <p>Почта:<br> <input name="email" /></p>
+        <p>Пароль:<br> <input name="password" /></p>
+        <p>Повторите пароль:<br> <input name="password_repeat" /></p>
+        <input type="submit" value="Отправить" />
+    </form>
+    {% endif %}
+</body>
+</html>
+</html>
