@@ -8,3 +8,6 @@ def index(request):
             "title": "Пример",
         },
     )
+
+def test(request):
+    return render(request, "test.html")
