@@ -9,12 +9,17 @@
     <link rel="stylesheet" href="{% static 'main.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 <body>
-    {% if user.is_authenticated %}
-    <div class="App">
-        <header class="App-header">
+    {{user}}
+    {% if user.is_authenticated and user.is_active%}
+    <div class="">
+        <header class="">
             Вы вошли в аккаунт
             <a class="underline underline-offset-1" href="logout/">Выйти</a>
         </header>
+    </div>
+    {% elif not user.is_active and user.is_authenticated%}
+    <div class="">
+        Подтвердите свой аккаунт
     </div>
     {% else %}
     <div class="">
@@ -24,6 +29,7 @@
         <a class="underline underline-offset-1" href="login/">Войти</a>
     </div>
     {% endif %}
+    
 </body>
 
 </html>

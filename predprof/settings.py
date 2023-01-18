@@ -35,13 +35,14 @@ if 'CODESPACE_NAME' in os.environ:
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    #"django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_browser_reload",
+    "user_model",
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 os.environ['DJANGO_SETTINGS_MODULE']='predprof.settings'
 
 LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+ACCOUNT_EMAIL_REQUIRED = False
+
+AUTH_USER_MODEL = 'user_model.User'
+
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+#Настройки SMTP (почтового-клиента)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'te5tkp@yandex.ru'
+EMAIL_HOST_USER = 'te5tkp@yandex.ru'
+EMAIL_HOST_PASSWORD = 'werdmgockguyjave'
