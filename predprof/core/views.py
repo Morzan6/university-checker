@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
+
 from django.shortcuts import redirect
 from django.contrib.auth import  authenticate, logout
 from django.contrib.auth import login
@@ -7,22 +7,21 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.http import HttpResponse
-from user_model.models import User as u #херня эта VSкодовская выдает ошибку, хотя все работает и со строкой все норм (не обращать внимания)
 from .scripts.tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model, login, update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 
 User = get_user_model()
 
+#обработчик главной страницы
 def index(request):
     return render(
         request, "index.html",
         {
-            "title": "Главная страница",
+            "title": "Главная страница",      
         },
     )
 
@@ -34,20 +33,23 @@ def signup(request):
 
 #добавление нового пользователя
 def create_user(request):
+    # Получаем данные из формы
     username = request.POST.get("username", "Undefined")
     email = request.POST.get("email", "Undefined")
     password = request.POST.get("password", "Undefined")
 
-    # Создайте пользователя и сохраните его в базе данных, делаем его не активированным и входим
-    user = u.objects._create_user(username, email, password)
-    user.is_active = False
-    
+    # Создаем пользователя и сохраните его в базе данных, делаем его не активированным и входим
+    user = User.objects._create_user(username, email, password)
+    user.is_confirmed = False
     user.save()
-    user2 = authenticate(request, username=username, email=email, password=password)
+    
+    #Входим
+    user2 = authenticate(request, username=username, password=password)
     print(user2)
     if user2 is not None:
-        login(request, user2,  backend='django.contrib.auth.backends.ModelBackend')
-
+        login(request, user2)
+        print("succsess")
+        
     # Создаем письмо 
     mail_subject = 'Активируйте свой аккаунт.'
     current_site = get_current_site(request)
@@ -60,10 +62,13 @@ def create_user(request):
     #Отправляем письмо
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
-    # redirect("/").set_cookie('username', username)
 
-    return HttpResponse('Подтвердите свою почту, для завершения регистрации')
-
+    response = HttpResponse(f' Подтвердите свою почту, для завершения регистрации')
+    
+    #Ставим куки с именем пользователя
+    if user2 is not None:
+         response.set_cookie('username', username)
+    return response
 
 
 #рендер страницы с входом
@@ -75,12 +80,17 @@ def auth(request):
     username = request.POST["username"]
     password = request.POST["password"]
     user = authenticate(request, username=username, password=password)
+    error = ""
     if user is not None:
         login(request, user)
+        print("passed")
         response = redirect('/')
         response.set_cookie('username', username)
     else:
-        response = redirect('/login')
+        error = "Неправильные имя пользователя или пароль"
+        
+        #если неправильные имя пользователя или пароль, то рендерим тоже страницу с входом и кидаем в перемнную error сообщение об ошибки
+        response = render(request, "registration/login.html", {"error": error})
     return response
 
 #выход из аккаунта
@@ -100,7 +110,7 @@ def activate(request, uid, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist): #если выдает ошибки, то пишем, что нет такого пользователя
         user = None
     if user is not None and account_activation_token.check_token(user, token): #если пользователь есть и токен совпадает, ставим ему активацию и входим в акк
-        user.is_active = True
+        user.is_confirmed = True
         user.save()
         login(request, user)
         return HttpResponse("Вы подтвердили аккаунт, поздравляю")

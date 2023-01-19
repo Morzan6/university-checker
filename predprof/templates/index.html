@@ -6,25 +6,35 @@
 
 <head>
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
+    
     <script src="https://cdn.tailwindcss.com"></script>
 <body>
-    {{user}}
-    {% if user.is_authenticated and user.is_active%}
-    <div class="">
-        <header class="">
-            Вы вошли в аккаунт
-            <a class="underline underline-offset-1" href="logout/">Выйти</a>
-        </header>
-    </div>
-    {% elif not user.is_active and user.is_authenticated%}
-    <div class="">
-        Подтвердите свой аккаунт
-    </div>
-    {% else %}
-    <div class="">
-        Надо залогинится
+    
+    <div class="bg-neutral-200">
+        (тест инфа)<br/>
+        Ваш аккаунт - {{user}}
         <br/>
+        Подтвержден: {{ user.is_confirmed }}
+        
+    </div>
+
+
+    {% if user.is_authenticated and user.is_confirmed%}
+    <div class="mt-2 pt-4">
+        <div>
+            <div class="text-lg font-bold">Вы вошли в аккаунт</div><br/>
+            <a class="underline underline-offset-1" href="logout/">Выйти</a>
+        </div>
+    </div>
+    {% elif user.is_authenticated and not user.is_confirmed%}
+    <div class="mt-2 pt-4">
+        Подтвердите свой аккаунт. Проверьте почту<br/>
+        <a class="underline underline-offset-1" href="logout/">Выйти</a>
+    </div>
+    {% elif not user.is_authenticated %}
+    <div class="mt-2 pt-4">
+        <h1 class="text-lg font-bold">Надо залогинится</h1>
+        
         <a class="underline underline-offset-1" href="signup/">Зарегистрироваться</a>
         <a class="underline underline-offset-1" href="login/">Войти</a>
     </div>

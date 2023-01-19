@@ -1,7 +1,10 @@
+<title>Вход</title>
+<h2>Вход в аккаунт</h2>
 <form method="post" action={% url 'auth' %} onSubmit = "return checkPassword(this)">
     {% csrf_token %}
-    <p>Имя пользователя:<br> <input name="username" /></p>
-    <p>Пароль:<br> <input name="password" /></p>
+    {{error}}
+    <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p>
+    <p>Пароль:<br> <input name="password" placeholder="Пароль"/></p>
     <input type="submit" value="Отправить"/>
     <input type="hidden" name="next" value="{{ next }}"/>
 </form>

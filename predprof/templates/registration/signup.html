@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Registration</title>
+    <title>Регистрация</title>
     <script>
         function checkPassword(form) {
                 password = form.password.value;
@@ -10,17 +10,17 @@
   
                 // Если пароли не введены
                 if (password == '') {
-                    alert ("Введите пароль");
+                    document.getElementById("error").innerHTML = "Введите пароль";
                     return false;
                 }     
                 // Если пароль не подтвержден
                 else if (password_repeat == '') {
-                    alert ("Подтвердите пароль");
+                    document.getElementById("error").innerHTML = "Подтвердите пароль";
                     return false;
                 }     
                 // Если пароли не равны    
                 else if (password != password_repeat) {
-                    alert ("\nПароли не совпадают: Попробуйте снова...")
+                    document.getElementById("error").innerHTML = "Пароли не совпадают";
                     return false;
                 }
   
@@ -30,6 +30,7 @@
                     return true;
                 }
             }
+
     </script>
 </head>
 <body>
@@ -39,10 +40,13 @@
     <h2>Регистрация</h2>
     <form method="post" action={% url 'create_user' %} onSubmit = "return checkPassword(this)">
         {% csrf_token %}
-        <p>Имя пользователя:<br> <input name="username" /></p>
-        <p>Почта:<br> <input name="email" /></p>
-        <p>Пароль:<br> <input name="password" /></p>
-        <p>Повторите пароль:<br> <input name="password_repeat" /></p>
+        <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p>
+        <p>Почта:<br> <input name="email" placeholder="Почта"/></p>
+        <p>Пароль:<br> <input type="password" name="password" id="pwd"  placeholder="Введите пароль"/>
+            <button type="button" onclick="if (pwd.type == 'text') pwd.type = 'password', pwd2.type = 'password'; else pwd.type = 'text', pwd2.type = 'text';">показать пароль</button>
+        <p>Повторите пароль:<br> <input type="password" name="password_repeat" id="pwd2" placeholder="Повторите пароль"/></p>
+        <p id="error"></p>
+        <br/>
         <input type="submit" value="Отправить" />
     </form>
     {% endif %}

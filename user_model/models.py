@@ -17,7 +17,7 @@ class MyUserManager(BaseUserManager):
         return self._create_user(username=username, email=email, password=password, is_staff=True, is_superuser=True, is_active=True)
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(unique=True,  verbose_name='username', max_length=20)
+    username = models.CharField(unique=True,  verbose_name='username', max_length=20, null=True)
     email = models.EmailField(unique=True, null=True, verbose_name='email')
     
 
@@ -35,13 +35,18 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    
+    is_confirmed = models.BooleanField(
+        _('confirmed'),
+        default=False,
+    )
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
     objects = MyUserManager()
 
     def __str__(self):
-        return str(self.email)
+        return str(self.username)
 
     def get_full_name(self):
         return self.username
