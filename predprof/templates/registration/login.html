@@ -1,12 +1,24 @@
-<title>Вход</title>
-<h2>Вход в аккаунт</h2>
-<form method="post" action={% url 'auth' %} onSubmit = "return checkPassword(this)">
-    {% csrf_token %}
-    {{error}}
-    <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p>
-    <p>Пароль:<br> <input name="password" placeholder="Пароль"/></p>
-    <input type="submit" value="Отправить"/>
-    <input type="hidden" name="next" value="{{ next }}"/>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+</head>
+<body>
+    <h2>Вход в аккаунт</h2>
+    <form method="post" action={% url 'auth' %} onSubmit = "return checkPassword(this)">
+        {% csrf_token %}
+        {{error}}
+        <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p>
+        <p>Пароль:<br> <input name="password" placeholder="Пароль"/></p>
+        <input type="submit" value="Отправить"/>
+        <input type="hidden" name="next" value="{{ next }}"/>
+    </form>
 <!-- <a href="">Забыли пароль?</a> -->
+</body>
+</html>
+
+
 

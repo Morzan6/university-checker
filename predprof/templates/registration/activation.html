@@ -1,0 +1,28 @@
+{% load django_browser_reload %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Активация акаунта</title>
+</head>
+
+
+<body>
+    {%if successful_activation%}
+    <div class="div">
+        Вы подтвердили аккаунт, поздравляю <br/>
+        <a href="/">Главная</a>
+        
+    </div>
+    {%else%}
+    <div class="div">
+        
+        Неправильная ссылка для активации аккаунта<br/>
+        <a href="/">Главная</a>
+    </div>
+    {%endif%}
+</body>
+</html>

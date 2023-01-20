@@ -63,7 +63,7 @@ def create_user(request):
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
 
-    response = HttpResponse(f' Подтвердите свою почту, для завершения регистрации')
+    response = HttpResponse(f' Подтвердите свою почту, для завершения регистрации <br/><a class="underline underline-offset-1" href="/">Главная</a>')
     
     #Ставим куки с именем пользователя
     if user2 is not None:
@@ -113,8 +113,9 @@ def activate(request, uid, token):
         user.is_confirmed = True
         user.save()
         login(request, user)
-        return HttpResponse("Вы подтвердили аккаунт, поздравляю")
-        # return render(request, 'activation.html')
+
+        #и передаем флажок успешной активации True
+        return render(request, 'registration/activation.html', {"successful_activation": True})
                 
-    else: #если токен или пользователь не тот, то пишем, что неправильная ссылка
-        return HttpResponse('Неправильная ссылка для активации аккаунта')
+    else: #если токен или пользователь не тот, то ставим флажок False
+        return render(request, 'registration/activation.html', {"successful_activation": False})
