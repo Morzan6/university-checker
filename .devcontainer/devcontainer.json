@@ -16,6 +16,10 @@
       ]
     },
     "vscode": {
+      "settings": {
+        "workbench.colorTheme": "Community Material Theme Darker High Contrast",
+      },
+
       "extensions": [
         "ms-python.python",
         "alexcvzz.vscode-sqlite",
