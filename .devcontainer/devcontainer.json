@@ -19,11 +19,15 @@
       "settings": {
         "workbench.colorTheme": "Community Material Theme Darker High Contrast",
         "files.associations": {
-          "*.css": "tailwindcss"
+          "*.css": "tailwindcss",
+          "*html": "html"
         },
         "editor.quickSuggestions": {
           "strings": true
-        }
+        },
+        "emmet.triggerExpansionOnTab": true,
+        
+        "emmet.useInlineCompletions": true
       },
 
       "extensions": [
