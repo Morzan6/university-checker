@@ -1,16 +1,12 @@
-{% load django_browser_reload %}
-{% load static %}
-
 <!doctype html>
 <html>
 
 <head>
     <title>{{ title }}</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
 <body>
     
-    <div class="bg-neutral-200">
+    <div class="bg-neutral-300">
         (тест инфа)<br/>
         Ваш аккаунт - {{user}}
         <br/>
@@ -22,7 +18,7 @@
     {% if user.is_authenticated and user.is_confirmed%}
     <div class="mt-2 pt-4">
         <div>
-            <div class="text-lg font-bold">Вы вошли в аккаунт</div><br/>
+            <div class="text-lg font-bold ">Вы вошли в аккаунт</div><br/>
             <a class="underline underline-offset-1" href="logout/">Выйти</a>
         </div>
     </div>

@@ -18,6 +18,12 @@
     "vscode": {
       "settings": {
         "workbench.colorTheme": "Community Material Theme Darker High Contrast",
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
+        "editor.quickSuggestions": {
+          "strings": true
+        }
       },
 
       "extensions": [
@@ -31,13 +37,14 @@
 		"christian-kohler.path-intellisense",
 		"SimonSiefke.svg-preview",
 		"Equinusocio.vsc-community-material-theme",
-		"batisteo.vscode-django"
+		"batisteo.vscode-django",
+		"csstools.postcss"
 	]
     }
   },
   "portsAttributes": {
     "8000": {
-      "label": "Application",
+      "label": "Application"
     }
   },
   "forwardPorts": [8000]

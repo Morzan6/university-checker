@@ -160,3 +160,4 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'te5tkp@yandex.ru'
 EMAIL_HOST_USER = 'te5tkp@yandex.ru'
 EMAIL_HOST_PASSWORD = 'werdmgockguyjave'
+
