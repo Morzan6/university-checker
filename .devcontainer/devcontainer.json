@@ -21,16 +21,17 @@
       },
 
       "extensions": [
-        "ms-python.python",
-        "alexcvzz.vscode-sqlite",
-        "esbenp.prettier-vscode",
-        "yy0931.vscode-sqlite3-editor", 
-        "bradlc.vscode-tailwindcss",
-        "naumovs.color-highlight",
-        "VisualStudioExptTeam.vscodeintellicode",
-        "christian-kohler.path-intellisense",
-        "SimonSiefke.svg-preview",
-      ]
+		"ms-python.python",
+		"alexcvzz.vscode-sqlite",
+		"esbenp.prettier-vscode",
+		"yy0931.vscode-sqlite3-editor",
+		"bradlc.vscode-tailwindcss",
+		"naumovs.color-highlight",
+		"VisualStudioExptTeam.vscodeintellicode",
+		"christian-kohler.path-intellisense",
+		"SimonSiefke.svg-preview",
+		"Equinusocio.vsc-community-material-theme"
+	]
     }
   },
   "portsAttributes": {
