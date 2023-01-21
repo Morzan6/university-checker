@@ -1,18 +1,13 @@
 from django.shortcuts import render
-
 from django.shortcuts import redirect
 from django.contrib.auth import  authenticate, logout
-from django.contrib.auth import login
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.http import HttpResponse
-from .scripts.tokens import account_activation_token
 from django.core.mail import EmailMessage
-from django.contrib.auth import get_user_model, login, update_session_auth_hash
+from django.contrib.auth import get_user_model, login
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
+from core.scripts.tokens import account_activation_token
 
 User = get_user_model()
 
@@ -63,11 +58,11 @@ def create_user(request):
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
 
-    response = HttpResponse(f' Подтвердите свою почту, для завершения регистрации <br/><a class="underline underline-offset-1" href="/">Главная</a>')
+    response = HttpResponse(' Подтвердите свою почту, для завершения регистрации <br/><a class="underline underline-offset-1" href="/">Главная</a>')
     
     #Ставим куки с именем пользователя
     if user2 is not None:
-         response.set_cookie('username', username)
+        response.set_cookie('username', username)
     return response
 
 

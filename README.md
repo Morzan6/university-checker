@@ -5,7 +5,7 @@
 ```python
 python manage.py runserver
 ```
-
+https://morzan6-organic-doodle-69gx6797jvr24w6x-8000.preview.app.github.dev/ - 
 
  ```
  20.01.2023 00:52

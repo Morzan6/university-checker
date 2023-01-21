@@ -30,7 +30,8 @@
 		"VisualStudioExptTeam.vscodeintellicode",
 		"christian-kohler.path-intellisense",
 		"SimonSiefke.svg-preview",
-		"Equinusocio.vsc-community-material-theme"
+		"Equinusocio.vsc-community-material-theme",
+		"batisteo.vscode-django"
 	]
     }
   },

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_browser_reload",
     "user_model",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -58,12 +59,12 @@ MIDDLEWARE = [
 
 X_FRAME_OPTIONS = "ALLOW-FROM preview.app.github.dev"
 
-ROOT_URLCONF = "predprof.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "predprof" / "templates"],
+        "DIRS": [BASE_DIR / "core" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "predprof.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
@@ -125,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATICFILES_DIRS = [
-    BASE_DIR / "predprof" / "static",
+    BASE_DIR / "core" / "static",
 ]
 
 STATIC_URL = "static/"
@@ -136,7 +137,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-os.environ['DJANGO_SETTINGS_MODULE']='predprof.settings'
+os.environ['DJANGO_SETTINGS_MODULE']='config.settings'
 
 LOGIN_REDIRECT_URL = '/'
 
