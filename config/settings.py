@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     "django_browser_reload",
     "user_model",
     "core",
+    "services_model",
+    "reports_model",
+    "raiting_model",
 ]
 
 MIDDLEWARE = [

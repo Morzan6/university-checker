@@ -22,6 +22,7 @@ def index(request):
 
 def test(request):
     return render(request, "test.html")
+    
 #рендер страницы с регистрацией нового пользователя
 def signup(request):
     return render(request, "registration/signup.html")
