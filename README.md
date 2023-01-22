@@ -41,3 +41,11 @@ https://morzan6-organic-doodle-69gx6797jvr24w6x-8000.preview.app.github.dev/ -
 
  * Добавлен рендер страницы /activate из html-шаблона, с передачей инфы об успешной или неуспешной активации
  ```
+ 
+ ```
+ 22.01.2023 16:00
+ 
+ * Добавлены модели (таблицы в БД) для самого сервиса, репортов пользователей и оценок. Все расписано в фигме, что за что отвечает 
+ https://www.figma.com/file/ymyXt2sMhfXjmIcDzosDHr/PredProf?node-id=0%3A1&t=9gIgnzuyBXJZ8MVs-0
+ 
+ ```
