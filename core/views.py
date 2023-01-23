@@ -9,6 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from core.scripts.tokens import account_activation_token
 from services_model.models import Service
+from transliterate import translit
 
 User = get_user_model()
 
@@ -117,13 +118,28 @@ def activate(request, uid, token):
     else: #если токен или пользователь не тот, то ставим флажок False
         return render(request, 'registration/activation.html', {"successful_activation": False})
 
-def admin_panel(request):
-    return render(request, 'admin_panel.html')
+#рендер админскйо панели
+def admin_panel(request, **kwargs):
+    
+    user = request.user
+    #если пользователь не админ, то его не пускает
+    if user.is_staff == True:
+        return render(request, 'admin_panel.html',)
+        
+    else:
+        return redirect("/")
 
+#добавляет сервис в БД
 def add_service(request):
+    #поулчает данные из формы
     name = request.POST["name"]
     url = request.POST["url"]
+    #просто дформатирует ссылку
+    if url[:6] != "https:/" or url[:5] != "http:/":
+        url = "https:/" + url
+    #ставит слаг(идентификатор)
+    slug = translit(name, "ru", reversed=True).lower()
 
-    Service.objects.update_or_create(name=name, url=url)
-
-    return redirect("admin/")
+    #добавляеет в БД данные
+    Service.objects.update_or_create(name=name, url=url, slug=slug)
+    return redirect(admin_panel)

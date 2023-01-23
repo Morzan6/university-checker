@@ -28,7 +28,9 @@
         },
         "emmet.triggerExpansionOnTab": true,
         
-        "emmet.useInlineCompletions": true
+        "emmet.useInlineCompletions": true,
+        "python.linting.pylintArgs": ["--load-plugins pylint_django", "pylint_django", "--disable=django-not-configured",
+        "--django-settings-module=<mainapp>.settings"]
       },
 
       "extensions": [
