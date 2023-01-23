@@ -14,5 +14,6 @@ urlpatterns = [
     path("auth/", core_views.auth, name="auth"), #вход пользователя (обработка)
     path("create_user/", core_views.create_user, name="create_user"), #создание и добавление нового пользователя в бд 
     path('activate/<str:uid>/<str:token>', core_views.activate, name='activate'), #проверка пользователя и активация аккаунта  
-    # path("add/", core_views.add_service, name="auth") 
+    path("add_service/", core_views.add_service, name="add_service"),
+    path("admin_panel/", core_views.admin_panel)
 ]

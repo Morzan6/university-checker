@@ -117,9 +117,13 @@ def activate(request, uid, token):
     else: #если токен или пользователь не тот, то ставим флажок False
         return render(request, 'registration/activation.html', {"successful_activation": False})
 
+def admin_panel(request):
+    return render(request, 'admin_panel.html')
 
+def add_service(request):
+    name = request.POST["name"]
+    url = request.POST["url"]
 
-# def add_service(request):
-#     Service.objects.update_or_create(name="МИФИ", url="https://mephi.ru/", status="200", reports="|", time="10:20:00")
+    Service.objects.update_or_create(name=name, url=url)
 
-#     return redirect("/")
+    return redirect("admin/")

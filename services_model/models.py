@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=25, unique=True, verbose_name="name")
+    name = models.CharField(max_length=25, db_index=True, unique=True, verbose_name="name")
     url = models.URLField(max_length=25, unique=True)
     status = models.CharField(max_length=999999, default = None,null=True)
     reports = models.CharField(max_length=999999, default = None,null=True)
