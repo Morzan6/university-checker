@@ -137,9 +137,8 @@ def add_service(request):
     #просто дформатирует ссылку
     if url[:6] != "https:/" or url[:5] != "http:/":
         url = "https:/" + url
-    #ставит слаг(идентификатор)
+    #ставит слаг(идентификатор), транслитерируем его и делаем нижнего регистра
     slug = translit(name, "ru", reversed=True).lower()
-
     #добавляеет в БД данные
     Service.objects.update_or_create(name=name, url=url, slug=slug)
     return redirect(admin_panel)
