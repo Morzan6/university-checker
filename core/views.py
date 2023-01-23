@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model, login
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from core.scripts.tokens import account_activation_token
+from services_model.models import Service
 
 User = get_user_model()
 
@@ -115,3 +116,10 @@ def activate(request, uid, token):
                 
     else: #если токен или пользователь не тот, то ставим флажок False
         return render(request, 'registration/activation.html', {"successful_activation": False})
+
+
+
+# def add_service(request):
+#     Service.objects.update_or_create(name="МИФИ", url="https://mephi.ru/", status="200", reports="|", time="10:20:00")
+
+#     return redirect("/")
