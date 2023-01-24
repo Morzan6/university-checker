@@ -164,3 +164,6 @@ DEFAULT_FROM_EMAIL = 'te5tkp@yandex.ru'
 EMAIL_HOST_USER = 'te5tkp@yandex.ru'
 EMAIL_HOST_PASSWORD = 'werdmgockguyjave'
 
+#пути к медиа файлам
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -8,8 +8,11 @@ from django.contrib.auth import get_user_model, login
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from scripts.tokens import account_activation_token
+from scripts.handle_image import handle_uploaded_file
 from services_model.models import Service
 from transliterate import translit
+from django.shortcuts import get_object_or_404
+from django.forms.models import model_to_dict
 
 User = get_user_model()
 
@@ -134,11 +137,26 @@ def add_service(request):
     #поулчает данные из формы
     name = request.POST["name"]
     url = request.POST["url"]
+    
+    # image = request.FILES.get["img"]
     #просто дформатирует ссылку
     if url[:6] != "https:/" or url[:5] != "http:/":
         url = "https:/" + url
     #ставит слаг(идентификатор), транслитерируем его и делаем нижнего регистра
     slug = translit(name, "ru", reversed=True).lower()
+    #получаем картинку из формы
+    handle_uploaded_file(request.FILES['img'], slug)
+    #создаем путь для картинки с названием от слага
+    image = "/media/services_images/" + slug + ".png"
     #добавляеет в БД данные
-    Service.objects.update_or_create(name=name, url=url, slug=slug)
+    Service.objects.update_or_create(name=name, url=url, slug=slug, image=image)
     return redirect(admin_panel)
+
+#рендер страницы любого сервиса по переданному слагу
+def show_service(request, service_slug):
+    service = get_object_or_404(Service, slug=service_slug)#ищет сервис в БД по слагу, если не находит возвращает 404 код
+    content = model_to_dict(service)#переводит данные найденного сервиса в словрь
+
+    return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
+
+

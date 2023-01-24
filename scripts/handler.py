@@ -15,3 +15,4 @@ from services_model.models import Service
 #полчаем массив со словарями в переменной Dict формата [{'name': 'МФТИ', 'url': 'https://mipt.ru/'}, {'name': 'МГТУ им. Н. Э. Баумана', 'url': 'https://bmstu.ru/'}...]
 Dict = Service.objects.values("name", "url")
 print(Dict)
+

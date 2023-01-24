@@ -8,11 +8,12 @@
 </head>
 <body>
     <h2>Добавление нового сервиса</h2>
-    <form method="post" action={% url 'add_service' %}>
+    <form method="post" action={% url 'add_service' %} enctype=multipart/form-data>
         {% csrf_token %}
         {{error}}
         <p>Название:<br> <input name="name" placeholder="Название"/></p>
         <p>URL:<br> <input name="url" placeholder="http:/url.ru"/></p>
+        <p>Логотип:<br><input name="img" type="file" /></p>
         <input type="submit" value="Отправить"/>
         <input type="hidden" name="next" value="{{ next }}"/>
 
