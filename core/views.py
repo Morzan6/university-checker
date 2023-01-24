@@ -7,7 +7,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth import get_user_model, login
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from core.scripts.tokens import account_activation_token
+from scripts.tokens import account_activation_token
 from services_model.models import Service
 from transliterate import translit
 
