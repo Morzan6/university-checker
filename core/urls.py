@@ -18,6 +18,7 @@ urlpatterns = [
     path("add_service/", core_views.add_service, name="add_service"),#добавляет сервис в БД
     path("admin_panel/", core_views.admin_panel),#рендерит админ панель
     path('service/<slug:service_slug>/', core_views.show_service, name='service'), #рендерит страницу любого сервиса по переданному слагу
+    path('add_report&<slug:slug>/', core_views.add_report, name="add_report")
 ]
 
 #Дебаг медиа файлов 

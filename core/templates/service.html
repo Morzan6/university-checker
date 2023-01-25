@@ -7,10 +7,26 @@
     <title>{{name}}</title>
 </head>
 <body>
-    Тестовая траница рендера сервиса
+    Тестовая страница рендера сервиса
     {{url}}
     
     <img class="" width="100" src="{{image}}">
     
+    <div class="div">
+        <h3>У меня недоступен ресурс</h3>
+        <form method="post" action="/add_report&{{slug}}/" enctype=multipart/form-data>
+            {% csrf_token %}
+            {{error}}
+            <p>Выберете проблему:<br> <select name="type" id="">
+                <option value=" ">---Выберете проблему---</option>
+                <option value="connection">Подключение к сервису</option>
+                <option value="login">Вход/регистрация</option>
+            </select></p>
+            <p>Сообщение:<br> <input name="message" placeholder="Необязательное поле "/></p>
+            <input type="submit" value="Отправить"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+        
+    </div>
 </body>
 </html>

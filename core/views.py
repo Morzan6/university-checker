@@ -10,9 +10,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from scripts.tokens import account_activation_token
 from scripts.handle_image import handle_uploaded_file
 from services_model.models import Service
+from reports_model.models import Report
 from transliterate import translit
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
+from django.http import HttpResponseRedirect
 
 User = get_user_model()
 
@@ -137,8 +139,6 @@ def add_service(request):
     #поулчает данные из формы
     name = request.POST["name"]
     url = request.POST["url"]
-    
-    # image = request.FILES.get["img"]
     #просто дформатирует ссылку
     if url[:6] != "https:/" or url[:5] != "http:/":
         url = "https:/" + url
@@ -151,6 +151,31 @@ def add_service(request):
     #добавляеет в БД данные
     Service.objects.update_or_create(name=name, url=url, slug=slug, image=image)
     return redirect(admin_panel)
+
+def add_report(request, slug):
+    #получаем данные из формы
+    types = request.POST["type"]
+    message = request.POST["message"]
+    #если тип проблемы не указан, то редиректим назад
+    if types == " ":
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    #получаем никнейм пользователя
+    user = request.user
+    #добавляем в таблицу репортов инфу о новом репорте
+    Report.objects.update_or_create(types=str(types), message=message, users_name=user, service_slug=slug)
+
+    #дальше добавлем айдишник нового репорта в таблицу сервиса
+    
+    service = Service.objects.get(slug=slug)
+    last_id = Report.objects.latest("id")
+    last_id = last_id.id
+    reports = service.reports
+    reports = reports + ", "+ str(last_id)
+    Service.objects.filter(slug=slug).update(reports=reports)
+
+    #редиректим на предыдущию страницу, когда все сделали
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 #рендер страницы любого сервиса по переданному слагу
 def show_service(request, service_slug):
