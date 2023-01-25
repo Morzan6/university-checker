@@ -5,7 +5,33 @@
 ```python
 python manage.py runserver
 ```
-https://morzan6-organic-doodle-69gx6797jvr24w6x-8000.preview.app.github.dev/ - 
+ https://www.figma.com/file/ymyXt2sMhfXjmIcDzosDHr/PredProf?node-id=0%3A1&t=9gIgnzuyBXJZ8MVs-0
+
+```
+.
+├── config #папка конфига с настройками 
+│   ├── asgi.py
+│   ├── settings.py
+│   └── wsgi.py
+├── core  #ядро, основная папка проекта
+│   ├── apps.py
+│   ├── static #папка с css и прочими статичными штуками
+│   ├── templates #папка с html-шаблонами 
+│   ├── urls.py  #обработчик url-запросов
+│   └── views.py #функции, которые выполняет сайт при переходе на разные url
+├── media #медиа файлы тут
+├── scripts #папка со скриптами разными
+├── raiting_model #папка с моделью рейтинга для БД
+├── services_model #папка с моделью сервиса для БД
+├── user_model #папка с моделью пользователя для БД
+├── reports_model #папка с моделью репортов для БД
+├── db.json #данные для БД
+├── db.sqlite3 #база данных
+├── manage.py #системный файл для работы через терминал и отправки команд
+├── README.md #это для гитхаба
+├── requirements.txt #необходимые библиотеки для python
+└── tailwind.config.js #конфиг для тейлвинда
+```
 
  ```
  20.01.2023 00:52
@@ -17,28 +43,6 @@ https://morzan6-organic-doodle-69gx6797jvr24w6x-8000.preview.app.github.dev/ -
  ```
  21.01.2023 12:20
  * Изменена иерархия папок
-
-*
-├── config #папка конфига с настройками 
-│   ├── asgi.py
-│   ├── settings.py
-│   └── wsgi.py
-├── core #ядро, основная папка проекта
-│   ├── apps.py
-│   ├── scripts #папка со скриптами разными
-│   ├── static #папка с картинками, css и прочими дополнительными штуками
-│   ├── templates #папка с html-шаблонами 
-│   ├── urls.py #обработчик url-запросов
-│   └── views.py #функции, которые выполняет сайт при переходе на разные url
-├── db.sqlite3 #база данных
-├── manage.py #файл для работы через терминал и отправки команд
-├── README.md #это для гитхаба
-├── requirements.txt #необходимые библиотеки для python
-└── user_model #папка с моделью пользователя для БД
-    ├── apps.py
-    ├── migrations #микрации модели в БД
-    └── models.py #сама модель
-
  * Добавлен рендер страницы /activate из html-шаблона, с передачей инфы об успешной или неуспешной активации
  ```
  
