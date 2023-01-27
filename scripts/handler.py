@@ -17,5 +17,7 @@ Dict = Service.objects.values("name", "url")
 print(Dict)
 
 def site_up():
-    for i in Dict:
-        print(i['name'])
+    for service in Dict:
+        print(service['url'])
+
+site_up()
