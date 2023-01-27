@@ -168,5 +168,4 @@ EMAIL_HOST_PASSWORD = 'werdmgockguyjave'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-TOKEN = '5628470712:AAFPdkjgvx41Z8dJpFd7RFjFaaC7XnNOUxw'
-admin_id = 975083397
+
