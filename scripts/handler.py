@@ -18,6 +18,7 @@ print(Dict)
 
 def site_up():
     for service in Dict:
-        print(service['url'])
+        url = service['url']
+        print(url)
 
 site_up()
