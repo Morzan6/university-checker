@@ -16,3 +16,6 @@ from services_model.models import Service
 Dict = Service.objects.values("name", "url")
 print(Dict)
 
+def site_up():
+    for i in Dict:
+        print(i['name'])
