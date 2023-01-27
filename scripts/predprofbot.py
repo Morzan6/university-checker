@@ -1,11 +1,11 @@
 from aiogram import Bot, Dispatcher, executor, types
-from config import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
+from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import sqlite3 as sq
 #библиотечки
 
 
-TOKEN = '5628470712:AAFPdkjgvx41Z8dJpFd7RFjFaaC7XnNOUxw'   #Убрать токен отсюда, добавить в cfg файл
+   #Убрать токен отсюда, добавить в cfg файл
 
 
 bot = Bot(TOKEN)
