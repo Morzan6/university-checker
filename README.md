@@ -5,7 +5,7 @@
 ```python
 python manage.py runserver
 ```
- https://www.figma.com/file/ymyXt2sMhfXjmIcDzosDHr/PredProf?node-id=0%3A1&t=9gIgnzuyBXJZ8MVs-0
+ https://www.figma.com/file/Zp4WWIQR9QFlalIUYyw2Pw/PredProf?node-id=0%3A1&t=y5r2GTY3kbJqHboX-1
 
 ```
 .
