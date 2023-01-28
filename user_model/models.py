@@ -19,6 +19,8 @@ class MyUserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(unique=True,  verbose_name='username', max_length=20, null=True)
     email = models.EmailField(unique=True, null=True, verbose_name='email')
+    subscribes = models.CharField(null=True, max_length=9999)
+    tgid = models.CharField(unique=True, null=True, max_length=50)
     
 
     is_staff = models.BooleanField(
