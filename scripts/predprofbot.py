@@ -90,9 +90,11 @@ async def add_service(user_login, service):  #Добавляет сервис
 async def remove_service(user_login, service): #Удаляет сервис
     pass
 
-async def notification(user_logins, service): #Оповещает о неработе сервиса
-    notif = 'Внимание, сервис' + str(service) + 'не работает' #Можно добавить условие на ddos, краш и другие ошибки
-    pass
+async def notification(user_logins, service, error_code): #Оповещает о неработе сервиса
+    error_code_end = errors[error_code] #Сделать словарь с кодом ошибки и причиной, и error_code_end - значение ошибки
+    notif = 'Внимание, проблема с сервисом: ' + str(service) + 'Причина: ' +str(error_code_end) #Можно добавить условие на ddos, краш и другие ошибки
+    for i in range(len(user_logins)):
+        await bot.send_message(user_logins[i], notif)
 
 
 
