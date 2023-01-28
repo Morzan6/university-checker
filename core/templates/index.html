@@ -6,17 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-<body>
-    
+    <style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+        
+        @layer base {
+          html {
+            font-family:  'Comic Sans', system-ui, sans-serif; 
+          }
+        }
+        </style>
+</head>  
     <div class="bg-neutral-400">
         (тест инфа)<br/>
         Ваш аккаунт - {{user}}
         <br/>
         Подтвержден: {{ user.is_confirmed }}
         
-    </div>
-
-
     {% if user.is_authenticated and user.is_confirmed%}
     <div class="mt-2 pt-4">
         <div>
@@ -38,6 +45,20 @@
     </div>
     {% endif %}
     
+    </div>
+
+<body class="bg-neutral-300">
+
+    <header>
+        <div class="flex mx-20 my-8 w-auto h-20 bg-neutral-100 rounded-lg place-items-center drop-shadow-lg">
+            <p class="my-4 mx-8 text-2xl font-semibold">ВУЗ-Детектор</p>
+            <a class="my-4 mx-8 text-lg font-semibold" href="login/"> Авторизация</a> 
+        </div>
+    </header>
+
+    <br>
+    потом доделать
+
 </body>
 </html>
  

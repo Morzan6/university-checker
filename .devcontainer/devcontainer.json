@@ -30,7 +30,8 @@
         
         "emmet.useInlineCompletions": true,
         "python.linting.pylintArgs": ["--load-plugins pylint_django", "pylint_django", "--disable=django-not-configured",
-        "--django-settings-module=<mainapp>.settings"]
+        "--django-settings-module=<mainapp>.settings"],
+        "css.lint.unknownAtRules": "ignore"
       },
 
       "extensions": [
@@ -45,7 +46,8 @@
 		"SimonSiefke.svg-preview",
 		"Equinusocio.vsc-community-material-theme",
 		"batisteo.vscode-django",
-		"csstools.postcss"
+		"csstools.postcss",
+		"stylelint.vscode-stylelint"
 	]
     }
   },
