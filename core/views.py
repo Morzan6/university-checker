@@ -123,34 +123,47 @@ def activate(request, uid, token):
     else: #если токен или пользователь не тот, то ставим флажок False
         return render(request, 'registration/activation.html', {"successful_activation": False})
 
-#рендер админскйо панели
+#рендер админской панели
 def admin_panel(request, **kwargs):
     
+    reports = Report.objects.exclude(message="").exclude(is_moderated=True).values("id","types", "service_slug", "message", "users_name")
+  
+    reports = list(reports)
+
+    for report in reports:
+        slug = report['service_slug']
+        service = Service.objects.get(slug=slug)
+        url = service.url
+        report['service_slug'] = url
+        report['service_name'] = service.name
+    print(reports)
+
+
     user = request.user
     #если пользователь не админ, то его не пускает
     if user.is_staff == True:
-        return render(request, 'admin_panel.html',)
+        return render(request, 'admin_panel.html', {"reports": reports})
         
     else:
         return redirect("/")
 
-#добавляет сервис в БД
-def add_service(request):
-    #поулчает данные из формы
-    name = request.POST["name"]
-    url = request.POST["url"]
-    #просто дформатирует ссылку
-    if url[:6] != "https:/" or url[:5] != "http:/":
-        url = "https:/" + url
-    #ставит слаг(идентификатор), транслитерируем его и делаем нижнего регистра
-    slug = translit(name, "ru", reversed=True).lower()
-    #получаем картинку из формы
-    handle_uploaded_file(request.FILES['img'], slug)
-    #создаем путь для картинки с названием от слага
-    image = "/media/services_images/" + slug + ".png"
-    #добавляеет в БД данные
-    Service.objects.update_or_create(name=name, url=url, slug=slug, image=image)
+#функция одобрения репорта
+def moderate_report(request, id):
+    if request.user.is_staff:
+        report = Report.objects.get(id=id)
+        report.is_moderated = True
+        report.save()
+
     return redirect(admin_panel)
+
+#удаление репорта если он не прошел модерацию
+def cancel_report (request, id):
+    if request.user.is_staff:
+        report = Report.objects.get(id=id)
+        report.delete()
+
+    return redirect(admin_panel)
+
 
 def add_report(request, slug):
     #получаем данные из формы
@@ -175,6 +188,25 @@ def add_report(request, slug):
 
     #редиректим на предыдущию страницу, когда все сделали
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+#добавляет сервис в БД
+def add_service(request):
+    #поулчает данные из формы
+    name = request.POST["name"]
+    
+    url = request.POST["url"]
+    #просто дформатирует ссылку
+    if url[:6] != "https:/" or url[:5] != "http:/":
+        url = "https:/" + url
+    #ставит слаг(идентификатор), транслитерируем его и делаем нижнего регистра
+    slug = translit(name, "ru", reversed=True).lower()
+    #получаем картинку из формы
+    handle_uploaded_file(request.FILES['img'], slug)
+    #создаем путь для картинки с названием от слага
+    image = "/media/services_images/" + slug + ".png"
+    #добавляеет в БД данные
+    Service.objects.update_or_create(name=name, url=url, slug=slug, image=image)
+    return redirect(admin_panel)
 
 
 #рендер страницы любого сервиса по переданному слагу

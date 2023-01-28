@@ -5,18 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель</title>
+    <script>
+    </script>
 </head>
 <body>
-    <h2>Добавление нового сервиса</h2>
-    <form method="post" action={% url 'add_service' %} enctype=multipart/form-data>
-        {% csrf_token %}
-        {{error}}
-        <p>Название:<br> <input name="name" placeholder="Название"/></p>
-        <p>URL:<br> <input name="url" placeholder="http:/url.ru"/></p>
-        <p>Логотип:<br><input name="img" type="file" /></p>
-        <input type="submit" value="Отправить"/>
-        <input type="hidden" name="next" value="{{ next }}"/>
-
-    </form>
+    <div>
+        <h2>Добавление нового сервиса</h2>
+        <form method="post" action={% url 'add_service' %} enctype=multipart/form-data>
+            {% csrf_token %}
+            {{error}}
+            <p>Название:<br> <input required name="name" placeholder="Название"/></p>
+            <p>URL:<br> <input required name="url" placeholder="http:/url.ru"/></p>
+            <p>Логотип:<br><input required name="img" value="" type="file"/></p>
+            <input type="submit" value="Отправить"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </div>
+    <div class="div">
+        <h2>Отчеты пользователей</h2>
+        <table>
+            <tr><th>Тип</th><th>Сервис</th><th>Сообщение</th><th>Пользователь</th></tr>
+        {% for report in reports%}
+            <tr><td>{{report.types}}</td><td><a href="{{report.service_slug}}" >{{report.service_name}}</a></td><td>{{report.message}}</td><td>{{report.users_name}}</td> 
+                <td>
+                    <form action="/moderate_report&{{report.id}}" method="post">
+                        {% csrf_token %}
+                        <button name="button">Подтвердить</button>
+                    </form>
+                    <form action="/cancel_report&{{report.id}}" method="post">
+                        {% csrf_token %}
+                        <button name="button">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            
+        {% endfor %}
+        </table>
+        Больше сообщений пока нет
+    </div>
 </body>
 </html>
