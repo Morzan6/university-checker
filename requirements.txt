@@ -3,3 +3,4 @@ django-browser-reload==1.6.0
 six==1.16.0
 transliterate==1.10.2
 pylint-django==2.5.3
+aiogram==2.24
