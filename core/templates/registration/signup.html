@@ -4,32 +4,58 @@
     <meta charset="utf-8" />
     <title>Регистрация</title>
     <script>
-        function checkPassword(form) {
+        function check(form) {
                 password = form.password.value;
                 password_repeat = form.password_repeat.value;
-  
+                email = form.email.value;
+                username = form.username.value;
+                
+                if (! (/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i.test(email))) {
+                    document.getElementById("email_error").innerHTML = "Некорректная почта";
+                        return false;
+                }
+
+                else if (! (/^[a-zA-Z0-9_-]{4,16}$/.test(username))) {
+                    document.getElementById("username_error").innerHTML = "В имени пользователя могут быть только цифры, буквы, символы '-' и '_'. Минимальная длина - 4 символа";
+                        return false;
+                }
+                else{
+                    document.getElementById("email_error").innerHTML = "";
+                    document.getElementById("username_error").innerHTML = "";
+                }
                 // Если пароли не введены
                 if (password == '') {
-                    document.getElementById("error").innerHTML = "Введите пароль";
+                    document.getElementById("password_error").innerHTML = "";
+                    document.getElementById("password_error").innerHTML = "Введите пароль";
                     return false;
                 }     
                 // Если пароль не подтвержден
                 else if (password_repeat == '') {
-                    document.getElementById("error").innerHTML = "Подтвердите пароль";
+                    document.getElementById("password_error").innerHTML = "";
+                    document.getElementById("password_error").innerHTML = "Подтвердите пароль";
                     return false;
                 }     
                 // Если пароли не равны    
                 else if (password != password_repeat) {
-                    document.getElementById("error").innerHTML = "Пароли не совпадают";
+                    document.getElementById("password_error").innerHTML = "";
+                    document.getElementById("password_error").innerHTML = "Пароли не совпадают";
                     return false;
                 }
-  
+
+                else if (! (/\^\[a-zA-Z0-9]\[\\W]\{7,\}\$/i.test(password))) {
+                    document.getElementById("password_error").innerHTML = "";
+                    document.getElementById("password_error").innerHTML = "Пароль должен содежрать минимум 8 символов";
+                    return false;
+                } 
                 // Если равны = true
                 else{
                     
                     return true;
                 }
+                
+                
             }
+
 
     </script>
 </head>
@@ -38,14 +64,14 @@
     <h2>Вы уже вошли в аккаунт</h2>
     {% else %}
     <h2>Регистрация</h2>
-    <form method="post" action={% url 'create_user' %} onSubmit = "return checkPassword(this)">
+    <form method="post" action={% url 'create_user' %} onSubmit = "return check(this)">
         {% csrf_token %}
-        <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p>
-        <p>Почта:<br> <input name="email" placeholder="Почта"/></p>
+        <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p><p id="username_error"></p>
+        <p>Почта:<br> <input name="email" placeholder="Почта"/></p>  <p id="email_error"></p>
         <p>Пароль:<br> <input type="password" name="password" id="pwd"  placeholder="Введите пароль"/>
             <button type="button" onclick="if (pwd.type == 'text') pwd.type = 'password', pwd2.type = 'password'; else pwd.type = 'text', pwd2.type = 'text';">показать пароль</button>
         <p>Повторите пароль:<br> <input type="password" name="password_repeat" id="pwd2" placeholder="Повторите пароль"/></p>
-        <p id="error"></p>
+        <p id="password_error"></p>
         <br/>
         <input type="submit" value="Отправить" />
     </form>
