@@ -19,7 +19,7 @@ from user_model.models import User
 Dict = Service.objects.values("name", "url")
 print(Dict)
 
-def site_up():
+def DDoS_checker():
     for service in Dict:
         url = service['url']
         print(url)
@@ -29,7 +29,7 @@ def site_up():
         if response.elapsed.total_seconds() > 30:
             print('DDoS')
 
-site_up()
+DDoS_checker()
 
 
 
