@@ -8,11 +8,11 @@ from user_model.models import User
 
 
 async def add_service(user_login, service):  # Добавляет сервис
-    user = User.objects.get(tgid=user_login)
-    subs = user.subscribes
-    subs = subs + " " + service + ","
-    user.subscribes = subs
-    user.save()
+    user = User.objects.get(tgid=user_login) #получили строчку пользователя с нашим tgid в перемнную user
+    subs = user.subscribes #получаем его подписки в перемнную subs
+    subs = subs + " " + service + "," #добавляем в строчку наш новый
+    user.subscribes = subs #переприсваиваем полю подписок нашу 
+    user.save() #сохраняем
 
 
 async def remove_service(user_login, service):  # Удаляет сервис
@@ -26,4 +26,4 @@ async def remove_service(user_login, service):  # Удаляет сервис
 
 
 
-asyncio.run(add_service(975083397, "bmstu"))
+# asyncio.run(add_service(975083397, "bmstu"))
