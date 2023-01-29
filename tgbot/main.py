@@ -1,14 +1,16 @@
+import sys
+import os
+sys.path.append('../../')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 from aiogram import Bot, Dispatcher, executor, types
-from config import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
+from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
 from keyboard_ import markupweb, markupweb_remove, addWeb, addWeb_remove
 from add_remove_service import add_service, remove_service
 #библиотечки
 
-
-
 bot = Bot(TOKEN)
 dp = Dispatcher(bot)
-
 
 async def on_startup(_): #Функция при запуске бота
     await bot.send_message(admin_id, text='Bot has been started') #Отправка сообщения админу
