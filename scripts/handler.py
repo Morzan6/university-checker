@@ -1,7 +1,8 @@
 """
 Чтобы запустить скрипт в терминале прописать "python  scripts/handler.py" (без кавычек)
 """
-
+import requests
+import datetime 
 #просто настройки джанги
 import os, django
 import sys
@@ -22,17 +23,15 @@ def site_up():
     for service in Dict:
         url = service['url']
         print(url)
+        response = requests.get(url) 
+        print(response)
+        print(response.elapsed)
+        if response.elapsed > 30:
+            print('DDoS')
 
 site_up()
 
 
-import datetime 
-import requests
-response = requests.get('url')  
-print(response)
-print(response.elapsed)
 
 
-def time_in_range(start, end, x):
-    if x > 30 :
-        print('DDoS')
+    
