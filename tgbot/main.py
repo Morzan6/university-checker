@@ -1,6 +1,6 @@
 from aiogram import Bot, Dispatcher, executor, types
 from config import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
-from keyboard import markupweb, markupweb_remove, addWeb, addWeb_remove
+from .keyboard import markupweb, markupweb_remove, addWeb, addWeb_remove
 from add_remove_service import add_service, remove_service
 #библиотечки
 
