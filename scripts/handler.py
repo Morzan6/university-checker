@@ -25,3 +25,14 @@ def site_up():
 
 site_up()
 
+
+import datetime 
+import requests
+response = requests.get('url')  
+print(response)
+print(response.elapsed)
+
+
+def time_in_range(start, end, x):
+    if x > 30 :
+        print('DDoS')
