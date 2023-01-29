@@ -25,8 +25,8 @@ def site_up():
         print(url)
         response = requests.get(url) 
         print(response)
-        print(response.elapsed)
-        if response.elapsed > 30:
+        print(response.elapsed.total_seconds())
+        if response.elapsed.total_seconds() > 30:
             print('DDoS')
 
 site_up()
