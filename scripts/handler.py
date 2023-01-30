@@ -43,10 +43,22 @@ def error_codes():
             response = requests.get(f"{url}", timeout=0.5)
             code = response.status_code
             print("Code:", code)
+
+            #добавляет в БД все что надо
             service = Service.objects.get(url=url)
             status = service.status
             status = status + " " + str(code) + ","
             service.status = status
+
+            reports = service.reports
+            reports = reports + " |"
+            service.reports = reports
+
+            current_time = service.time
+            current_time = current_time + " "+ str(datetime.datetime.now())+","
+            service.time = current_time
+
+            service.save()
             
             #if response.status_code >= 300:
         time.sleep(10)       
