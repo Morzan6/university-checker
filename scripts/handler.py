@@ -1,7 +1,8 @@
 """
 Чтобы запустить скрипт в терминале прописать "python  scripts/handler.py" (без кавычек)
 """
-
+import requests
+import datetime 
 #просто настройки джанги
 import requests
 import time
@@ -32,3 +33,7 @@ def DDoS_checker():
                 print('DDoS')
         time.sleep(10)
 DDoS_checker()
+
+
+
+###
