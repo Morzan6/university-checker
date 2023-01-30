@@ -20,7 +20,8 @@ urlpatterns = [
     path('service/<slug:service_slug>/', core_views.show_service, name='service'), #рендерит страницу любого сервиса по переданному слагу
     path('add_report&<slug:slug>/', core_views.add_report, name="add_report"),
     path('moderate_report&<int:id>', core_views.moderate_report, name="moderate_report"),
-    path('cancel_report&<int:id>', core_views.cancel_report, name="cancel_report")
+    path('cancel_report&<int:id>', core_views.cancel_report, name="cancel_report"),
+    path('search/<str:query>', core_views.search, name="search")
 ]
 
 #Дебаг медиа файлов 

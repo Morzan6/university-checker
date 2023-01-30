@@ -17,6 +17,17 @@
           }
         }
         </style>
+        <script type="text/javascript">
+            function search(){
+            
+                var query = document.getElementById("search")
+                var from = document.getElementById("search_form")
+                query = "/search/"+query
+                document.location.replace(query)
+
+            }
+            
+        </script>
 </head>  
     <div class="bg-neutral-400">
         (тест инфа)<br/>
@@ -44,13 +55,17 @@
         <a class="underline underline-offset-1" href="login/">Войти</a>
     </div>
     {% endif %}
-    
+    <form>
+        {% csrf_token %}
+        <input type="text" id="search"  onsubmit='location.href="/search/"+document.getElementById("search").value'/>
+        <input type="button"  onclick='location.href="/search/"+document.getElementById("search").value' value="Найти" />
+    </form>
     </div>
 
 <body class="bg-neutral-300">
 
     <header>
-        <div class="flex mx-20 my-8 w-auto h-20 bg-neutral-100 rounded-lg place-items-center drop-shadow-lg">
+        <div class="flex mx-20 my-8 w-auto h-20 bg-neutral-100 rounded-lg justify-items-center align-middle drop-shadow-lg">
             <p class="my-4 mx-8 text-2xl font-semibold">ВУЗ-Детектор</p>
             <a class="my-4 mx-8 text-lg font-semibold" href="login/"> Авторизация</a> 
         </div>

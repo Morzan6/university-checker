@@ -15,7 +15,8 @@ from transliterate import translit
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
-
+from django.db.models import Q
+import re
 User = get_user_model()
 
 #обработчик главной страницы
@@ -217,3 +218,11 @@ def show_service(request, service_slug):
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
 
+def search(request, query):
+    #фильтруем строку регулярками на наличие плохих символов
+    query = re.sub('[.^<>%$#\'/]', '', query)
+     
+    #делаем запросы к БД через регулярки
+    queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
+    
+    return render(request, "search.html", {"queryset":queryset, "search_query": query})
