@@ -35,5 +35,19 @@ def DDoS_checker():
 DDoS_checker()
 
 
+def error_codes():
+    while True:
+        for service in Dict:
+            url = service['url']
+            response = requests.get(f"{url}", timeout=0.5)
+            code = response.status_code
+            service = Service.objects.get(url=url)
+            status = service.status
+            status = status + " " + str(code) + ","
+            service.status = status
+            #if response.status_code >= 300:
+        time.sleep(10)       
+error_codes()
+
 
 ###
