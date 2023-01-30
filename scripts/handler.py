@@ -3,6 +3,9 @@
 """
 
 #просто настройки джанги
+import requests
+import time
+import datetime 
 import os, django
 import sys
 sys.path.append('../../')
@@ -18,21 +21,14 @@ from user_model.models import User
 Dict = Service.objects.values("name", "url")
 print(Dict)
 
-def site_up():
-    for service in Dict:
-        url = service['url']
-        print(url)
-
-site_up()
-
-
-import datetime 
-import requests
-response = requests.get('url')  
-print(response)
-print(response.elapsed)
-
-
-def time_in_range(start, end, x):
-    if x > 30 :
-        print('DDoS')
+def DDoS_checker():
+    while True:
+        for service in Dict:
+            url = service['url']
+            print(url)
+            response = requests.get(url) 
+            print(response.elapsed.total_seconds())
+            if response.elapsed.total_seconds() > 30:
+                print('DDoS')
+        time.sleep(10)
+DDoS_checker()
