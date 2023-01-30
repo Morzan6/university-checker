@@ -5,8 +5,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 from aiogram import Bot, Dispatcher, executor, types
 from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
-from keyboard_ import markupweb, markupweb_remove, addWeb, addWeb_remove
-from add_remove_service import add_service, remove_service
+from tgbot.keyboard import markupweb, markupweb_remove, addWeb, addWeb_remove
+from tgbot.add_remove_service import add_service, remove_service
 #библиотечки
 
 bot = Bot(TOKEN)

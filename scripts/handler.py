@@ -2,7 +2,9 @@
 Чтобы запустить скрипт в терминале прописать "python  scripts/handler.py" (без кавычек)
 """
 import requests
-import datetime 
+import datetime
+import threading
+import asyncio
 #просто настройки джанги
 import requests
 import time
@@ -17,6 +19,7 @@ django.setup()
 #импорт модели сервиса
 from services_model.models import Service
 from user_model.models import User
+from tgbot.main import notification
 
 #полчаем массив со словарями в переменной Dict формата [{'name': 'МФТИ', 'url': 'https://mipt.ru/'}, {'name': 'МГТУ им. Н. Э. Баумана', 'url': 'https://bmstu.ru/'}...]
 Dict = Service.objects.values("name", "url")
@@ -32,8 +35,6 @@ def DDoS_checker():
             if response.elapsed.total_seconds() > 30:
                 print('DDoS')
         time.sleep(10)
-DDoS_checker()
-
 
 def error_codes():
     while True:
@@ -41,13 +42,18 @@ def error_codes():
             url = service['url']
             response = requests.get(f"{url}", timeout=0.5)
             code = response.status_code
+            print("Code:", code)
             service = Service.objects.get(url=url)
             status = service.status
             status = status + " " + str(code) + ","
             service.status = status
+            
             #if response.status_code >= 300:
         time.sleep(10)       
-error_codes()
+        
 
 
-###
+t1 = threading.Thread(target=DDoS_checker)
+t2 = threading.Thread(target=error_codes)
+t1.start()
+t2.start()
