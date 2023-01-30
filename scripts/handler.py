@@ -34,6 +34,23 @@ def DDoS_checker():
             print(response.elapsed.total_seconds())
             if response.elapsed.total_seconds() > 30:
                 print('DDoS')
+
+
+            service = Service.objects.get(url=url)
+            status = service.status
+            status = status + " " + str(response.elapsed.total_seconds()) + ","
+            service.status = status
+
+            reports = service.reports
+            reports = reports + " |"
+            service.reports = reports
+
+            current_time = service.time
+            current_time = current_time + " "+ str(datetime.datetime.now())+","
+            service.time = current_time
+
+            service.save()
+
         time.sleep(10)
 
 def error_codes():
