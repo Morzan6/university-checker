@@ -1,6 +1,3 @@
-
-
-
 async def add_service(user_login, service):  # Добавляет сервис
     print(123)
 
