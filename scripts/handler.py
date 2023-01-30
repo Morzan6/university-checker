@@ -38,7 +38,7 @@ def DDoS_checker():
 
             service = Service.objects.get(url=url)
             status = service.status
-            status = status + " " + str(response.elapsed.total_seconds()) + ","
+            status = status + " " + str("DDoS") + ","
             service.status = status
 
             reports = service.reports
