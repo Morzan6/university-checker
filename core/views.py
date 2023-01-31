@@ -227,13 +227,15 @@ def search(request, **kwargs):
     except: #если не получается, ищем в дополнительных аргументах kwargs
         if 'query' in kwargs:
             query = kwargs['query'] #если сеть запрос в доп аргумнентах, то берем его
-            query = urllib.parse.unquote(query) #и обрабатываем, если он url encoded
+            
         else:
             query = "" #если нет в аргументах, то делаем запрос пустым (он выведет все записи тогда)
-        
+            
+    query = urllib.parse.unquote(query) #и обрабатываем, если он url encoded 
     #фильтруем строку регулярками на наличие плохих символов
-    query = re.sub('[.^<>%$#\'/]', '', query)
-     
+    query = re.sub('[\^<>%$#\'/]', '', query)
+    
+    print(query)
     #делаем запросы к БД через регулярки
     queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
     
