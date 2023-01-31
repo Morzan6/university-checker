@@ -17,6 +17,8 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 import re
+import urllib.parse
+
 User = get_user_model()
 
 #обработчик главной страницы
@@ -218,7 +220,17 @@ def show_service(request, service_slug):
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
 
-def search(request, query):
+def search(request, **kwargs):
+
+    try:#пробуем достать из формы запрос
+       query = request.POST["search"]
+    except: #если не получается, ищем в дополнительных аргументах kwargs
+        if 'query' in kwargs:
+            query = kwargs['query'] #если сеть запрос в доп аргумнентах, то берем его
+            query = urllib.parse.unquote(query) #и обрабатываем, если он url encoded
+        else:
+            query = "" #если нет в аргументах, то делаем запрос пустым (он выведет все записи тогда)
+        
     #фильтруем строку регулярками на наличие плохих символов
     query = re.sub('[.^<>%$#\'/]', '', query)
      
