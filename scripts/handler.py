@@ -25,7 +25,7 @@ from tgbot.main import notification
 Dict = Service.objects.values("name", "url")
 print(Dict)
 
-def DDoS_checker():
+async def DDoS_checker():
     while True:
         for service in Dict:
             url = service['url']
@@ -52,12 +52,13 @@ def DDoS_checker():
                 service.save()
 
             time.sleep(10)
+        await asyncio.sleep(1)
 
-def error_codes():
+async def error_codes():
     while True:
         for service in Dict:
             url = service['url']
-            response = requests.get(f"{url}", timeout=0.5)
+            response = requests.get(f"{url}", timeout=5)
             code = response.status_code
             print("Code:", code)
 
@@ -76,13 +77,27 @@ def error_codes():
             service.time = current_time
 
             service.save()
-            
             #if response.status_code >= 300:
-        time.sleep(10)       
-        
+        time.sleep(10)      
+        await asyncio.sleep(1) 
+
+# t1 = threading.Thread(target=DDoS_checker)
+# t2 = threading.Thread(target=error_codes)
+# t1.start()
+# t2.start()
+# async def main():
+#     t1 = asyncio.create_task(DDoS_checker())
+#     t2 = asyncio.create_task(error_codes())
+#     await t2
+#     await t1
+
+# asyncio.run(main())
+async def main():
+    await asyncio.gather(error_codes(),DDoS_checker())
+
+asyncio.run(main())
 
 
-t1 = threading.Thread(target=DDoS_checker)
-t2 = threading.Thread(target=error_codes)
-t1.start()
-t2.start()
+# await notification([975083397],'Университет имени Баумэна') Добавить куда надо, аргументами список с юзерами, в строку slug/сразу название вуза 
+
+

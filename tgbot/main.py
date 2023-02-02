@@ -55,7 +55,7 @@ async def callback(callback: types.CallbackQuery):
 
 
 async def notification(user_logins, service): # Оповещает о неработе сервиса
-    notif = 'Внимание, сервис' + str(service) + 'не работает' #Можно добавить условие на ddos, краш и другие ошибки
+    notif = 'Внимание, сервис ' + str(service) + ' не работает' #Можно добавить условие на ddos, краш и другие ошибки
     for i in range(len(user_logins)):
         await bot.send_message(user_logins[i], notif)
 
