@@ -18,6 +18,7 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 import re
 import urllib.parse
+from django.core.exceptions import ObjectDoesNotExist
 
 User = get_user_model()
 
@@ -240,3 +241,25 @@ def search(request, **kwargs):
     queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
     
     return render(request, "search.html", {"queryset":queryset, "search_query": query})
+
+def add_subscribe(request, slug):
+    username = request.user
+    print(request)
+    
+    try:
+        user = User.objects.get(username=username)
+        print(username)
+        subscribes = user.subscribes
+        
+        if subscribes == None:
+            subscribes = ""
+        if slug in subscribes:
+            print("БЛЯТЬ")
+           
+        subscribes = subscribes + " " + str(slug) + ","
+        user.subscribes = subscribes
+        user.save()
+    except ObjectDoesNotExist:
+        print("Войдите в аккаунт")
+        return redirect(f'service/{slug}')
+    return redirect(f'service/{slug}')
