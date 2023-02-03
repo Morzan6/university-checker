@@ -23,7 +23,8 @@ urlpatterns = [
     path('cancel_report&<int:id>', core_views.cancel_report, name="cancel_report"), #отмена репорта
     path('search/<str:query>', core_views.search, name="search_from_url"), #поиск по url
     path('search/', core_views.search, name="search"), #поиск по форме
-    path('add_subscribe&<slug:slug>', core_views.add_subscribe, name="add subscribe")
+    path('add_subscribe&<slug:slug>', core_views.add_subscribe, name="add subscribe"),
+    path('delete_subscribe&<slug:slug>', core_views.delete_subscribe, name="add subscribe")
 ]
 
 #Дебаг медиа файлов 

@@ -217,10 +217,10 @@ def add_service(request):
 def show_service(request, service_slug, **kwargs):
     service = get_object_or_404(Service, slug=service_slug)#ищет сервис в БД по слагу, если не находит возвращает 404 код
     content = model_to_dict(service)#переводит данные найденного сервиса в словрь
+
     try:
         please_login = kwargs['please_login']
         content['please_login'] = please_login
-        print(please_login)
     except KeyError:
         pass
 
@@ -231,33 +231,14 @@ def show_service(request, service_slug, **kwargs):
         if service_slug in subscribes:
             subscribe_exist = 1
             content['subscribe_exist'] = subscribe_exist
-            print(subscribe_exist)
+            
     except:
         pass
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
 
-def search(request, **kwargs):
 
-    try:#пробуем достать из формы запрос
-       query = request.POST["search"]
-    except: #если не получается, ищем в дополнительных аргументах kwargs
-        if 'query' in kwargs:
-            query = kwargs['query'] #если сеть запрос в доп аргумнентах, то берем его
-            
-        else:
-            query = "" #если нет в аргументах, то делаем запрос пустым (он выведет все записи тогда)
-            
-    query = urllib.parse.unquote(query) #и обрабатываем, если он url encoded 
-    #фильтруем строку регулярками на наличие плохих символов
-    query = re.sub('[\^<>%$#\'/]', '', query)
-    
-    print(query)
-    #делаем запросы к БД через регулярки
-    queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
-    
-    return render(request, "search.html", {"queryset":queryset, "search_query": query})
 
 def add_subscribe(request, slug):
     username = request.user
@@ -280,3 +261,48 @@ def add_subscribe(request, slug):
         return show_service(request, slug, **{"please_login": please_login})
 
     return redirect(f'service/{slug}')
+
+def delete_subscribe(request, slug):
+     username = request.user
+    
+     try:
+        user = User.objects.get(username=username)
+        print(username)
+        subscribes = user.subscribes
+        
+        if subscribes == None:
+            subscribes = ""
+            return redirect(f'service/{slug}')
+        
+        subscribes = subscribes.split(slug+",")
+        subscribes = str(subscribes[0]+subscribes[1])
+        user.subscribes = subscribes
+        user.save()
+        user.save()
+     except ObjectDoesNotExist:
+        please_login = 1
+        return show_service(request, slug, **{"please_login": please_login})
+
+     return redirect(f'service/{slug}')
+
+
+def search(request, **kwargs):
+
+    try:#пробуем достать из формы запрос
+       query = request.POST["search"]
+    except: #если не получается, ищем в дополнительных аргументах kwargs
+        if 'query' in kwargs:
+            query = kwargs['query'] #если сеть запрос в доп аргумнентах, то берем его
+            
+        else:
+            query = "" #если нет в аргументах, то делаем запрос пустым (он выведет все записи тогда)
+            
+    query = urllib.parse.unquote(query) #и обрабатываем, если он url encoded 
+    #фильтруем строку регулярками на наличие плохих символов
+    query = re.sub('[\^<>%$#\'/]', '', query)
+    
+    print(query)
+    #делаем запросы к БД через регулярки
+    queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
+    
+    return render(request, "search.html", {"queryset":queryset, "search_query": query})
