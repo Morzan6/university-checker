@@ -17,8 +17,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 #импорт модели сервиса
-from services_model.models import Service
-from user_model.models import User
+from models.models import Service
+from models.models import User
 from tgbot.main import notification
 
 #полчаем массив со словарями в переменной Dict формата [{'name': 'МФТИ', 'url': 'https://mipt.ru/'}, {'name': 'МГТУ им. Н. Э. Баумана', 'url': 'https://bmstu.ru/'}...]

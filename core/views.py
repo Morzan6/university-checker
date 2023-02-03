@@ -9,8 +9,8 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from scripts.tokens import account_activation_token
 from scripts.handle_image import handle_uploaded_file
-from services_model.models import Service
-from reports_model.models import Report
+from models.models import Service
+from models.models import Report
 from transliterate import translit
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict

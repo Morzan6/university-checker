@@ -43,11 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_browser_reload",
     "django_mysql",
-    "user_model",
+    
     "core",
-    "services_model",
-    "reports_model",
-    "raiting_model",
+    
+    "models",
     
 ]
 
@@ -153,7 +152,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 
 ACCOUNT_EMAIL_REQUIRED = False
 
-AUTH_USER_MODEL = 'user_model.User'
+AUTH_USER_MODEL = 'models.User'
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 

@@ -7,8 +7,8 @@ django.setup()
 
 
 
-from services_model.models import Service 
-from user_model.models import User
+from models.models import Service 
+from models.models import User
 from django.core.mail import EmailMessage
 
 def email_alert(service_slug,Error):
