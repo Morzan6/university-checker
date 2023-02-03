@@ -214,9 +214,26 @@ def add_service(request):
 
 
 #рендер страницы любого сервиса по переданному слагу
-def show_service(request, service_slug):
+def show_service(request, service_slug, **kwargs):
     service = get_object_or_404(Service, slug=service_slug)#ищет сервис в БД по слагу, если не находит возвращает 404 код
     content = model_to_dict(service)#переводит данные найденного сервиса в словрь
+    try:
+        please_login = kwargs['please_login']
+        content['please_login'] = please_login
+        print(please_login)
+    except KeyError:
+        pass
+
+    try:
+        username = request.user
+        user = get_object_or_404(User, username=username)
+        subscribes = user.subscribes
+        if service_slug in subscribes:
+            subscribe_exist = 1
+            content['subscribe_exist'] = subscribe_exist
+            print(subscribe_exist)
+    except:
+        pass
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
@@ -244,7 +261,6 @@ def search(request, **kwargs):
 
 def add_subscribe(request, slug):
     username = request.user
-    print(request)
     
     try:
         user = User.objects.get(username=username)
@@ -254,12 +270,13 @@ def add_subscribe(request, slug):
         if subscribes == None:
             subscribes = ""
         if slug in subscribes:
-            print("БЛЯТЬ")
+            return redirect(f'service/{slug}')
            
         subscribes = subscribes + " " + str(slug) + ","
         user.subscribes = subscribes
         user.save()
     except ObjectDoesNotExist:
-        print("Войдите в аккаунт")
-        return redirect(f'service/{slug}')
+        please_login = 1
+        return show_service(request, slug, **{"please_login": please_login})
+
     return redirect(f'service/{slug}')

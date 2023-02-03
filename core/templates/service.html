@@ -11,7 +11,11 @@
     {{url}}
     
     <img class="" width="100" src="{{image}}">
+    {%if not subscribe_exist%}
     <a href="/add_subscribe&{{slug}}">Добавить в избранное</a>
+    {%else%}
+    Уже добавлено в избраное
+    {%endif%}
     <div class="div">
         <h3>У меня недоступен ресурс</h3>
         <form method="post" action="/add_report&{{slug}}/" enctype=multipart/form-data>
@@ -28,5 +32,9 @@
         </form>
         
     </div>
+    {%if please_login%}
+    Зарегестрируйтесь
+    {%endif%}
+
 </body>
 </html>
