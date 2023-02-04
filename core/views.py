@@ -9,27 +9,99 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from scripts.tokens import account_activation_token
 from scripts.handle_image import handle_uploaded_file
-from services_model.models import Service
-from reports_model.models import Report
+from models.models import Service
+from models.models import Report
 from transliterate import translit
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 import re
+import urllib.parse
+from django.core.exceptions import ObjectDoesNotExist
+import base64
+
 User = get_user_model()
 
 #обработчик главной страницы
 def index(request):
+    services = Service.objects.all()[:5]
+
+    full_array = []
+    for s in services:
+        service = Service.objects.get(slug=s.slug)
+        
+        all_info = []
+
+        time = (service.time).split(",")
+        time = [i[:].strip() for i in time]
+        del time[-1]
+
+        for t in time:
+            datetime_dict = {}
+            time_ = t[11:]
+            date = t[:-9]
+            datetime_dict['year'] = int(date[:-6])
+            datetime_dict['month'] = int(date[5:-3])
+            datetime_dict['day'] = int(date[8:])
+            datetime_dict['hour'] = int(time_[:-6])
+            datetime_dict['minute'] = int(time_[3:-3])
+            datetime_dict['second'] = int(time_[6:])
+            
+            all_info.append(datetime_dict)
+       
+
+    
+        status = (service.status).split(",")
+        del status[-1]
+        
+        status = [int(i.strip()) for i in status]
+
+        for s in range(len(status)):
+            if status[s] >= 200 and status[s] < 300:
+                status[s] = 1
+            elif status[s] >= 500 and status[s] < 600:
+                status[s] = 20
+            elif status[s] >= 400 and status[s] < 500:
+                status[s] = 15
+            elif status[s] >= 300 and status[s] < 400:
+                status[s] = 5
+            elif status[s] >= 100 and status[s] < 200:
+                status[s] = 10
+
+        reports = (service.reports).split("|")
+        
+    
+        count_rep = []
+        for report in reports:
+            report = report.split(",")
+            reports_count = len(report)
+            count_rep.append(reports_count)
+        
+
+        incedents = [a*b*(-1) for a,b in zip(count_rep,status)]
+    
+
+        for dt, i in zip(all_info, incedents):
+            dt['y'] = i
+        
+        
+        for inf in all_info:
+            inf['name'] = service.name
+            inf['slug'] = service.slug
+        full_array.append(all_info)
+
+    print("\n",full_array)
+
     return render(
         request, "index.html",
         {
-            "title": "Главная страница",      
+            "title": "Главная страница",    
+            "full_array": full_array,
+            "len": len(full_array),
         },
     )
 
-def test(request):
-    return render(request, "test.html")
     
 #рендер страницы с регистрацией нового пользователя
 def signup(request):
@@ -211,18 +283,174 @@ def add_service(request):
 
 
 #рендер страницы любого сервиса по переданному слагу
-def show_service(request, service_slug):
+def show_service(request, service_slug, **kwargs):
     service = get_object_or_404(Service, slug=service_slug)#ищет сервис в БД по слагу, если не находит возвращает 404 код
     content = model_to_dict(service)#переводит данные найденного сервиса в словрь
+
+        
+    all_info = []
+
+    time = (service.time).split(",")
+    time = [i[:].strip() for i in time]
+    del time[-1]
+
+    for t in time:
+        datetime_dict = {}
+        time_ = t[11:]
+        date = t[:-9]
+        datetime_dict['year'] = int(date[:-6])
+        datetime_dict['month'] = int(date[5:-3])
+        datetime_dict['day'] = int(date[8:])
+        datetime_dict['hour'] = int(time_[:-6])
+        datetime_dict['minute'] = int(time_[3:-3])
+        datetime_dict['second'] = int(time_[6:])
+            
+        all_info.append(datetime_dict)
+       
+
+    
+    status = (service.status).split(",")
+    del status[-1]
+        
+    status = [int(i.strip()) for i in status]
+
+    for s in range(len(status)):
+        if status[s] >= 200 and status[s] < 300:
+                status[s] = 1
+        elif status[s] >= 500 and status[s] < 600:
+                status[s] = 20
+        elif status[s] >= 400 and status[s] < 500:
+                status[s] = 15
+        elif status[s] >= 300 and status[s] < 400:
+                status[s] = 5
+        elif status[s] >= 100 and status[s] < 200:
+                status[s] = 10
+
+    reports = (service.reports).split("|")
+        
+    
+    count_rep = []
+    for report in reports:
+        report = report.split(",")
+        reports_count = len(report)
+        count_rep.append(reports_count)
+        
+
+    incedents = [a*b*(-1) for a,b in zip(count_rep,status)]
+    
+
+    for dt, i in zip(all_info, incedents):
+        dt['y'] = i
+        
+        
+    for inf in all_info:
+        inf['name'] = service.name
+        inf['slug'] = service.slug
+
+    try:
+        please_login = kwargs['please_login']
+        content['please_login'] = please_login
+    except KeyError:
+        pass
+
+    try:
+        username = request.user
+        user = get_object_or_404(User, username=username)
+        subscribes = user.subscribes
+        if service_slug in subscribes:
+            subscribe_exist = 1
+            content['subscribe_exist'] = subscribe_exist
+            
+    except:
+        pass
+
+    content = content | {"all_info":all_info}
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
 
-def search(request, query):
+
+
+def add_subscribe(request, slug):
+    username = request.user
+    
+    try:
+        user = User.objects.get(username=username)
+        print(username)
+        subscribes = user.subscribes
+        
+        if subscribes == None:
+            subscribes = ""
+        if slug in subscribes:
+            return redirect(f'service/{slug}')
+           
+        subscribes = subscribes + " " + str(slug) + ","
+        user.subscribes = subscribes
+        user.save()
+    except ObjectDoesNotExist:
+        please_login = 1
+        return show_service(request, slug, **{"please_login": please_login})
+
+    return redirect(f'service/{slug}')
+
+def delete_subscribe(request, slug):
+     username = request.user
+    
+     try:
+        user = User.objects.get(username=username)
+        print(username)
+        subscribes = user.subscribes
+        
+        if subscribes == None:
+            subscribes = ""
+            return redirect(f'service/{slug}')
+        
+        subscribes = subscribes.split(slug+",")
+        subscribes = str(subscribes[0]+subscribes[1])
+        user.subscribes = subscribes
+        user.save()
+        user.save()
+     except ObjectDoesNotExist:
+        please_login = 1
+        return show_service(request, slug, **{"please_login": please_login})
+
+     return redirect(f'service/{slug}')
+
+
+def search(request, **kwargs):
+
+    try:#пробуем достать из формы запрос
+       query = request.POST["search"]
+    except: #если не получается, ищем в дополнительных аргументах kwargs
+        if 'query' in kwargs:
+            query = kwargs['query'] #если сеть запрос в доп аргумнентах, то берем его
+            
+        else:
+            query = "" #если нет в аргументах, то делаем запрос пустым (он выведет все записи тогда)
+            
+    query = urllib.parse.unquote(query) #и обрабатываем, если он url encoded 
     #фильтруем строку регулярками на наличие плохих символов
-    query = re.sub('[.^<>%$#\'/]', '', query)
-     
+    query = re.sub('[\^<>%$#\'/]', '', query)
+    
+    print(query)
     #делаем запросы к БД через регулярки
     queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
     
     return render(request, "search.html", {"queryset":queryset, "search_query": query})
+
+
+
+def tg_activate(request, tgid):
+    username = request.user
+    tgid = str(base64.b64decode(tgid))
+    try:
+        user = User.objects.get(username=username)
+        if tgid in user.tgid:
+            return  HttpResponse(f'уже привязан')
+        user.tgid = tgid
+        user.save()
+        return HttpResponse(f'{user}')
+    except ObjectDoesNotExist:
+        return log_in(request)
+
+    

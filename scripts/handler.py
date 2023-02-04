@@ -8,7 +8,7 @@ import asyncio
 #просто настройки джанги
 import requests
 import time
-import datetime 
+from datetime import datetime, timezone, timedelta
 import os, django
 import sys
 sys.path.append('../../')
@@ -17,15 +17,18 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 #импорт модели сервиса
-from services_model.models import Service
-from user_model.models import User
+from models.models import Service
+from models.models import User
 from tgbot.main import notification
+
+timezone_offset = 3.0  
+tzinfo = timezone(timedelta(hours=timezone_offset))
 
 #полчаем массив со словарями в переменной Dict формата [{'name': 'МФТИ', 'url': 'https://mipt.ru/'}, {'name': 'МГТУ им. Н. Э. Баумана', 'url': 'https://bmstu.ru/'}...]
 Dict = Service.objects.values("name", "url")
 print(Dict)
 
-def DDoS_checker():
+async def DDoS_checker():
     while True:
         for service in Dict:
             url = service['url']
@@ -38,7 +41,7 @@ def DDoS_checker():
             if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
                 status = service.status
-                status = status + " " + str("DDoS") + ","
+                status = status + " " + str("100") + ","
                 service.status = status
 
                 reports = service.reports
@@ -46,18 +49,19 @@ def DDoS_checker():
                 service.reports = reports
 
                 current_time = service.time
-                current_time = current_time + " "+ str(datetime.datetime.now())+","
+                current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
                 service.time = current_time
 
                 service.save()
 
             time.sleep(10)
+        await asyncio.sleep(1)
 
-def error_codes():
+async def error_codes():
     while True:
         for service in Dict:
             url = service['url']
-            response = requests.get(f"{url}", timeout=0.5)
+            response = requests.get(f"{url}", timeout=5)
             code = response.status_code
             print("Code:", code)
 
@@ -72,17 +76,32 @@ def error_codes():
             service.reports = reports
 
             current_time = service.time
-            current_time = current_time + " "+ str(datetime.datetime.now())+","
+            current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
             service.time = current_time
 
             service.save()
-            
             #if response.status_code >= 300:
-        time.sleep(10)       
-        
+        time.sleep(10)      
+        await notification('bmstu', 'Ddos')
+        await asyncio.sleep(1) 
+
+# t1 = threading.Thread(target=DDoS_checker)
+# t2 = threading.Thread(target=error_codes)
+# t1.start()
+# t2.start()
+# async def main():
+#     t1 = asyncio.create_task(DDoS_checker())
+#     t2 = asyncio.create_task(error_codes())
+#     await t2
+#     await t1
+
+# asyncio.run(main())
+async def main():
+    await asyncio.gather(error_codes(),DDoS_checker())
+
+asyncio.run(main())
 
 
-t1 = threading.Thread(target=DDoS_checker)
-t2 = threading.Thread(target=error_codes)
-t1.start()
-t2.start()
+# await notification([975083397],'Университет имени Баумэна') Добавить куда надо, аргументами список с юзерами, в строку slug/сразу название вуза 
+
+

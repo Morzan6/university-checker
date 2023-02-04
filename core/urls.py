@@ -8,7 +8,6 @@ urlpatterns = [
     path("", core_views.index, name="index"),
     #path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
-    path("test/", core_views.test),
     path("signup/", core_views.signup), #рендер страницы регистрации
     path("login/", core_views.log_in), #рендер страницы входа
     path("logout/", core_views.log_out), #выход из аккаунта 
@@ -18,10 +17,14 @@ urlpatterns = [
     path("add_service/", core_views.add_service, name="add_service"),#добавляет сервис в БД
     path("admin_panel/", core_views.admin_panel),#рендерит админ панель
     path('service/<slug:service_slug>/', core_views.show_service, name='service'), #рендерит страницу любого сервиса по переданному слагу
-    path('add_report&<slug:slug>/', core_views.add_report, name="add_report"),
-    path('moderate_report&<int:id>', core_views.moderate_report, name="moderate_report"),
-    path('cancel_report&<int:id>', core_views.cancel_report, name="cancel_report"),
-    path('search/<str:query>', core_views.search, name="search")
+    path('add_report&<slug:slug>/', core_views.add_report, name="add_report"), #добавление репорта
+    path('moderate_report&<int:id>', core_views.moderate_report, name="moderate_report"), #одобрение репорта
+    path('cancel_report&<int:id>', core_views.cancel_report, name="cancel_report"), #отмена репорта
+    path('search/<str:query>', core_views.search, name="search_from_url"), #поиск по url
+    path('search/', core_views.search, name="search"), #поиск по форме
+    path('add_subscribe&<slug:slug>', core_views.add_subscribe, name="add subscribe"),
+    path('delete_subscribe&<slug:slug>', core_views.delete_subscribe, name="add subscribe"),
+    path('activatetg&<str:tgid>/', core_views.tg_activate)
 ]
 
 #Дебаг медиа файлов 

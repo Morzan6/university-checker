@@ -7,6 +7,9 @@ from aiogram import Bot, Dispatcher, executor, types
 from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
 from tgbot.keyboard import markupweb, markupweb_remove, addWeb, addWeb_remove
 from tgbot.add_remove_service import add_service, remove_service
+
+from models.models import Service 
+from models.models import User
 #библиотечки
 
 bot = Bot(TOKEN)
@@ -54,10 +57,18 @@ async def callback(callback: types.CallbackQuery):
 
 
 
-async def notification(user_logins, service): # Оповещает о неработе сервиса
-    notif = 'Внимание, сервис' + str(service) + 'не работает' #Можно добавить условие на ddos, краш и другие ошибки
-    for i in range(len(user_logins)):
-        await bot.send_message(user_logins[i], notif)
+async def notification(service_slug, error_code): # Оповещает о неработе сервиса
+    # notif = 'Внимание, сервис ' + str(service) + ' не работает' #Можно добавить условие на ddos, краш и другие ошибки
+    # for i in range(len(user_logins)):
+    #     await bot.send_message(user_logins[i], notif)
+    users = User.objects.filter( subscribes__icontains = service_slug )
+    service = Service.objects.get(slug = service_slug)
+    for user in users:
+        print(user.tgid)
+        print(service.name)
+        notif = 'Внимание, обнаружена ошибка в работе сервиса: ' + str(service.name) + "\n\nОшибка: " + str(error_code) + '\n\nСсылка на сервис - ' + str(service.url)
+        await bot.send_message(user.tgid, notif)
+
 
 
 

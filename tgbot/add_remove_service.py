@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 import asyncio
-from user_model.models import User
+from models.models import User
 
 
 async def add_service(user_login, service):  # Добавляет сервис

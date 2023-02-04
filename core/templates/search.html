@@ -9,7 +9,7 @@
 <body>
     {% for query in queryset %}
     <li>
-      <a href="{{ query.url }}">{{ query.name }}</a>
+      <a href="/service/{{ query.slug }}">{{ query.name }}</a>
     </li>
   {% endfor %}
 </body>

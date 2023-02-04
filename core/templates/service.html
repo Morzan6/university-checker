@@ -5,13 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{name}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+        
+        @layer base {
+          html {
+            font-family:  'Comic Sans', system-ui, sans-serif; 
+          }
+        }
+    </style>
+    <script src="/static/canvasjs.3.js"></script>
 </head>
 <body>
     Тестовая страница рендера сервиса
     {{url}}
     
     <img class="" width="100" src="{{image}}">
-    
+    {%if not subscribe_exist%}
+    <a href="/add_subscribe&{{slug}}">Добавить в избранное</a>
+    {%else%}
+    Уже добавлено в избраное
+    <a href="/delete_subscribe&{{slug}}">Удалить из избранного</a>
+    {%endif%}
     <div class="div">
         <h3>У меня недоступен ресурс</h3>
         <form method="post" action="/add_report&{{slug}}/" enctype=multipart/form-data>
@@ -27,6 +45,51 @@
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
         
+    </div>
+    {%if please_login%}
+    Зарегистрируйтесь
+    {%endif%}
+
+
+    <div class="flex place-content-center">
+        <div id="chart" class="mx-4 h-48 w-72"></div>
+        <script>
+            window.onload = function () {
+            
+            
+            var chart = new CanvasJS.Chart("chart", {
+                animationEnabled: true,
+                title:{
+                    text: "{{item.1.name}}"
+                },
+                axisX:{
+                    valueFormatString: "DD MMM hh:mm:ss",
+                    labelAngle: -20,
+                    gridThickness: 0.1,
+                },
+                axisY: {
+                    title: "",
+                    gridThickness: 0.1,
+                    scaleBreaks: {
+                        autoCalculate: true
+                    }
+                },
+                data: [{
+                    type: "line",
+                    fillOpacity: .2, 
+                    xValueFormatString: "DD MMM  hh:mm:ss",
+                    color: "#F08080",
+                    dataPoints: [
+                    {%for i in all_info%}
+                        { x: new Date(Date.UTC({{i.year}}, {{i.month}}-1, {{i.day}}, {{i.hour}}, {{i.minute}}, {{i.second}})), y: {{i.y}} },
+                    {%endfor%}
+                    ]
+                }]
+            });
+            chart.render();
+            
+            }
+        </script>
     </div>
 </body>
 </html>
