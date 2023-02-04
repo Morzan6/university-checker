@@ -1,1 +1,2 @@
-# core/static/* linguist-vendored
+#core/static/* linguist-vendored
+static/tailwind.config.js -linguist-vendored
