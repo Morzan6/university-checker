@@ -26,7 +26,7 @@ User = get_user_model()
 #обработчик главной страницы
 def index(request):
     services = Service.objects.all()[:5]
-    print(services)
+
     full_array = []
     for s in services:
         service = Service.objects.get(slug=s.slug)
@@ -49,7 +49,7 @@ def index(request):
             datetime_dict['second'] = int(time_[6:])
             
             all_info.append(datetime_dict)
-        print(all_info)
+       
 
     
         status = (service.status).split(",")
@@ -68,9 +68,9 @@ def index(request):
                 status[s] = 5
             elif status[s] >= 100 and status[s] < 200:
                 status[s] = 10
-        print(status)
+
         reports = (service.reports).split("|")
-        print(status)
+        
     
         count_rep = []
         for report in reports:
@@ -80,7 +80,7 @@ def index(request):
         
 
         incedents = [a*b*(-1) for a,b in zip(count_rep,status)]
-        print(incedents)
+    
 
         for dt, i in zip(all_info, incedents):
             dt['y'] = i
@@ -89,15 +89,9 @@ def index(request):
         for inf in all_info:
             inf['name'] = service.name
             inf['slug'] = service.slug
-        print(all_info)
         full_array.append(all_info)
 
     print("\n",full_array)
-    ids = []
-    for i in range(len(full_array)):
-        id_ = i
-        ids.append(id_)
-    print(ids)
 
     return render(
         request, "index.html",
@@ -108,8 +102,6 @@ def index(request):
         },
     )
 
-def test(request):
-    return render(request, "test.html")
     
 #рендер страницы с регистрацией нового пользователя
 def signup(request):
@@ -295,6 +287,66 @@ def show_service(request, service_slug, **kwargs):
     service = get_object_or_404(Service, slug=service_slug)#ищет сервис в БД по слагу, если не находит возвращает 404 код
     content = model_to_dict(service)#переводит данные найденного сервиса в словрь
 
+        
+    all_info = []
+
+    time = (service.time).split(",")
+    time = [i[:].strip() for i in time]
+    del time[-1]
+
+    for t in time:
+        datetime_dict = {}
+        time_ = t[11:]
+        date = t[:-9]
+        datetime_dict['year'] = int(date[:-6])
+        datetime_dict['month'] = int(date[5:-3])
+        datetime_dict['day'] = int(date[8:])
+        datetime_dict['hour'] = int(time_[:-6])
+        datetime_dict['minute'] = int(time_[3:-3])
+        datetime_dict['second'] = int(time_[6:])
+            
+        all_info.append(datetime_dict)
+       
+
+    
+    status = (service.status).split(",")
+    del status[-1]
+        
+    status = [int(i.strip()) for i in status]
+
+    for s in range(len(status)):
+        if status[s] >= 200 and status[s] < 300:
+                status[s] = 1
+        elif status[s] >= 500 and status[s] < 600:
+                status[s] = 20
+        elif status[s] >= 400 and status[s] < 500:
+                status[s] = 15
+        elif status[s] >= 300 and status[s] < 400:
+                status[s] = 5
+        elif status[s] >= 100 and status[s] < 200:
+                status[s] = 10
+
+    reports = (service.reports).split("|")
+        
+    
+    count_rep = []
+    for report in reports:
+        report = report.split(",")
+        reports_count = len(report)
+        count_rep.append(reports_count)
+        
+
+    incedents = [a*b*(-1) for a,b in zip(count_rep,status)]
+    
+
+    for dt, i in zip(all_info, incedents):
+        dt['y'] = i
+        
+        
+    for inf in all_info:
+        inf['name'] = service.name
+        inf['slug'] = service.slug
+
     try:
         please_login = kwargs['please_login']
         content['please_login'] = please_login
@@ -311,6 +363,8 @@ def show_service(request, service_slug, **kwargs):
             
     except:
         pass
+
+    content = content | {"all_info":all_info}
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
@@ -383,3 +437,11 @@ def search(request, **kwargs):
     queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
     
     return render(request, "search.html", {"queryset":queryset, "search_query": query})
+
+
+def tg_verification(request):
+    user = get_object_or_404(User, email=login)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = account_activation_token.make_token(user)
+    current_site = get_current_site(request)
+    activation_link = "http://{0}/activatetg/{1}/{2}".format(current_site, uid, token)

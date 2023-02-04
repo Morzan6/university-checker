@@ -76,10 +76,9 @@
     <br>
     потом доделать
     <br>
-    
+    <div class="flex place-content-center">
     {%for item in full_array%}
-    {{ forloop.counter }}
-        <div id="chart{{ forloop.counter }}" class="h-64 w-96"></div>
+        <div id="chart{{ forloop.counter }}" class="mx-4 h-48 w-72"></div>
     {%endfor%}
 
 
@@ -105,7 +104,7 @@
                     }
                 },
                 data: [{
-                    type: "spline",
+                    type: "line",
                     fillOpacity: .2, 
                     xValueFormatString: "DD MMM  hh:mm:ss",
                     color: "#F08080",
@@ -120,7 +119,7 @@
             {%endfor%}
             }
         </script>
-    
+    </div>
 </body>
 </html>
  

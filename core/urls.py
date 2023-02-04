@@ -8,7 +8,6 @@ urlpatterns = [
     path("", core_views.index, name="index"),
     #path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
-    path("test/", core_views.test),
     path("signup/", core_views.signup), #рендер страницы регистрации
     path("login/", core_views.log_in), #рендер страницы входа
     path("logout/", core_views.log_out), #выход из аккаунта 
