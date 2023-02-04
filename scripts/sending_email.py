@@ -52,6 +52,6 @@ def email_alert(service_slug,Error):
     print(service.name)
     for user in users: 
 
-        email = EmailMessage(f"{service.name} Сбой в работе сервиса.", f'Внимание, замечен сбой в {service.url} Приносим свои извинения!,{Dict_error[f"Error"]}', to=[user.email])
+        email = EmailMessage(f"{service.name} - Сбой в работе сервиса.", f'Внимание, замечен сбой в {service.url}. Приносим свои извинения!\n\n{Dict_error[f"{Error}"]}', to=[user.email])
         email.send() 
-email_alert('mpti',300)    
+email_alert('bmstu',502)    
