@@ -1,1 +1,2 @@
-core/static/* linguist-vendored
+# core/static/* linguist-vendored
+*.js linguist-language=JavaScript
