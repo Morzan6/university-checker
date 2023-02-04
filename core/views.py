@@ -19,7 +19,7 @@ from django.db.models import Q
 import re
 import urllib.parse
 from django.core.exceptions import ObjectDoesNotExist
-from random import randrange
+import base64
 
 User = get_user_model()
 
@@ -439,9 +439,18 @@ def search(request, **kwargs):
     return render(request, "search.html", {"queryset":queryset, "search_query": query})
 
 
-def tg_verification(request):
-    user = get_object_or_404(User, email=login)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    token = account_activation_token.make_token(user)
-    current_site = get_current_site(request)
-    activation_link = "http://{0}/activatetg/{1}/{2}".format(current_site, uid, token)
+
+def tg_activate(request, tgid):
+    username = request.user
+    tgid = str(base64.b64decode(tgid))
+    try:
+        user = User.objects.get(username=username)
+        if tgid in user.tgid:
+            return  HttpResponse(f'уже привязан')
+        user.tgid = tgid
+        user.save()
+        return HttpResponse(f'{user}')
+    except ObjectDoesNotExist:
+        return log_in(request)
+
+    
