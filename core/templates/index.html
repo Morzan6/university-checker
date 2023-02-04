@@ -78,9 +78,8 @@
     <br>
     <div class="flex place-content-center">
     {%for item in full_array%}
-        <div id="chart{{ forloop.counter }}" class="mx-4 h-48 w-72"></div>
+        <div id="chart{{ forloop.counter }}" class="mx-4 h-48 w-72  rounded-lg "></div>
     {%endfor%}
-
 
         <script>
             window.onload = function () {
@@ -105,9 +104,10 @@
                 },
                 data: [{
                     type: "line",
-                    fillOpacity: .2, 
+                    
                     xValueFormatString: "DD MMM  hh:mm:ss",
                     color: "#F08080",
+                    
                     dataPoints: [
                     {%for i in item%}
                         { x: new Date(Date.UTC({{i.year}}, {{i.month}}-1, {{i.day}}, {{i.hour}}, {{i.minute}}, {{i.second}})), y: {{i.y}} },
