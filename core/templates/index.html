@@ -16,15 +16,16 @@
             font-family:  'Comic Sans', system-ui, sans-serif; 
           }
         }
-        </style>
-        <script type="text/javascript">
+    </style>
+    <script type="text/javascript">
             function search(){
             
                 return window.location.replace("/search/"+document.getElementById("search").value)
 
             }
             
-        </script>
+    </script>
+    <script src="/static/canvasjs.3.js"></script>
 </head>  
     <div class="bg-neutral-400">
         (тест инфа)<br/>
@@ -36,13 +37,13 @@
     <div class="mt-2 pt-4">
         <div>
             <div class="text-lg font-bold ">Вы вошли в аккаунт</div><br/>
-            <a class="underline underline-offset-1" href="logout/">Выйти</a>
+            <a class="underline underline-offset-1" href="/logout/">Выйти</a>
         </div>
     </div>
     {% elif user.is_authenticated and not user.is_confirmed%}
     <div class="mt-2 pt-4">
         Подтвердите свой аккаунт. Проверьте почту<br/>
-        <a class="underline underline-offset-1" href="logout/">Выйти</a>
+        <a class="underline underline-offset-1" href="/logout/">Выйти</a>
     </div>
     {% elif not user.is_authenticated %}
     <div class="mt-2 pt-4">
@@ -56,7 +57,8 @@
     </div>
 
 <body class="bg-neutral-300">
-
+  
+    
     <header>
         <div class="flex mx-20 my-8 w-auto h-20 bg-neutral-100 rounded-lg justify-items-center align-middle place-content-center drop-shadow-lg">
             <p class="my-4 mx-8 text-2xl font-semibold">ВУЗ-Детектор</p>
@@ -73,7 +75,52 @@
 
     <br>
     потом доделать
+    <br>
+    
+    {%for item in full_array%}
+    {{ forloop.counter }}
+        <div id="chart{{ forloop.counter }}" class="h-64 w-96"></div>
+    {%endfor%}
 
+
+        <script>
+            window.onload = function () {
+            {%for item in full_array%}
+            
+            var chart{{ forloop.counter }} = new CanvasJS.Chart("chart{{ forloop.counter }}", {
+                animationEnabled: true,
+                title:{
+                    text: "{{item.1.name}}"
+                },
+                axisX:{
+                    valueFormatString: "DD MMM hh:mm:ss",
+                    labelAngle: -20,
+                    gridThickness: 0.1,
+                },
+                axisY: {
+                    title: "",
+                    gridThickness: 0.1,
+                    scaleBreaks: {
+                        autoCalculate: true
+                    }
+                },
+                data: [{
+                    type: "spline",
+                    fillOpacity: .2, 
+                    xValueFormatString: "DD MMM  hh:mm:ss",
+                    color: "#F08080",
+                    dataPoints: [
+                    {%for i in item%}
+                        { x: new Date(Date.UTC({{i.year}}, {{i.month}}-1, {{i.day}}, {{i.hour}}, {{i.minute}}, {{i.second}})), y: {{i.y}} },
+                    {%endfor%}
+                    ]
+                }]
+            });
+            chart{{ forloop.counter }}.render();
+            {%endfor%}
+            }
+        </script>
+    
 </body>
 </html>
  

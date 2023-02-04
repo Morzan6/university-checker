@@ -8,7 +8,7 @@ import asyncio
 #просто настройки джанги
 import requests
 import time
-import datetime 
+from datetime import datetime, timezone, timedelta
 import os, django
 import sys
 sys.path.append('../../')
@@ -20,6 +20,9 @@ django.setup()
 from models.models import Service
 from models.models import User
 from tgbot.main import notification
+
+timezone_offset = 3.0  
+tzinfo = timezone(timedelta(hours=timezone_offset))
 
 #полчаем массив со словарями в переменной Dict формата [{'name': 'МФТИ', 'url': 'https://mipt.ru/'}, {'name': 'МГТУ им. Н. Э. Баумана', 'url': 'https://bmstu.ru/'}...]
 Dict = Service.objects.values("name", "url")
@@ -38,7 +41,7 @@ async def DDoS_checker():
             if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
                 status = service.status
-                status = status + " " + str("DDoS") + ","
+                status = status + " " + str("100") + ","
                 service.status = status
 
                 reports = service.reports
@@ -46,7 +49,7 @@ async def DDoS_checker():
                 service.reports = reports
 
                 current_time = service.time
-                current_time = current_time + " "+ str(datetime.datetime.now())+","
+                current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
                 service.time = current_time
 
                 service.save()
@@ -73,7 +76,7 @@ async def error_codes():
             service.reports = reports
 
             current_time = service.time
-            current_time = current_time + " "+ str(datetime.datetime.now())+","
+            current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
             service.time = current_time
 
             service.save()
