@@ -50,9 +50,8 @@ def email_alert(service_slug,Error):
     users = User.objects.filter( subscribes__icontains = service_slug )
     service = Service.objects.get(slug = service_slug)
     print(service.name)
-    for user in users:
+    for user in users: 
 
-        email = EmailMessage(f'{service.name} Сбой в работе сервиса.', f'Внимание. замечен сбой в {service.url} Приносим свои извинения! 
-        {Dict_error['Error']} ', to=[user.email])
+        email = EmailMessage(f"{service.name} Сбой в работе сервиса.", f'Внимание, замечен сбой в {service.url} Приносим свои извинения!',f'{Dict_error["Error"]}', to=[user.email])
         email.send() #Написать более объемное предложение
 email_alert('mpti',200)    
