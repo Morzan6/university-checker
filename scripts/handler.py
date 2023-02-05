@@ -20,6 +20,7 @@ django.setup()
 from models.models import Service
 from models.models import User
 from tgbot.main import notification
+from scripts.sending import email_alert
 
 timezone_offset = 3.0  
 tzinfo = timezone(timedelta(hours=timezone_offset))
@@ -53,6 +54,7 @@ async def DDoS_checker():
                 service.time = current_time
 
                 service.save()
+                
 
             time.sleep(10)
         await asyncio.sleep(1)
@@ -103,6 +105,5 @@ asyncio.run(main())
 
 
 # await notification([975083397],'Университет имени Баумэна') Добавить куда надо, аргументами список с юзерами, в строку slug/сразу название вуза 
-
 
 
