@@ -22,11 +22,12 @@ from models.models import User
 from tgbot.main import notification
 from scripts.sending import email_alert
 
+
 timezone_offset = 3.0  
 tzinfo = timezone(timedelta(hours=timezone_offset))
 
 #полчаем массив со словарями в переменной Dict формата [{'name': 'МФТИ', 'url': 'https://mipt.ru/'}, {'name': 'МГТУ им. Н. Э. Баумана', 'url': 'https://bmstu.ru/'}...]
-Dict = Service.objects.values("name", "url")
+Dict = Service.objects.values("name", "url","slug")
 print(Dict)
 
 async def DDoS_checker():
@@ -38,6 +39,8 @@ async def DDoS_checker():
             print(response.elapsed.total_seconds())
             if response.elapsed.total_seconds() > 30:
                 print('DDoS')
+            if response.elapsed.total_seconds() > 30:
+              await email_alert(service.slug,100)  
 
             if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
