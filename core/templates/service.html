@@ -55,6 +55,7 @@
 
     <div class="flex place-content-center">
         <div id="chart" class="mx-4 h-48 w-72"></div>
+        {{info_status}}
         <script>
             window.onload = function () {
             
@@ -80,7 +81,7 @@
                     type: "line",
                     fillOpacity: .2, 
                     xValueFormatString: "DD MMM  hh:mm:ss",
-                    color: "#F08080",
+                    color: "{{color}}",
                     dataPoints: [
                     {%for i in all_info%}
                         { x: new Date(Date.UTC({{i.year}}, {{i.month}}-1, {{i.day}}, {{i.hour}}, {{i.minute}}, {{i.second}})), y: {{i.y}} },
@@ -117,7 +118,7 @@
             <input type="submit" value="Отправить"/>
             <input type="hidden" name="next" value="{{ next }}"/>
             {%else%}
-            <a class="underline underline-offset-1" href="login/">Войдите</a>, чтобы оставить отзыв
+            <a class="underline underline-offset-1" href="/login/">Войдите</a>, чтобы оставить отзыв
             {%endif%}
         </form>
     </div>
