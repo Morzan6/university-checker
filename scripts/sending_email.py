@@ -46,7 +46,7 @@ from models.models import Service
 from models.models import User
 from django.core.mail import EmailMessage
 
-def email_alert(service_slug,Error):
+async def email_alert(service_slug,Error):
     users = User.objects.filter( subscribes__icontains = service_slug )
     service = Service.objects.get(slug = service_slug)
     print(service.name)
