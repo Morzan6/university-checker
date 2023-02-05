@@ -11,6 +11,7 @@ from scripts.tokens import account_activation_token
 from scripts.handle_image import handle_uploaded_file
 from models.models import Service
 from models.models import Report
+from models.models import Raiting
 from transliterate import translit
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
@@ -365,6 +366,27 @@ def show_service(request, service_slug, **kwargs):
         pass
 
     content = content | {"all_info":all_info}
+    
+    
+    raiting = Raiting.objects.filter(service_name=service_slug)
+    rates = []
+    
+    score = 0
+    for rate in raiting:
+        rate = model_to_dict(rate)
+        
+        rates.append(rate)
+        score += rate['rate']
+        
+    feedbacks_counts = len(raiting)
+    if len(raiting) == 0:
+        feedbacks_counts = 1
+    score = round((score/feedbacks_counts), 2)
+    
+    
+    content = content|{"feedbacks":rates}
+    content['score'] = score
+    content['feedback_number'] = len(raiting)
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
@@ -454,3 +476,18 @@ def tg_activate(request, tgid):
         return log_in(request)
 
     
+def add_feedback(request, slug):
+    
+    username = request.user
+    message = request.POST["feedback_message"]
+    value = request.POST["feedback"]
+    print(message, value)
+    
+    try:
+        raiting = get_object_or_404(Raiting, users_name=username)
+        if message != "":
+            Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
+    except ObjectDoesNotExist:
+        raiting = Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

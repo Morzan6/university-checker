@@ -21,17 +21,28 @@
         "workbench.colorTheme": "Community Material Theme Darker High Contrast",
         "files.associations": {
           "*.css": "tailwindcss",
-          "*html": "html"
-        },
+          "*html": "html",
+          "**/*.html": "html",
+          "**/templates/*/*.html": "django-html",
+          "**/templates/*": "django-html",
+          "**/requirements{/**,*}.{txt,in}": "pip-requirements"},
         "editor.quickSuggestions": {
           "strings": true
         },
         "emmet.triggerExpansionOnTab": true,
-        
         "emmet.useInlineCompletions": true,
         "python.linting.pylintArgs": ["--load-plugins pylint_django", "pylint_django", "--disable=django-not-configured",
         "--django-settings-module=<mainapp>.settings"],
-        "css.lint.unknownAtRules": "ignore"
+        "css.lint.unknownAtRules": "ignore",
+        "[django-html]": {
+          "editor.formatOnSave": true,
+          "editor.quickSuggestions": {
+              "other": true,
+              "comments": true,
+              "strings": true
+          }
+      }
+
       },
 
       "extensions": [
@@ -47,7 +58,9 @@
 		"Equinusocio.vsc-community-material-theme",
 		"batisteo.vscode-django",
 		"csstools.postcss",
-		"stylelint.vscode-stylelint"
+		"stylelint.vscode-stylelint",
+		"wholroyd.jinja",
+		"samuelcolvin.jinjahtml"
 	]
     }
   },

@@ -22,6 +22,8 @@
 <body>
     Тестовая страница рендера сервиса
     {{url}}
+    <br>
+    Рейтинг - {{score}}
     
     <img class="" width="100" src="{{image}}">
     {%if not subscribe_exist%}
@@ -91,5 +93,43 @@
             }
         </script>
     </div>
+
+    
+    <div class="div">
+        <h3>Оставить отзыв</h3>
+        <form method="post" action="/add_feedback&{{slug}}/" enctype=multipart/form-data>
+            {% csrf_token %}
+            {{error}}
+            <p><br>
+                <input type="radio" id="1" name="feedback" value="1">
+                <label for="1">1</label>
+                <input type="radio" id="2" name="feedback" value="2">
+                <label for="2">2</label>
+                <input type="radio" id="3" name="feedback" value="3">
+                <label for="3">3</label>
+                <input type="radio" id="4" name="feedback" value="4">
+                <label for="4">4</label>
+                <input type="radio" id="5" name="feedback" value="5">
+                <label for="5">5</label>
+            </p>
+            {% if user.is_authenticated and user.is_confirmed%}
+            <p>Сообщение:<br> <input name="feedback_message" placeholder="Оставьте отзыв"/></p>
+            <input type="submit" value="Отправить"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+            {%else%}
+            <a class="underline underline-offset-1" href="login/">Войдите</a>, чтобы оставить отзыв
+            {%endif%}
+        </form>
+    </div>
+    <br>
+    <div>
+        <p>Отзывы. Всего - {{feedback_number}} отзывов(-а)</p>  
+        {%for feedback in feedbacks%}
+        {{feedback.users_name}} - {{feedback.message}} -{{feedback.rate}}
+        <br>
+        {%endfor%}
+
+    </div>
+           
 </body>
 </html>
