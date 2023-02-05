@@ -11,11 +11,13 @@ from scripts.tokens import account_activation_token
 from scripts.handle_image import handle_uploaded_file
 from models.models import Service
 from models.models import Report
+from models.models import Raiting
 from transliterate import translit
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from datetime import datetime, timezone, timedelta
 import re
 import urllib.parse
 from django.core.exceptions import ObjectDoesNotExist
@@ -50,7 +52,7 @@ def index(request):
             
             all_info.append(datetime_dict)
        
-
+        
     
         status = (service.status).split(",")
         del status[-1]
@@ -85,10 +87,35 @@ def index(request):
         for dt, i in zip(all_info, incedents):
             dt['y'] = i
         
-        
         for inf in all_info:
             inf['name'] = service.name
             inf['slug'] = service.slug
+            
+               
+        #Удаляем все значения которые были раньше чем ближайшие 24 часа 
+        for item in list(all_info):
+            datetime_ = datetime.strptime(f"{item['year']}-{item['month']}-{item['day']} {item['hour']}:{item['minute']}:{item['second']}", "%Y-%m-%d %H:%M:%S")
+            
+            compare = datetime.now().replace(microsecond=0)
+            compare -= timedelta(days=1)
+            
+            if compare > datetime_:
+                print("-----")
+                all_info.remove(item)
+        
+        
+        if all_info[-1]["y"] > -10:
+            all_info[0]['info_status'] = "Работает"
+            all_info[0]['color'] = "#3CB371"
+        elif all_info[-1]["y"] <= -20:
+            all_info[0]['info_status'] = "Серьёзный сбой"
+            all_info[0]['color'] = "#F08080"
+        elif all_info[-1]["y"] <= -15:
+            all_info[0]['info_status'] = "Есть проблемы"
+            all_info[0]['color'] = "#f5c71a"
+            
+        print(all_info)   
+            
         full_array.append(all_info)
 
     print("\n",full_array)
@@ -269,16 +296,18 @@ def add_service(request):
     
     url = request.POST["url"]
     #просто дформатирует ссылку
-    if url[:6] != "https:/" or url[:5] != "http:/":
-        url = "https:/" + url
+    
     #ставит слаг(идентификатор), транслитерируем его и делаем нижнего регистра
-    slug = translit(name, "ru", reversed=True).lower()
+    # to_slug = "".join(word[0] for word in name.upper().split())
+    # slug = translit(to_slug, "ru", reversed=True).lower()
+    slug = re.sub(r'https://', '', url)
+    slug = re.sub(r'.ru/', '', slug)
     #получаем картинку из формы
     handle_uploaded_file(request.FILES['img'], slug)
     #создаем путь для картинки с названием от слага
     image = "/media/services_images/" + slug + ".png"
     #добавляеет в БД данные
-    Service.objects.update_or_create(name=name, url=url, slug=slug, image=image)
+    Service.objects.update_or_create(name=name, url=url, slug=slug, image=image, status='200,', reports='|', time=f'{str(datetime.now().replace(microsecond=0))},')
     return redirect(admin_panel)
 
 
@@ -365,6 +394,51 @@ def show_service(request, service_slug, **kwargs):
         pass
 
     content = content | {"all_info":all_info}
+    
+    
+    raiting = Raiting.objects.filter(service_name=service_slug)
+    rates = []
+    
+    score = 0
+    for rate in raiting:
+        rate = model_to_dict(rate)
+        
+        rates.append(rate)
+        score += rate['rate']
+        
+    feedbacks_counts = len(raiting)
+    if len(raiting) == 0:
+        feedbacks_counts = 1
+    score = round((score/feedbacks_counts), 2)
+    
+    
+    content = content|{"feedbacks":rates}
+    content['score'] = score
+    content['feedback_number'] = len(raiting)
+    
+    if all_info[-1]["y"] > -10:
+        content['info_status'] = "Работает"
+        content['color'] = "#3CB371"
+    elif all_info[-1]["y"] <= -20:
+        content['info_status'] = "Серьёзный сбой"
+        content['color'] = "#F08080"
+    elif all_info[-1]["y"] <= -15:
+        content['info_status'] = "Есть проблемы"
+        content['color'] = "#f5c71a"
+    
+    #удаляются занчения, сделаные не за полседние 24 часа   
+    for item in list(all_info):
+            
+            
+            datetime_ = datetime.strptime(f"{item['year']}-{item['month']}-{item['day']} {item['hour']}:{item['minute']}:{item['second']}", "%Y-%m-%d %H:%M:%S")
+            
+            compare = datetime.now().replace(microsecond=0)
+            compare -= timedelta(days=1)
+    
+            
+            if compare > datetime_:
+                print("-----")
+                all_info.remove(item)
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
@@ -454,3 +528,18 @@ def tg_activate(request, tgid):
         return log_in(request)
 
     
+def add_feedback(request, slug):
+    
+    username = request.user
+    message = request.POST["feedback_message"]
+    value = request.POST["feedback"]
+    print(message, value)
+    
+    try:
+        raiting = get_object_or_404(Raiting, users_name=username)
+        if message != "":
+            Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
+    except ObjectDoesNotExist:
+        raiting = Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -2,7 +2,7 @@
 Чтобы запустить скрипт в терминале прописать "python  scripts/handler.py" (без кавычек)
 """
 import requests
-import datetime
+
 import threading
 import asyncio
 #просто настройки джанги

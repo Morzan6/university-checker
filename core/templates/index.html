@@ -79,21 +79,25 @@
     <div class="flex place-content-center">
     {%for item in full_array%}
         <div id="chart{{ forloop.counter }}" class="mx-4 h-48 w-72  rounded-lg "></div>
+        {{item.0.info_status}}
     {%endfor%}
 
         <script>
+        
             window.onload = function () {
             {%for item in full_array%}
             
             var chart{{ forloop.counter }} = new CanvasJS.Chart("chart{{ forloop.counter }}", {
                 animationEnabled: true,
                 title:{
-                    text: "{{item.1.name}}"
+                    text: "{{item.0.name}}"
                 },
                 axisX:{
-                    valueFormatString: "DD MMM hh:mm:ss",
+                    valueFormatString: "DD MMM HH:MM:ss",
                     labelAngle: -20,
                     gridThickness: 0.1,
+                    
+                    
                 },
                 axisY: {
                     title: "",
@@ -103,10 +107,10 @@
                     }
                 },
                 data: [{
-                    type: "line",
+                    type: "spline",
                     
-                    xValueFormatString: "DD MMM  hh:mm:ss",
-                    color: "#F08080",
+                    xValueFormatString: "DD MMM  HH:MM:ss",
+                    color: "{{item.0.color}}",
                     
                     dataPoints: [
                     {%for i in item%}
