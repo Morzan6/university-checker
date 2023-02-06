@@ -40,7 +40,8 @@ async def DDoS_checker():
             if response.elapsed.total_seconds() > 30:
                 print('DDoS')
             if response.elapsed.total_seconds() > 30:
-              await email_alert(service.slug,100)
+              await email_alert(service['slug'],100)
+              await notification(service['slug'],100)
             
 
             if response.elapsed.total_seconds() > 30:
