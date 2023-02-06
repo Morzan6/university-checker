@@ -40,7 +40,8 @@ async def DDoS_checker():
             if response.elapsed.total_seconds() > 30:
                 print('DDoS')
             if response.elapsed.total_seconds() > 30:
-              await email_alert(service.slug,100)  
+              await email_alert(service.slug,100)
+            
 
             if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
@@ -108,5 +109,4 @@ asyncio.run(main())
 
 
 # await notification([975083397],'Университет имени Баумэна') Добавить куда надо, аргументами список с юзерами, в строку slug/сразу название вуза 
-
 
