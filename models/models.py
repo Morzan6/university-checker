@@ -66,6 +66,7 @@ class Service(models.Model):
     time = models.CharField(max_length=999999, default = None,null=True)  
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     image = models.FileField(null=True)
+    abbreviation = models.CharField(unique=True, max_length=255, null=True)
 
     def __str__(self):
         return str(self.name)

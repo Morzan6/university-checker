@@ -295,6 +295,8 @@ def add_service(request):
     name = request.POST["name"]
     
     url = request.POST["url"]
+    
+    abbriviation = request.POST["abbriviation"]
     #просто дформатирует ссылку
     
     #ставит слаг(идентификатор), транслитерируем его и делаем нижнего регистра
@@ -307,7 +309,7 @@ def add_service(request):
     #создаем путь для картинки с названием от слага
     image = "/media/services_images/" + slug + ".png"
     #добавляеет в БД данные
-    Service.objects.update_or_create(name=name, url=url, slug=slug, image=image, status='200,', reports='|', time=f'{str(datetime.now().replace(microsecond=0))},')
+    Service.objects.update_or_create(name=name, url=url, slug=slug, abbriviation=abbriviation, image=image, status='200,', reports='|', time=f'{str(datetime.now().replace(microsecond=0))},')
     return redirect(admin_panel)
 
 
@@ -415,6 +417,7 @@ def show_service(request, service_slug, **kwargs):
     content = content|{"feedbacks":rates}
     content['score'] = score
     content['feedback_number'] = len(raiting)
+    content['buckets'] = [0] * int(str(score)[:1])
     
     if all_info[-1]["y"] > -10:
         content['info_status'] = "Работает"
@@ -439,6 +442,7 @@ def show_service(request, service_slug, **kwargs):
             if compare > datetime_:
                 print("-----")
                 all_info.remove(item)
+    print(content)
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
@@ -508,7 +512,8 @@ def search(request, **kwargs):
     
     print(query)
     #делаем запросы к БД через регулярки
-    queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}"))
+    queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}") | Q(abbreviation__iregex=rf"{query}"))
+    print(queryset[0])
     
     return render(request, "search.html", {"queryset":queryset, "search_query": query})
 
