@@ -25,6 +25,12 @@ import base64
 
 User = get_user_model()
 
+def count_services():
+    count = Service.objects.all().count()
+    
+    return count
+    
+
 #обработчик главной страницы
 def index(request):
     services = Service.objects.all()[:5]
@@ -126,6 +132,7 @@ def index(request):
             "title": "Главная страница",    
             "full_array": full_array,
             "len": len(full_array),
+            "count": count_services(),
         },
     )
 
@@ -242,7 +249,7 @@ def admin_panel(request, **kwargs):
     user = request.user
     #если пользователь не админ, то его не пускает
     if user.is_staff == True:
-        return render(request, 'admin_panel.html', {"reports": reports})
+        return render(request, 'admin_panel.html', {"reports": reports, "count": count_services(),})
         
     else:
         return redirect("/")
@@ -443,6 +450,8 @@ def show_service(request, service_slug, **kwargs):
                 print("-----")
                 all_info.remove(item)
     print(content)
+    
+    content["count"] =  count_services()
 
     return render(request, 'service.html', content)#рендерит шаблон и передает ему словарь
 
@@ -515,7 +524,7 @@ def search(request, **kwargs):
     queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}") | Q(abbreviation__iregex=rf"{query}"))
     print(queryset[0])
     
-    return render(request, "search.html", {"queryset":queryset, "search_query": query})
+    return render(request, "search.html", {"queryset":queryset, "search_query": query, "count":  count_services()})
 
 
 

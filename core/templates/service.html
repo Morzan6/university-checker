@@ -54,7 +54,7 @@
                             </svg></button>
                             
                             {% csrf_token %}
-                            <input name="search" autocomplete="off" class="flex mx-auto py-2 px-2  rounded-lg w-80  hover:bg-gray-100 cursor-pointer duration-100 text-gray-600 outline-0 placeholder:px-1 " placeholder="Поиск среди {servicesCounterValue} ВУЗов"/>
+                            <input name="search" autocomplete="off" class="flex mx-auto py-2 px-2  rounded-lg w-80  hover:bg-gray-100 cursor-pointer duration-100 text-gray-600 outline-0 placeholder:px-1 " placeholder="Поиск среди {{count}} ВУЗов"/>
                         </form>  
                                      
                         
@@ -100,40 +100,47 @@
                         
                         <div class=" flex flex-col">
                             <!--Full-->
-                            <div class="hidden md:flex h-full justify-end mb-4">
+                            <div class="hidden h-full justify-end mb-4 md:grid grid-cols-2 col-span-2">
 
-                                {%if please_login%}
-                                <span class="place-self-start pt-1 text-xs text-gray-600">
-                                Войдите или зарегистрируйтесь, <br>чтобы добавить сервис в избранное
-                                </span>
-                                {%endif%}
-
-                                {%if not subscribe_exist%}
-                                <a href="/add_subscribe&{{slug}} " class="pt-1">
-                                    <button class="flex mx-4 place-self-center fill-none stroke-gray-600 stroke-1 active:scale-75 duration-200">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
-                                            <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
-                                        </svg>
-                                    </button>
-                                </a>
-                                {%else%}
-                                <a href="/delete_subscribe&{{slug}}"   class="pt-1">
-                                    <button class="flex mx-4 place-self-center   hover:stroke-2 active:scale-75 fill-red-600 duration-200">
-                                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
-                                            <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
-                                        </svg>
-                                    </button>
-                                </a>
-                                {%endif%}
                                 
 
-                                <a href="{{url}}">
-                                <button class="bg-gray-900 hover:bg-gray-700 duration-100 ease-out rounded-full py-2 px-6 text-gray-200 flex place-self-end relative">Перейти на сайт
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2 place-self-center">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path>
-                                    </svg>
-                                </button>
-                                </a>
+                               
+                                <div class="flex flex-col place-self-start">
+                                    {%if not subscribe_exist%}
+                                    <a href="/add_subscribe&{{slug}} " class="flex text-gray-600 mr-3 place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100">
+                                        <button class="flex mr-2 place-self-center fill-none stroke-gray-600 stroke-1 ">
+                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
+                                                <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
+                                            </svg>
+                                        </button>
+                                        <span class="place-self-center">Добавить в избранное</span>
+                                    </a>
+                                    {%else%}
+                                    <a href="/delete_subscribe&{{slug}}"   class="flex text-gray-600 mr-3 place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100">
+                                        
+                                        <button class="flex mr-2  hover:stroke-2 active:scale-75 fill-red-600 duration-200">
+                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
+                                                <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
+                                            </svg>
+                                        </button>
+                                        <span class="place-self-center">В избранном</span>
+                                    </a>
+                                    {%endif%}
+                                    {%if please_login%}
+                                    <span class="absolute right-[50.5%] rounded-md px-2 py-1 bg-neutral-800 place-self-start pt-1 text-xs text-gray-200 shadow-lg">
+                                    Войдите или зарегистрируйтесь, <br>чтобы добавить сервис в избранное
+                                    </span>
+                                    {%endif%}
+                                </div>
+                                <div class="flex flex-col  place-self-end">
+                                    <a href="{{url}}">
+                                    <button class="bg-gray-900 hover:bg-gray-700 duration-100 ease-out rounded-full py-2 px-6 text-gray-200 flex place-self-end relative">Перейти на сайт
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2 place-self-center">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path>
+                                        </svg>
+                                    </button>
+                                    </a>
+                                </div>
                             </div>
                         <div class="p-3 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100">
                                 <div class="flex -space-x-3 text-amber-500 mb-1">
@@ -152,28 +159,34 @@
                             </div>
 
                             <!--Mobile-->
-                            <div class="md:hidden flex h-full justify-end mt-4">
-                                <div class="mr-52 place-content-center">
+                            <div class="md:hidden grid grid-cols-2 col-span-2 h-full  mt-4">
+                                <div class="flex-col justify-self-start place-content-center">
                                     {%if not subscribe_exist%}
-                                    <a href="/add_subscribe&{{slug}} " class="w-auto">
-                                        <button class="flex pt-1 place-self-center fill-none stroke-gray-600 stroke-1 active:scale-75 duration-200">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
-                                                <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
-                                            </svg>
-                                        </button>
+                                    <a href="/add_subscribe&{{slug}} " class="flex  text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100">
+                                        <div class="flex mr-2 place-self-center fill-none stroke-gray-600 stroke-1">
+                                            <button class="">
+                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
+                                                    <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <span class="place-self-center">Добавить в избранное</span>
                                     </a>
                                     {%else%}
-                                    <a href="/delete_subscribe&{{slug}}"  class="">
-                                        <button class="flex  place-self-center pt-1  hover:stroke-2 active:scale-75 fill-red-600 duration-200">
-                                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
-                                                <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
-                                            </svg>
-                                        </button>
+                                    <a href="/delete_subscribe&{{slug}}" class="flex  text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100">
+                                        <div  class="fill-red-600 flex mr-2 place-self-center ">
+                                            <button class="mr-2">
+                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43 37">
+                                                    <path d="M38.8385 4.09425C37.8367 3.11329 36.6472 2.33511 35.3381 1.80419C34.0289 1.27327 32.6257 1 31.2086 1C29.7914 1 28.3882 1.27327 27.079 1.80419C25.7699 2.33511 24.5804 3.11329 23.5786 4.09425L21.4995 6.12916L19.4204 4.09425C17.3968 2.11369 14.6522 1.00103 11.7904 1.00103C8.92861 1.00103 6.18403 2.11369 4.16043 4.09425C2.13684 6.07481 1 8.76103 1 11.562C1 14.3629 2.13684 17.0491 4.16043 19.0297L6.23955 21.0646L21.4995 36L36.7594 21.0646L38.8385 19.0297C39.8408 18.0492 40.6359 16.885 41.1783 15.6037C41.7208 14.3223 42 12.9489 42 11.562C42 10.175 41.7208 8.80161 41.1783 7.52027C40.6359 6.23894 39.8408 5.07476 38.8385 4.09425Z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <span class="place-self-center">В избранном</span>
                                     </a>
                                     {%endif%}
                                 </div>
                                 
-                                <div class="justify-self-end">
+                                <div class="flex-col justify-self-end">
                                     <a href="{{url}}">
                                     <button class=" bg-gray-900 hover:bg-gray-700 duration-100 ease-out rounded-full py-2 px-6 text-gray-200 flex place-self-end relative">Перейти на сайт
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2 place-self-center">
@@ -191,7 +204,7 @@
                     <div class="md:hidden bg-white shadow-xl rounded-xl p-4 mx-4 mb-4">
                         
                             <span class="place-self-start pt-1 text-base text-gray-600">
-                            Войдите или зарегистрируйтесь, чтобы добавить сервис в избранное
+                            <a href="/login/" class="underline">Войдите</a> или <a href="/signup/" class="underline">зарегистрируйтесь</a>, чтобы добавить сервис в избранное
                             </span>
                         
                     </div>
