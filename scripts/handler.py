@@ -88,6 +88,8 @@ async def error_codes():
 
             service.save()
             #if response.status_code >= 300:
+            
+            
         time.sleep(10)      
         await notification('bmstu', 'Ddos')
         await asyncio.sleep(1) 
