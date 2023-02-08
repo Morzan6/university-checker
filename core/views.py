@@ -20,7 +20,7 @@ from django.db.models import Q
 from datetime import datetime, timezone, timedelta
 import re
 import urllib.parse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 import base64
 
 User = get_user_model()
@@ -411,7 +411,7 @@ def show_service(request, service_slug, **kwargs):
     score = 0
     for rate in raiting:
         rate = model_to_dict(rate)
-        
+        rate['user_raiting_bucket'] = [0]*rate['rate']
         rates.append(rate)
         score += rate['rate']
         
@@ -421,10 +421,12 @@ def show_service(request, service_slug, **kwargs):
     score = round((score/feedbacks_counts), 2)
     
     
+    
     content = content|{"feedbacks":rates}
     content['score'] = score
     content['feedback_number'] = len(raiting)
     content['buckets'] = [0] * int(str(score)[:1])
+    
     
     if all_info[-1]["y"] > -10:
         content['info_status'] = "Работает"
@@ -553,7 +555,7 @@ def add_feedback(request, slug):
         raiting = get_object_or_404(Raiting, users_name=username)
         if message != "":
             Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
-    except ObjectDoesNotExist:
+    except (ObjectDoesNotExist, MultipleObjectsReturned):
         raiting = Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
