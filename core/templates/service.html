@@ -18,6 +18,7 @@
         }
     </style>
     <script src="/static/canvasjs.3.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -268,10 +269,102 @@
                     </div>    
                     
 
-                    <div class="bg-white shadow-xl rounded-xl h-auto p-6 m-4 z-0 hover:shadow-4xl  grid sm:grid-cols-2">
-                        <span class="uppercase text-gray-400 text-sm  tracking-wide">Отзывы. Всего - {{feedback_number}} отзывов(-а)</span> 
+                    <div class="bg-white shadow-xl rounded-xl h-auto p-6 mx-4 z-0 hover:shadow-4xl  grid sm:grid-cols-2">
+                        <div class="flex flex-col">
+                        <div class="bg-white shadow-xl  rounded-xl p-4 mx-4 mb-4">
+                            <span class="uppercase text-gray-400 text-sm  tracking-wide">Оставить отзыв</span> 
+
+                            <form class="" method="post" action="/add_feedback&{{slug}}/" enctype=multipart/form-data>
+                                {% csrf_token %}
+                                {{error}}
+                                <style>
+                                    .star-rating__wrap:after{
+                                        content: "";
+                                        display: table;
+                                        clear: both;
+                                    }
+                                    .star-rating__input{
+                                      float: right;
+                                      position: relative;
+                                      width: 0;
+                                      height: 0;
+                                      margin: 0 30px 30px 0;
+                                      cursor: pointer;
+                                    }
+                                    .star-rating__input:before {
+                                      content: "\f006";
+                                        color: rgb(245 158 11);
+                                      font-size: 30px;
+                                      width: 20px;
+                                      height: 20px;
+                                      line-height: 20px;
+                                        position: absolute;
+                                      left: 0;
+                                      top: 0;
+                                    }
+                                    .star-rating__input:hover:before,
+                                    .star-rating__input:hover ~ .star-rating__input:before {
+                                        content: "\f005";
+                                      color: rgb(245 158 11);
+                                    }
+                                    .star-rating__input:checked:before,
+                                    .star-rating__input:checked ~ .star-rating__input:before
+                                    {
+                                        content: "\f005";
+                                        color: rgb(245 158 11); !important;
+                                    }
+                                </style>
+                                <div class="flex flex-row-reverse  after:table after:clear-both after:content-none my-4 justify-center">
+                                    <input class="star-rating__input fa" id="star-rating-5" type="radio" name="feedback" value="5" title="5">
+                                    <input class="star-rating__input fa" id="star-rating-4" type="radio" name="feedback" value="4" title="4">
+                                    <input class="star-rating__input fa" id="star-rating-3" type="radio" name="feedback" value="3" title="3">
+                                    <input class="star-rating__input fa" id="star-rating-2" type="radio" name="feedback" value="2" title="2">
+                                    <input class="star-rating__input fa" id="star-rating-1" type="radio" name="feedback" value="1" title="1">
+                                  
+                                </div>
+                                {% if user.is_authenticated and user.is_confirmed%}
+                                <p>Сообщение:<br> <input name="feedback_message" placeholder="Оставьте отзыв"/></p>
+                                <input type="submit" value="Отправить"/>
+                                <input type="hidden" name="next" value="{{ next }}"/>
+                                {%else%}
+                                <a class="underline underline-offset-1" href="/login/">Войдите</a>, чтобы оставить отзыв
+                                {%endif%}
+                            </form>
+
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="uppercase text-gray-400 text-sm  tracking-wide">Отзывы. Всего - {{feedback_number}} отзывов(-а)</span> 
 
                         
+                            {%for feedback in feedbacks%}
+                            <div class="flex p-2 mt-2">
+                                <svg class="flex w-6 h-6 mt-1 fill-gray-600" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 29 29">
+                                    <path d="M14.5 2A12.514 12.514 0 0 0 2 14.5 12.521 12.521 0 0 0 14.5 27a12.5 12.5 0 0 0 0-25Zm7.603 19.713a8.48 8.48 0 0 0-15.199.008A10.367 10.367 0 0 1 4 14.5a10.5 10.5 0 0 1 21 0 10.368 10.368 0 0 1-2.897 7.213ZM14.5 7a4.5 4.5 0 1 0 4.5 4.5A4.5 4.5 0 0 0 14.5 7Z"/>
+                                </svg>
+                                <div class="ml-2">
+                                    
+                                    <span class="flex text-gray-600 uppercase font-semibold">{{feedback.users_name}} </span>
+                                    
+                                    
+                                    <span class="flex text-gray-600">{{feedback.message}}</span>
+                                    
+                                </div>
+                                
+                                <div class="flex ml-auto">
+                                    
+                                    <div class="flex -space-x-1 text-amber-500 mb-1">
+                                        {%for rate in feedback.user_raiting_bucket%}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                            <path stroke="white" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"></path>
+                                        </svg> 
+                                        {%endfor%}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                        </div>
                     </div>
                 
             <div class="shrink flex w-full">
@@ -361,7 +454,7 @@
             {% csrf_token %}
             {{error}}
             <p><br>
-                <input type="radio" id="1" name="feedback" value="1">
+                {% comment %} <input type="radio" id="1" name="feedback" value="1">
                 <label for="1">1</label>
                 <input type="radio" id="2" name="feedback" value="2">
                 <label for="2">2</label>
@@ -370,7 +463,7 @@
                 <input type="radio" id="4" name="feedback" value="4">
                 <label for="4">4</label>
                 <input type="radio" id="5" name="feedback" value="5">
-                <label for="5">5</label>
+                <label for="5">5</label> {% endcomment %}
             </p>
             {% if user.is_authenticated and user.is_confirmed%}
             <p>Сообщение:<br> <input name="feedback_message" placeholder="Оставьте отзыв"/></p>
