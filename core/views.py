@@ -21,6 +21,7 @@ from datetime import datetime, timezone, timedelta
 import re
 import urllib.parse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.utils.datastructures import MultiValueDictKeyError
 import base64
 
 User = get_user_model()
@@ -29,6 +30,17 @@ def count_services():
     count = Service.objects.all().count()
     
     return count
+
+def func_chunk(lst, n):
+    for x in range(0, len(lst), n):
+        e_c = lst[x : n + x]
+
+        if len(e_c) < n:
+            e_c = e_c + [None for y in range(n - len(e_c))]
+        yield e_c
+
+
+
     
 
 #обработчик главной страницы
@@ -274,7 +286,11 @@ def cancel_report (request, id):
 
 def add_report(request, slug):
     #получаем данные из формы
-    types = request.POST["type"]
+    try:
+        types = request.POST["type"]
+    except MultiValueDictKeyError:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     message = request.POST["message"]
     #если тип проблемы не указан, то редиректим назад
     if types == " ":
@@ -420,10 +436,15 @@ def show_service(request, service_slug, **kwargs):
         feedbacks_counts = 1
     score = round((score/feedbacks_counts), 2)
     
+    rates = list(func_chunk(rates[::-1], 4))
+
     
-    
-    content = content|{"feedbacks":rates}
+
+    print(list(func_chunk(rates[::-1], 4)))
+
+    content = content|{"feedbacks": rates}
     content['score'] = score
+    content['report_pages'] = len(rates)
     content['feedback_number'] = len(raiting)
     content['buckets'] = [0] * int(str(score)[:1])
     
@@ -556,6 +577,7 @@ def add_feedback(request, slug):
         if message != "":
             Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
     except (ObjectDoesNotExist, MultipleObjectsReturned):
+        
         raiting = Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
