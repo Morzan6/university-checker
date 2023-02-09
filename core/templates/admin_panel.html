@@ -113,12 +113,14 @@
                                 <input type="hidden" name="next" value="{{ next }}"/>
                             </form>
                         </div>
-                        
+                        <div class="flex md:mt-0 my-8 text-lg flex-col justify-center place-items-center p-4">
+                            <span class="uppercase text-gray-400 text-sm mb-4">Добавление нового сервиса на сайт, не забудьте заполнить все поля</span>
+                        </div>
                         
                     </div>
                    
                 </div>
-                <div class="bg-white shadow-xl rounded-xl h-auto p-6 m-4 z-0 hover:shadow-4xl  ">
+                <div class="bg-white shadow-xl rounded-xl h-auto p-6 mx-4 z-0 hover:shadow-4xl  ">
                     <span class="uppercase text-gray-400 text-sm mb-4 tracking-wide">Отчеты пользователей</span> 
                     
                     <table class="mt-4 mb-4 md:ml-12 border border-gray-600">
@@ -128,7 +130,7 @@
                             <td class="text-sm p-2 border border-gray-600">
                                 <form action="/moderate_report&{{report.id}}" method="post">
                                     {% csrf_token %}
-                                    <button name="button" class="flex  text-gray-600  place-content-center p-1 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100  w-24 m-auto">Подтвердить</button>
+                                    <button name="button" class="flex mb-1 text-gray-600  place-content-center p-1 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100  w-24 m-auto">Подтвердить</button>
                                 </form>
                                 <form action="/cancel_report&{{report.id}}" method="post">
                                     {% csrf_token %}
