@@ -185,7 +185,7 @@ def create_user(request):
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
 
-    response = render(request, 'registration/activation.html', {"activate": True})
+    response = render(request, 'registration/activation.html', {"activate": True, "count":  count_services()})
     
     #Ставим куки с именем пользователя
     if user2 is not None:
@@ -195,7 +195,7 @@ def create_user(request):
 
 #рендер страницы с входом
 def log_in(request):
-    return render(request, "registration/login.html")
+    return render(request, "registration/login.html", {"count":  count_services()})
 
 #обработка и вход пользователя в аккаунт
 def auth(request):
@@ -212,7 +212,7 @@ def auth(request):
         error = "Неправильные имя пользователя или пароль"
         
         #если неправильные имя пользователя или пароль, то рендерим тоже страницу с входом и кидаем в перемнную error сообщение об ошибки
-        response = render(request, "registration/login.html", {"error": error})
+        response = render(request, "registration/login.html", {"error": error, "count":  count_services()})
     return response
 
 #выход из аккаунта
@@ -237,10 +237,10 @@ def activate(request, uid, token):
         login(request, user)
 
         #и передаем флажок успешной активации True
-        return render(request, 'registration/activation.html', {"successful_activation": True})
+        return render(request, 'registration/activation.html', {"successful_activation": True, "count":  count_services()})
                 
     else: #если токен или пользователь не тот, то ставим флажок False
-        return render(request, 'registration/activation.html', {"successful_activation": False})
+        return render(request, 'registration/activation.html', {"successful_activation": False, "count":  count_services()})
 
 #рендер админской панели
 def admin_panel(request, **kwargs):
@@ -598,22 +598,30 @@ def account(request):
 
     try:
         user = User.objects.get(username=username)
-        subscribes = user.subscribes.strip().split(',')
-        print(subscribes)
+        subscribes = user.subscribes.split(',')
+        subscribes = [i[:].strip() for i in subscribes]
+        del subscribes[-1]
 
-        try:
-            subs = []
-            for service in subscribes:
-                
-                s = Service.objects.get(slug=service)
-                subs.append(s.abbreviation)
-        except ObjectDoesNotExist:
-            subs = "Нет подписок"
+        print(subscribes)
+        
+        c_s = []
+        for service in subscribes:
             
-        print(subs)
+            if Service.objects.get(slug=service):
+                s = Service.objects.get(slug=service)
+                subs = {}
+                
+                subs['abb'] = s.abbreviation
+                subs['slug'] = s.slug
+
+                c_s.append(subs)
+            else:
+                c_s.append("Нет подписок")
+            
+        print(c_s)
 
         dc = model_to_dict(user)
 
-        return render(request, "account.html", {"dict": dc, "subs": subs})
+        return render(request, "account.html", {"dict": dc, "subs": c_s, "count":  count_services()})
     except ObjectDoesNotExist:
         return log_in(request)
