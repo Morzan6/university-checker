@@ -151,7 +151,7 @@ def index(request):
     
 #рендер страницы с регистрацией нового пользователя
 def signup(request):
-    return render(request, "registration/signup.html")
+    return render(request, "registration/signup.html", {"count":  count_services()})
 
 #добавление нового пользователя
 def create_user(request):
