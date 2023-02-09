@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, viewport=1.0">
+    <title>{{ title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Регистрация</title>
     <script>
         function check(form) {
@@ -42,11 +46,11 @@
                     return false;
                 }
 
-                else if (! (/\^\[a-zA-Z0-9]\[\\W]\{7,\}\$/i.test(password))) {
-                    document.getElementById("password_error").innerHTML = "";
-                    document.getElementById("password_error").innerHTML = "Пароль должен содежрать минимум 8 символов";
-                    return false;
-                } 
+                //else if (! (/\^\[a-zA-Z0-9]\[\\W]\$/.test(password))) {
+                 //   document.getElementById("password_error").innerHTML = "";
+                 //   document.getElementById("password_error").innerHTML = "Пароль должен содежрать минимум 8 символов";
+                //    return false;
+               // } 
                 // Если равны = true
                 else{
                     
@@ -60,22 +64,137 @@
     </script>
 </head>
 <body>
-    {% if user.is_authenticated %}
-    <h2>Вы уже вошли в аккаунт</h2>
-    {% else %}
-    <h2>Регистрация</h2>
-    <form method="post" action={% url 'create_user' %} onSubmit = "return check(this)">
-        {% csrf_token %}
-        <p>Имя пользователя:<br> <input name="username" placeholder="Имя пользователя"/></p><p id="username_error"></p>
-        <p>Почта:<br> <input name="email" placeholder="Почта"/></p>  <p id="email_error"></p>
-        <p>Пароль:<br> <input type="password" name="password" id="pwd"  placeholder="Введите пароль"/>
-            <button type="button" onclick="if (pwd.type == 'text') pwd.type = 'password', pwd2.type = 'password'; else pwd.type = 'text', pwd2.type = 'text';">показать пароль</button>
-        <p>Повторите пароль:<br> <input type="password" name="password_repeat" id="pwd2" placeholder="Повторите пароль"/></p>
-        <p id="password_error"></p>
-        <br/>
-        <input type="submit" value="Отправить" />
-    </form>
-    {% endif %}
+
+    <div class="absolute md:w-full min-w-screen md:min-h-screen  h-auto flex bg-gray-200">
+        <div class="grow h-full"></div>
+        <div class="shrink flex flex-col w-full min-h-screen max-w-screen-xl">
+            <div class="shrink flex w-full sticky top-0 px-2 z-50">
+                <!--Header-->
+                <div class="rounded-lg bg-white mt-4 shadow-xl p-2 w-full flex">
+                    <div class="shrink flex">
+                        <a href="/">
+                        <div class="flex py-2 px-4 rounded-lg hover:bg-gray-100 cursor-pointer duration-100 text-gray-800 font-medium">     
+                            <svg viewBox="0 0 217 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 place-self-center hidden">
+                                <path d="M0 8.21277C0 5.86262 1.90999 3.95745 4.26608 3.95745H23.4635C25.8195 3.95745 27.7295 5.86262 27.7295 8.21277V27.3617C27.7295 29.7119 25.8195 31.617 23.4635 31.617H4.26608C1.90999 31.617 0 29.7119 0 27.3617V8.21277Z" fill="black"/>
+                                <path d="M41.7223 31.617H54.3072V29.5319L51.2783 29.3192L50.6384 28.6383V20.9787C52.2169 21.0638 52.8994 21.1064 53.454 21.1064C54.6912 21.1064 58.7866 21.0638 61.6022 18.766C64.1619 16.6809 64.7165 13.8298 64.7165 11.4043C64.7165 7.19149 63.2234 3.06383 53.0701 3.06383H41.5517V5.14894L44.3673 5.3617L45.0072 5.95745V28.6383L44.2393 29.3192L41.7223 29.5319V31.617ZM50.6384 5.48936H52.8568C54.2646 5.48936 55.843 5.74468 57.1229 6.97872C58.616 8.42553 58.8293 10.4255 58.8293 11.8723C58.8293 13.3191 58.616 15.4043 57.1655 16.8936C55.6724 18.4255 53.582 18.6383 52.1742 18.6383C51.6623 18.6383 51.0224 18.5957 50.6384 18.5532V5.48936Z" fill="black"/>
+                                <path d="M66.7615 31.617H78.5359V29.7021L75.507 29.4894L74.8671 28.8936V16.6809C75.6777 16.1277 77.0001 15.4468 78.1093 15.4468C79.3465 15.4468 80.2424 16.3404 80.669 17.0213H82.8873L83.4419 11.1489C83.058 10.9787 82.546 10.7234 82.2048 10.6383C81.8208 10.5532 81.1809 10.4255 80.7543 10.4255C80.3703 10.4255 79.8158 10.5106 79.6878 10.5106C78.7919 11.1489 76.9148 12.5532 74.6964 14.8511L74.8671 10.5106H72.8194L66.5482 12.5106V14.2128H69.6198V28.8936L69.0226 29.4894L66.7615 29.7021V31.617Z" fill="black"/>
+                                <path d="M104.552 26.3404C101.395 28.2979 99.0485 28.6383 97.5553 28.6383C91.8814 28.6383 90.6443 24.2979 90.6443 20.766H104.594C104.594 16.2979 103.613 10.383 95.8062 10.383C92.1374 10.383 89.7911 11.8298 88.4686 13.0638C86.4635 14.9787 85.1837 17.8723 85.1837 21.3617C85.1837 25.3617 86.8048 27.7872 88.042 29.0638C89.5351 30.5957 91.9668 32 95.8062 32C99.6031 32 102.76 30.5106 104.552 29.4894V26.3404ZM90.8576 18.5106C90.8576 14.766 93.2039 12.6809 95.2943 12.6809C97.3847 12.6809 99.0058 14.6809 99.0058 18.1702V18.5106H90.8576Z" fill="black"/>
+                                <path d="M122.572 3.87234V10.766C121.335 10.5532 119.885 10.383 118.733 10.383C113.485 10.383 107.556 13.234 107.556 21.7872C107.556 28.2128 111.48 32 115.832 32C118.349 32 120.61 30.6809 122.572 29.234V31.617H130.592V29.7021L128.417 29.4894L127.82 28.8936V0.170213H125.772L119.458 2.17021V3.87234H122.572ZM122.572 27.5745C120.866 28.2553 119.757 28.383 119.159 28.383C114.381 28.383 113.272 24.4255 113.272 20.8936C113.272 16.6809 114.851 12.6809 119.415 12.6809C120.439 12.6809 121.164 12.9362 122.572 13.3617V27.5745Z" fill="black"/>
+                                <path d="M132.585 31.617H145.17V29.5319L142.141 29.3192L141.501 28.6383V20.9787C143.079 21.0638 143.762 21.1064 144.317 21.1064C145.554 21.1064 149.649 21.0638 152.465 18.766C155.024 16.6809 155.579 13.8298 155.579 11.4043C155.579 7.19149 154.086 3.06383 143.933 3.06383H132.414V5.14894L135.23 5.3617L135.87 5.95745V28.6383L135.102 29.3192L132.585 29.5319V31.617ZM141.501 5.48936H143.719C145.127 5.48936 146.706 5.74468 147.985 6.97872C149.479 8.42553 149.692 10.4255 149.692 11.8723C149.692 13.3191 149.479 15.4043 148.028 16.8936C146.535 18.4255 144.445 18.6383 143.037 18.6383C142.525 18.6383 141.885 18.5957 141.501 18.5532V5.48936Z" fill="black"/>
+                                <path d="M157.624 31.617H169.398V29.7021L166.37 29.4894L165.73 28.8936V16.6809C166.54 16.1277 167.863 15.4468 168.972 15.4468C170.209 15.4468 171.105 16.3404 171.532 17.0213H173.75L174.305 11.1489C173.921 10.9787 173.409 10.7234 173.067 10.6383C172.683 10.5532 172.043 10.4255 171.617 10.4255C171.233 10.4255 170.678 10.5106 170.55 10.5106C169.654 11.1489 167.777 12.5532 165.559 14.8511L165.73 10.5106H163.682L157.411 12.5106V14.2128H160.482V28.8936L159.885 29.4894L157.624 29.7021V31.617Z" fill="black"/>
+                                <path d="M187.223 10.383C181.294 10.383 176.046 13.4894 176.046 21.2766C176.046 28.6809 180.952 32 186.839 32C191.532 32 197.803 29.7872 197.803 21.1915C197.803 16.8085 195.926 14.2128 194.39 12.8936C192.727 11.4468 190.338 10.383 187.223 10.383ZM186.882 12.6809C191.148 12.6809 191.916 18.8936 191.916 21.2766C191.916 24.1277 191.02 29.7021 186.882 29.7021C182.872 29.7021 181.933 24.1702 181.933 21.1489C181.933 18.0851 182.531 16.2979 183.085 15.1915C183.597 14.2128 184.664 12.6809 186.882 12.6809Z" fill="black"/>
+                                <path d="M200.746 31.617H212.265V29.7021L209.406 29.4894L208.724 28.8936V14H214.44V11.4468H208.724V8.89362C208.724 5.02128 209.364 3.40425 210.388 2.08511L214.526 5.74468C215.72 5.40425 217 4.6383 217 3.06383C217 0.851063 214.739 0 212.99 0C210.43 0 208.425 1.23404 207.103 2.38298C204.074 5.02128 203.477 8.46809 203.477 10.8511V11.1064L200.704 12.383V14H203.477V28.8936L202.879 29.4894L200.746 29.7021V31.617Z" fill="black"/>
+                            </svg>      
+                            <img src="/static/logo.png" class="rounded w-48 place-self-center">
+                        </div></a>
+                    </div>
+                    <div class="grow flex w-full">
+                        <form action="/search/" method="POST" class="flex mx-auto w-auto">
+                        
+                            <button class="hover:text-neutral-500" type="submit" value="" >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 place-self-center mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg></button>
+                            
+                            {% csrf_token %}
+                            <input name="search" autocomplete="off" class="flex mx-auto py-2 px-2  rounded-lg w-80  hover:bg-gray-100 cursor-pointer duration-100 text-gray-600 outline-0 placeholder:px-1 " placeholder="Поиск среди {{count}} ВУЗов"/>
+                        </form>  
+                                     
+                        
+                        
+                    </div>
+                    {% if not user.is_authenticated %}
+                    <a href="/login/">
+                    <div class="shrink flex">
+                        <div class="flex py-2 px-4 rounded-lg hover:bg-gray-100 cursor-pointer duration-100 text-gray-800 font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 place-self-center mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>                  
+                            <p>
+                                Авторизация
+                            </p>          
+                        </div>       
+                    </div></a>
+                    {% elif user.is_authenticated and user.is_confirmed%}
+                    <a href="/account/">
+                        <div class="shrink flex">
+                            <div class="flex py-2 px-4 rounded-lg hover:bg-gray-100 cursor-pointer duration-100 text-gray-800 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 place-self-center mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>                  
+                                <p>
+                                    {{user}}
+                                </p>          
+                            </div>       
+                        </div></a>
+                    {% elif not user.is_confirmed%}
+                    <p class="flex w-18 text-sm text-gray-600">Подтвердите аккаунт</p>
+
+                    <a href="/account/">
+                        
+                        <div class="shrink flex">
+                            <div class="flex py-2 px-4 rounded-lg hover:bg-gray-100 cursor-pointer duration-100 text-gray-800 font-medium">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 place-self-center mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>                  
+                                <p>
+                                    {{user}}
+                                </p>          
+                            </div>       
+                        </div></a>                 
+                                       
+                    {%endif%}
+                </div>
+            </div>
+            <div class="grow flex flex-col w-full mb-2">
+                <!--List-->
+                <div class="bg-white shadow-xl rounded-xl h-auto p-6 m-4 z-0 hover:shadow-4xl  grid ">
+                    
+                    {% if user.is_authenticated %}
+                    <h2>Вы уже вошли в аккаунт</h2>
+                    {% else %}
+                    <span class="uppercase text-gray-400 text-sm mb-4 tracking-wide">Регистрация</span> 
+                    <div class="flex justify-center">
+                        <form class="flex flex-col" method="post" action={% url 'create_user' %} onSubmit = "return check(this)">
+                            {% csrf_token %}
+                            <p class="my-2 ">Имя пользователя: <input class="ml-3 resize-none p-2 outline-none rounded-md border border-gray-200 " name="username" placeholder="Имя пользователя"/></p><p class="italic font-semibold" id="username_error"></p>
+                            <p class="my-2">Почта: <input class="ml-[102px] resize-none p-2 outline-none rounded-md border border-gray-200 " name="email" placeholder="Почта"/></p>  <p class="italic font-semibold"id="email_error"></p>
+                            <p class="my-2 flex items-center">Пароль: <input class="ml-24 resize-none p-2 outline-none rounded-md border border-gray-200 " type="password" name="password" id="pwd"  placeholder="Введите пароль"/>
+                            
+                            <button type="button" class="flex  active:scale-90 mx-2 justify-center fill-gray-600 h-6 w-6" onclick="if (pwd.type == 'text') pwd.type = 'password', pwd2.type = 'password'; else pwd.type = 'text', pwd2.type = 'text';">
+                                <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1920 1920">
+                                    <path d="M960 1489.82c-348.474 0-668.545-202.323-841.298-529.918C291.455 632.306 611.526 429.984 960 429.984s668.545 202.322 841.298 529.918C1628.545 1287.497 1308.474 1489.82 960 1489.82Zm948.342-553.552C1720.645 558.648 1357.332 324 960 324c-397.333 0-760.645 234.648-948.342 612.268L0 959.902l11.658 23.634c187.697 377.62 551.01 612.268 948.342 612.268 397.333 0 760.645-234.648 948.342-612.268L1920 959.902l-11.658-23.634ZM960 1171.869c-116.9 0-211.967-95.067-211.967-211.967 0-116.9 95.067-211.967 211.967-211.967 116.9 0 211.967 95.067 211.967 211.967 0 116.9-95.067 211.967-211.967 211.967m0-529.918c-175.297 0-317.951 142.654-317.951 317.951 0 175.297 142.654 317.95 317.951 317.95 175.297 0 317.951-142.653 317.951-317.95S1135.297 641.951 960 641.951"/>
+                                </svg>
+                            </button>
+                            <p class="my-2">Повторите пароль: <input  class="ml-[10px] resize-none p-2 outline-none rounded-md border border-gray-200 " type="password" name="password_repeat" id="pwd2" placeholder="Повторите пароль"/></p>
+                            
+                            <p class="italic font-semibold" id="password_error"></p>
+                            <br/>
+                            <input class="flex  text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100 w-24 m-auto" type="submit" value="Отправить" />
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="md:mt-2 mt-[550px] shrink flex w-full">
+                <!-- Футер -->
+                
+            </div>       
+        </div>
+        <div class="grow h-full"></div>        
+    </div>
+
 </body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
 </html>

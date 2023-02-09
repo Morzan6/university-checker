@@ -185,7 +185,7 @@ def create_user(request):
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
 
-    response = HttpResponse(' Подтвердите свою почту, для завершения регистрации <br/><a class="underline underline-offset-1" href="/">Главная</a>')
+    response = render(request, 'registration/activation.html', {"activate": True})
     
     #Ставим куки с именем пользователя
     if user2 is not None:
@@ -408,6 +408,12 @@ def show_service(request, service_slug, **kwargs):
         pass
 
     try:
+        please_confirm = kwargs['please_confirm']
+        content['please_confirm'] = please_confirm
+    except KeyError:
+        pass
+
+    try:
         username = request.user
         user = get_object_or_404(User, username=username)
         subscribes = user.subscribes
@@ -486,6 +492,10 @@ def add_subscribe(request, slug):
     
     try:
         user = User.objects.get(username=username)
+
+        if not user.is_confirmed:
+             please_confirm = 1
+             return show_service(request, slug, **{"please_confirm": please_confirm})
         print(username)
         subscribes = user.subscribes
         
@@ -581,3 +591,29 @@ def add_feedback(request, slug):
         raiting = Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def account(request):
+    username = request.user
+
+    try:
+        user = User.objects.get(username=username)
+        subscribes = user.subscribes.strip().split(',')
+        print(subscribes)
+
+        try:
+            subs = []
+            for service in subscribes:
+                
+                s = Service.objects.get(slug=service)
+                subs.append(s.abbreviation)
+        except ObjectDoesNotExist:
+            subs = "Нет подписок"
+            
+        print(subs)
+
+        dc = model_to_dict(user)
+
+        return render(request, "account.html", {"dict": dc, "subs": subs})
+    except ObjectDoesNotExist:
+        return log_in(request)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width">
     <title>{{name}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
@@ -88,7 +88,7 @@
 
 <body>
 
-    <div class="absolute md:w-full min-w-screen  flex bg-indigo-100">
+    <div class="absolute md:w-full min-w-screen  flex bg-gray-200">
         <div class="grow h-full"></div>
         <div class="shrink flex flex-col w-full min-h-screen max-w-screen-xl">
             <div class="shrink flex w-full sticky top-0 px-2 z-50">
@@ -149,7 +149,23 @@
                                     {{user}}
                                 </p>          
                             </div>       
-                        </div></a>                    
+                        </div></a>    
+                    {% elif not user.is_confirmed%}
+                    <p class="flex w-18 text-sm text-gray-600">Подтвердите аккаунт</p>
+
+                    <a href="/account/">
+                        
+                        <div class="shrink flex">
+                            <div class="flex py-2 px-4 rounded-lg hover:bg-gray-100 cursor-pointer duration-100 text-gray-800 font-medium">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 place-self-center mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>                  
+                                <p>
+                                    {{user}}
+                                </p>          
+                            </div>       
+                        </div></a>                 
                     {%endif%}
                 </div>
             </div>
@@ -191,6 +207,11 @@
                                         </button>
                                         <span class="place-self-center">В избранном</span>
                                     </a>
+                                    {%endif%}
+                                    {%if please_confirm%}
+                                    <span class="absolute right-[50.5%] rounded-md px-2 py-1 bg-neutral-800 place-self-start pt-1 text-xs text-gray-200 shadow-lg">
+                                        Подтвердите аккаунт, <br>чтобы добавить сервис в избранное
+                                    </span>
                                     {%endif%}
                                     {%if please_login%}
                                     <span class="absolute right-[50.5%] rounded-md px-2 py-1 bg-neutral-800 place-self-start pt-1 text-xs text-gray-200 shadow-lg">
@@ -275,6 +296,16 @@
                         
                     </div>
                     {%endif%}
+                    
+                    {%if please_confirm%}
+                    <div class="md:hidden bg-white shadow-xl rounded-xl p-4 mx-4 mb-4">
+                        
+                            <span class="place-self-start pt-1 text-base text-gray-600">
+                            Подтвердите аккаунт, чтобы добавить сервис в избранное
+                            </span>
+                        
+                    </div>
+                    {%endif%}
 
                
                     <div class="grid md:grid-cols-2 grid-rows-1">
@@ -306,7 +337,7 @@
                             
                         </div>
                         
-                        <div class="bg-white shadow-xl  rounded-xl p-4 mx-4 mb-4">
+                        <div class="bg-white shadow-xl  rounded-xl p-4 md:mx-0 mx-4 md:mr-4 mb-4">
                             <span class="uppercase text-gray-400 text-sm mb-2 tracking-wide">График</span> 
                             <div id="chart" class="mx-4 h-64 w-auto"></div>
                             <span class="uppercase text-gray-400 text-sm tracking-wide">Текущий статус</span> 
@@ -401,7 +432,8 @@
                                         Отправить
                                     </button>
                                 </div>
-                                
+                                {% elif not user.is_confirmed%}
+                                Подтвердите аккаунт, чтобы оставить отзыв
 
                                 {%else%}
                                 <a class="underline underline-offset-1" href="/login/">Войдите</a>, чтобы оставить отзыв
@@ -409,7 +441,7 @@
                             </form>
                         
                         </div>
-                        <div class="flex flex-col bg-white shadow-xl  rounded-xl p-4 mx-4 mb-4">
+                        <div class="flex flex-col bg-white shadow-xl  rounded-xl p-4 md:mx-0 mx-4 md:mr-4 mb-4">
                             <span class="flex uppercase text-gray-400 text-sm  tracking-wide">Отзывы. Всего - {{feedback_number}} отзывов(-а)
                                 <span class="flex  ml-auto">
                                     <div class="" id="CurrientPage">1</div> / {{report_pages}}
@@ -422,11 +454,11 @@
                                     {%for feedback in fb%}
                                     <div  class="flex p-2 mt-2">
                                         {%if feedback != None%}
-                                        <svg class="flex w-6 h-6 mt-1 fill-gray-600" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 29 29">
+                                        <svg class="w-6 h-6 mt-1 fill-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29">
                                             <path d="M14.5 2A12.514 12.514 0 0 0 2 14.5 12.521 12.521 0 0 0 14.5 27a12.5 12.5 0 0 0 0-25Zm7.603 19.713a8.48 8.48 0 0 0-15.199.008A10.367 10.367 0 0 1 4 14.5a10.5 10.5 0 0 1 21 0 10.368 10.368 0 0 1-2.897 7.213ZM14.5 7a4.5 4.5 0 1 0 4.5 4.5A4.5 4.5 0 0 0 14.5 7Z"/>
                                         </svg>
                                         {%endif%}
-                                        <div class="ml-2 truncate break-all">
+                                        <div class="ml-2 md:truncate max-w-16 overflow-hidden break-all">
                                             
                                             <span class="flex text-gray-600 uppercase font-semibold">{{feedback.users_name}} </span>
                                             

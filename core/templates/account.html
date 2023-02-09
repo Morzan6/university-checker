@@ -96,37 +96,22 @@
                 <div class="bg-white shadow-xl rounded-xl h-auto p-6 m-4 z-0 hover:shadow-4xl  grid ">
                     
                    
-                    <span class="uppercase text-gray-400 text-sm mb-4 tracking-wide">Вход в аккаунт</span> 
-                    <div class="flex justify-center">
-                        {% if user.is_authenticated %}
-                        <h2>Вы уже вошли в аккаунт</h2>
-                        {%else%}
-                        <form class="flex flex-col" method="post" action={% url 'auth' %} onSubmit = "return checkPassword(this)">
-                            {{error}}
-                            {% csrf_token %}
-                            <p class="my-2 flex items-center">Имя пользователя: <input class="ml-4 resize-none p-2 outline-none rounded-md border border-gray-200 " name="username" placeholder="Имя пользователя"/></p>
-                            
-                            <p class="my-2 flex items-center">Пароль: <input class="ml-24 resize-none p-2 outline-none rounded-md border border-gray-200 " type="password" id="pwd" name="password" placeholder="Пароль"/>
-                            
-                            
-                            <button type="button" class="flex active:scale-90 mx-2 justify-center fill-gray-600 h-6 w-6" onclick="if (pwd.type == 'text') pwd.type = 'password', pwd2.type = 'password'; else pwd.type = 'text', pwd2.type = 'text';">
-                                <svg xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 1920 1920">
-                                    <path d="M960 1489.82c-348.474 0-668.545-202.323-841.298-529.918C291.455 632.306 611.526 429.984 960 429.984s668.545 202.322 841.298 529.918C1628.545 1287.497 1308.474 1489.82 960 1489.82Zm948.342-553.552C1720.645 558.648 1357.332 324 960 324c-397.333 0-760.645 234.648-948.342 612.268L0 959.902l11.658 23.634c187.697 377.62 551.01 612.268 948.342 612.268 397.333 0 760.645-234.648 948.342-612.268L1920 959.902l-11.658-23.634ZM960 1171.869c-116.9 0-211.967-95.067-211.967-211.967 0-116.9 95.067-211.967 211.967-211.967 116.9 0 211.967 95.067 211.967 211.967 0 116.9-95.067 211.967-211.967 211.967m0-529.918c-175.297 0-317.951 142.654-317.951 317.951 0 175.297 142.654 317.95 317.951 317.95 175.297 0 317.951-142.653 317.951-317.95S1135.297 641.951 960 641.951"/>
-                                </svg>
-                            </button>
-                            </p>
-                            
-                            
-                            <br/>
-                            <span class="text-gray-400 text-sm flex justify-center mb-4 tracking-wide">  Ещё нет аккаунта? <a href="/signup/" class="underline underline-offset-1">Зарегистрируйтесь</a></span>
-                            <input class="flex  text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100 w-24 m-auto" type="submit" value="Отправить" />
-                            <input type="hidden" name="next" value="{{ next }}"/>
-                        </form>
-                        {% endif %}
+                    <span class="uppercase text-gray-400 text-sm mb-4 tracking-wide">аккаунт</span> 
+                    <div class="flex text-lg flex-col justify-start">
+                        
+                        <div class="flex my-4 ">
+                            <p class="font-semibold">Имя пользователя - </p> <p class="ml-1"> {{dict.username}}</p>
+                        </div>
+
+                        <div class="flex my-4 ">
+                            <p class="font-semibold">Подписки - </p> <p class="ml-1"> {{subs}}</p>
+                        </div>
                     </div>
                     
                 </div>
+                {{dict}}
             </div>
+
             <div class="md:mt-2 mt-[650px] shrink flex w-full">
                 <!-- Футер -->
                 
@@ -136,11 +121,3 @@
     </div>
 
 </body>
-
-
-<!-- <a href="">Забыли пароль?</a> -->
-
-</html>
-
-
-

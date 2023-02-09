@@ -30,7 +30,7 @@
 
 <body>
 
-    <div class="absolute md:w-full min-w-screen md:min-h-screen  h-auto flex bg-indigo-100">
+    <div class="absolute md:w-full min-w-screen md:min-h-screen  h-auto flex bg-gray-200">
         <div class="grow h-full"></div>
         <div class="shrink flex flex-col w-full min-h-screen max-w-screen-xl">
             <div class="shrink flex w-full sticky top-0 px-2 z-50">
@@ -91,10 +91,28 @@
                                     {{user}}
                                 </p>          
                             </div>       
-                        </div></a>                    
+                        </div></a>
+                    {% elif not user.is_confirmed%}
+                    <p class="flex w-18 text-sm text-gray-600">Подтвердите аккаунт</p>
+
+                    <a href="/account/">
+                        
+                        <div class="shrink flex">
+                            <div class="flex py-2 px-4 rounded-lg hover:bg-gray-100 cursor-pointer duration-100 text-gray-800 font-medium">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 place-self-center mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>                  
+                                <p>
+                                    {{user}}
+                                </p>          
+                            </div>       
+                        </div></a>                      
                     {%endif%}
                 </div>
+                
             </div>
+            
             <div class="grow flex flex-col w-full mb-2">
                 <!--List-->
                 <div class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-2 mt-2">

@@ -25,7 +25,8 @@ urlpatterns = [
     path('add_subscribe&<slug:slug>', core_views.add_subscribe, name="add subscribe"),
     path('delete_subscribe&<slug:slug>', core_views.delete_subscribe, name="add subscribe"),
     path('activatetg&<str:tgid>/', core_views.tg_activate),
-    path('add_feedback&<slug:slug>/', core_views.add_feedback)
+    path('add_feedback&<slug:slug>/', core_views.add_feedback),
+    path('account/', core_views.account)
 ]
 
 #Дебаг медиа файлов 
