@@ -298,7 +298,10 @@ def add_report(request, slug):
     #получаем никнейм пользователя
     user = request.user
     #добавляем в таблицу репортов инфу о новом репорте
-    Report.objects.update_or_create(types=str(types), message=message, users_name=user, service_slug=slug)
+    if message == "":
+        Report.objects.update_or_create(types=str(types), message=message, users_name=user, service_slug=slug, is_moderated=True, time=str(datetime.now().replace(microsecond=0)))
+    else:
+        Report.objects.update_or_create(types=str(types), message=message, users_name=user, service_slug=slug, is_moderated=False, time=str(datetime.now().replace(microsecond=0)))
 
     #дальше добавлем айдишник нового репорта в таблицу сервиса
     

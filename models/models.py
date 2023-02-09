@@ -80,6 +80,7 @@ class Report(models.Model):
     message = models.CharField(max_length=200, null=True, unique=False)
     service_slug = models.SlugField(max_length=255, null=True, unique=False)
     is_moderated = models.BooleanField(default=False, unique=False)
+    time = models.CharField(max_length=200, null=True,  verbose_name="time", unique=False)
 
 
 class Raiting(models.Model):

@@ -368,7 +368,7 @@
                     <div class="z-0 hover:shadow-4xl  grid sm:grid-cols-2">
                         
                         <div class="bg-white shadow-xl  rounded-xl p-4 mx-4 mb-4 ">
-                            <span class="uppercase text-gray-400 text-sm  tracking-wide">Оставьте отзыв</span> 
+                            <span class="uppercase text-gray-400 text-sm  tracking-wide">Оставьте отзыв о сервисе</span> 
 
                             <form class="" method="post" action="/add_feedback&{{slug}}/" enctype=multipart/form-data>
                                 {% csrf_token %}
@@ -490,7 +490,7 @@
                                 
 
                             </div>
-                            <div class="m-auto bg-white bg-opacity-50 backdrop-blur-sm h-16 p-2  w-full">
+                            <div class="m-auto mt-2 bg-white bg-opacity-50 backdrop-blur-sm h-16 p-2  w-full">
                                     <button id="back_rep" id="forw_rep" class="mx-1 text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100" name="1" onclick="report_backwards(0,  {{report_pages}})" value="1" id="1">
                                         Назад 
                                     </button>
