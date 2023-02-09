@@ -1,4 +1,4 @@
-static/* linguist-vendored
-static/*.js linguist-vendored=false
+static/* linguist-vendored=true
+*.js linguist-vendored=false
 *.py linguist-language=python
 *.html linguist-language=html
