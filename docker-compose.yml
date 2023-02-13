@@ -1,4 +1,4 @@
-version: "2.0"
+version: "3.5"
    
 services:
 
@@ -12,17 +12,15 @@ services:
         - uwsgi
       ports:
         - "8000:8000"
-        - "80:80"        
+                
 
   uwsgi:
       build: 
         context: ./university-checker
       container_name: uwsgi
-      environment:
-        SECRETKEY: ""
       volumes:
         - ./nginx:/opt/conf
         - ./university-checker:/opt/app
       expose:
         - "8001"
-        - "80"
+        

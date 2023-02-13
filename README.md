@@ -1,0 +1,1 @@
+Установить docker, docker-compose, nginx

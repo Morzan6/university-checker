@@ -53,3 +53,4 @@ def time_dif(ind):
             print(dif // 86400, 'день назад')
         else:
             print(dif // 86400, 'дней назад')
+
