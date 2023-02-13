@@ -1,0 +1,28 @@
+version: "2.0"
+   
+services:
+
+  nginx:
+      build: 
+        context: ./nginx
+      container_name: nginx
+      links:
+        - uwsgi  
+      volumes_from:
+        - uwsgi
+      ports:
+        - "8000:8000"
+        - "80:80"        
+
+  uwsgi:
+      build: 
+        context: ./university-checker
+      container_name: uwsgi
+      environment:
+        SECRETKEY: ""
+      volumes:
+        - ./nginx:/opt/conf
+        - ./university-checker:/opt/app
+      expose:
+        - "8001"
+        - "80"

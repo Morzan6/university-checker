@@ -6,3 +6,4 @@ pylint-django==2.5.3
 aiogram==2.24
 django-mysql==4.8.0
 asyncio==3.4.3
+uwsgi

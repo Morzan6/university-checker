@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-rc@04_mry_3-$@2sq$b9%-9jp6q2eyxf4bsw9&&esj++aw&r)p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['university-checker.ru']
+ALLOWED_HOSTS = ['university-checker.ru', 'localhost']
 
 if 'CODESPACE_NAME' in os.environ:
     codespace_name = os.getenv("CODESPACE_NAME")
@@ -172,3 +172,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 TOKEN = '5628470712:AAFPdkjgvx41Z8dJpFd7RFjFaaC7XnNOUxw'
 admin_id = 975083397
+
+# SECRET_KEY = os.environ

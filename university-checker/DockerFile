@@ -1,0 +1,7 @@
+FROM python:3.9
+
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR university-checker/
+RUN pip3 install -r requirements.txt
+CMD ["uwsgi", "--master", "--ini", "/opt/conf/mysite_uwsgi.ini"]
