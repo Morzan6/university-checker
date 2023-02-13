@@ -68,6 +68,7 @@ async def error_codes():
     while True:
         for service in Dict:
             url = service['url']
+            slug = service['slug']
             response = requests.get(f"{url}", timeout=5)
             code = response.status_code
             print("Code:", code)
@@ -87,8 +88,9 @@ async def error_codes():
             service.time = current_time
 
             service.save()
-            #if response.status_code >= 300:
-            
+            if response.status_code >= 300:
+                email_alert(slug, code)
+                notification(slug, code)
             
         time.sleep(10)      
         await notification('bmstu', 'Ddos')
