@@ -19,38 +19,38 @@ def time_dif(ind):
 
     if (dif // 60) < 1:
         if dif == 11 or dif == 12 or dif == 13 or dif == 14:
-            print(dif, 'секунд назад')
+            return(str(dif, 'секунд назад'))
         elif dif % 10 == 2 or dif % 10 == 3 or dif % 10 == 4:
-            print(dif, 'секунды назад')
+            return(str(dif, 'секунды назад'))
         elif dif % 10 == 1:
-            print(dif, 'секунду назад')
+            return(str(dif, 'секунду назад'))
         else:
-            print(dif, 'секунд назад')
+            return(str(dif, 'секунд назад'))
     elif (dif // 3600) < 1:
         if dif // 60 == 11 or dif // 60 == 12 or dif // 60 == 13 or dif // 60 == 14:
-            print(dif // 60, 'минут назад')
+            return(str(dif // 60, 'минут назад'))
         elif dif // 60 % 10 == 2 or dif // 60 % 10 == 3 or dif // 60 % 10 == 4:
-            print(dif // 60, 'минуты назад')
+            return(str(dif // 60, 'минуты назад'))
         elif dif // 60 % 10 == 1:
-            print(dif // 60, 'минуту назад')
+            return(str(dif // 60, 'минуту назад'))
         else:
-            print(dif // 60, 'минут назад')
+            return(str(dif // 60, 'минут назад'))
     elif (dif // 86400) < 1:
         if dif // 3600 == 11 or dif // 3600 == 12 or dif // 3600 == 13 or dif // 3600 == 14:
-            print(dif // 3600, 'часов назад')
+            return(str(dif // 3600, 'часов назад'))
         elif dif // 3600 % 10 == 2 or dif // 3600 % 10 == 3 or dif // 3600 % 10 == 4:
-            print(dif // 3600, 'часа назад')
+            return(str(dif // 3600, 'часа назад'))
         elif dif // 3600 % 10 == 1:
-            print(dif // 3600, 'час назад')
+            return(str(dif // 3600, 'час назад'))
         else:
-            print(dif // 3600, 'часов назад')
+            return(str(dif // 3600, 'часов назад'))
     else:
         if dif // 86400 == 11 or dif // 86400 == 12 or dif // 86400 == 13 or dif // 86400 == 14:
-            print(dif // 86400, 'дней назад')
+            return(str(dif // 86400, 'дней назад'))
         elif dif // 86400 % 10 == 2 or dif // 86400 % 10 == 3 or dif // 86400 % 10 == 4:
-            print(dif // 86400, 'дня назад')
+            return(str(dif // 86400, 'дня назад'))
         elif dif // 86400 % 10 == 1:
-            print(dif // 86400, 'день назад')
+            return(str(dif // 86400, 'день назад'))
         else:
-            print(dif // 86400, 'дней назад')
+            return(str(dif // 86400, 'дней назад'))
 
