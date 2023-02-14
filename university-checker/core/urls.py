@@ -3,6 +3,10 @@ from django.urls import path, include
 from config import settings
 from core import views as core_views
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
+from django.urls import path, re_path
+
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
     path("", core_views.index, name="index"),
@@ -26,7 +30,8 @@ urlpatterns = [
     path('delete_subscribe&<slug:slug>', core_views.delete_subscribe, name="add subscribe"),
     path('activatetg&<str:tgid>/', core_views.tg_activate),
     path('add_feedback&<slug:slug>/', core_views.add_feedback),
-    path('account/', core_views.account)
+    path('account/', core_views.account),
+    re_path(r'^favicon\.ico$', favicon_view),
 ]
 
 #Дебаг медиа файлов 

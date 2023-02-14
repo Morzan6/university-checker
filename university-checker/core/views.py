@@ -23,6 +23,7 @@ import urllib.parse
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.datastructures import MultiValueDictKeyError
 import base64
+from scripts.time_delta import time_dif
 
 User = get_user_model()
 
@@ -91,7 +92,11 @@ def index(request):
 
         reports = (service.reports).split("|")
         
-    
+        delta = time_dif(f"{all_info[-1]['year']}-{all_info[-1]['month']}-{all_info[-1]['day']} {all_info[-1]['hour']}:{all_info[-1]['minute']}:{all_info[-1]['second']}")
+
+        for i in all_info:
+            i['delta'] = delta
+
         count_rep = []
         for report in reports:
             report = report.split(",")
@@ -132,7 +137,11 @@ def index(request):
             all_info[0]['info_status'] = "Есть проблемы"
             all_info[0]['color'] = "#f5c71a"
             
-        print(all_info)   
+        print(all_info)
+
+        
+
+        
             
         full_array.append(all_info)
 
@@ -141,7 +150,8 @@ def index(request):
     return render(
         request, "index.html",
         {
-            "title": "Главная страница",    
+            "title": "Главная страница",
+            
             "full_array": full_array,
             "len": len(full_array),
             "count": count_services(),
@@ -364,7 +374,10 @@ def show_service(request, service_slug, **kwargs):
             
         all_info.append(datetime_dict)
        
+     
+   
 
+    
     
     status = (service.status).split(",")
     del status[-1]
@@ -439,6 +452,8 @@ def show_service(request, service_slug, **kwargs):
         rate['user_raiting_bucket'] = [0]*rate['rate']
         rates.append(rate)
         score += rate['rate']
+        # delta = time_dif(f"{raiting[-1]['year']}-{raiting[-1]['month']}-{raiting[-1]['day']} {raiting[-1]['hour']}:{raiting[-1]['minute']}:{raiting[-1]['second']}")
+        # rate['delta'] = delta 
         
     feedbacks_counts = len(raiting)
     if len(raiting) == 0:
@@ -446,10 +461,9 @@ def show_service(request, service_slug, **kwargs):
     score = round((score/feedbacks_counts), 2)
     
     rates = list(func_chunk(rates[::-1], 4))
+  
 
-    
-
-    print(list(func_chunk(rates[::-1], 4)))
+    # print(list(func_chunk(rates[::-1], 4)))
 
     content = content|{"feedbacks": rates}
     content['score'] = score
@@ -480,8 +494,11 @@ def show_service(request, service_slug, **kwargs):
             
             if compare > datetime_:
                 print("-----")
-                all_info.remove(item)
+                all_info.remove(item)  
     print(content)
+
+    delta = time_dif(f"{all_info[-1]['year']}-{all_info[-1]['month']}-{all_info[-1]['day']} {all_info[-1]['hour']}:{all_info[-1]['minute']}:{all_info[-1]['second']}")
+    content['delta'] = delta
     
     content["count"] =  count_services()
 

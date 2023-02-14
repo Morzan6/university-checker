@@ -89,29 +89,15 @@ async def error_codes():
 
             service.save()
             if response.status_code >= 300:
-                email_alert(slug, code)
-                notification(slug, code)
+                await email_alert(slug, code)
+                await notification(slug, code)
             
-        time.sleep(10)      
-        await notification('bmstu', 'Ddos')
+            time.sleep(10)      
         await asyncio.sleep(1) 
 
-# t1 = threading.Thread(target=DDoS_checker)
-# t2 = threading.Thread(target=error_codes)
-# t1.start()
-# t2.start()
-# async def main():
-#     t1 = asyncio.create_task(DDoS_checker())
-#     t2 = asyncio.create_task(error_codes())
-#     await t2
-#     await t1
-
-# asyncio.run(main())
 async def main():
     await asyncio.gather(error_codes(),DDoS_checker())
 
 asyncio.run(main())
 
-
-# await notification([975083397],'Университет имени Баумэна') Добавить куда надо, аргументами список с юзерами, в строку slug/сразу название вуза 
 
