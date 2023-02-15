@@ -618,30 +618,33 @@ def account(request):
 
     try:
         user = User.objects.get(username=username)
-        try:
+
+        if user.subscribes:
             subscribes = user.subscribes.split(',')
             subscribes = [i[:].strip() for i in subscribes]
             del subscribes[-1]
-        except:
-            subscribes = "Нет подписок"
-
-        print(subscribes)
         
-        c_s = []
-        for service in subscribes:
-            
-            if Service.objects.get(slug=service):
-                s = Service.objects.get(slug=service)
-                subs = {}
-                
-                subs['abb'] = s.abbreviation
-                subs['slug'] = s.slug
 
-                c_s.append(subs)
-            else:
-                c_s.append("Нет подписок")
+            print(subscribes)
             
-        print(c_s)
+            c_s = []
+            for service in subscribes:
+                
+                if Service.objects.get(slug=service):
+                    s = Service.objects.get(slug=service)
+                    subs = {}
+                    
+                    subs['abb'] = s.abbreviation
+                    subs['slug'] = s.slug
+
+                    c_s.append(subs)
+                else:
+                    c_s.append("Нет подписок")
+                
+            print(c_s)
+
+        else:
+            c_s = ""
 
         dc = model_to_dict(user)
 
