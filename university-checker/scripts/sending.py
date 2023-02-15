@@ -55,4 +55,3 @@ async def email_alert(service_slug,Error):
 
         email = EmailMessage(f"{service.name} - Сбой в работе сервиса.", f'Внимание, замечен сбой в {service.url}. Приносим свои извинения!\n\n{Dict_error[f"{Error}"]}', to=[user.email])
         email.send() 
-email_alert('bmstu',502)    

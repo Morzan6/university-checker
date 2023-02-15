@@ -158,12 +158,12 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 #Настройки SMTP (почтового-клиента)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.jino.ru'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'te5tkp@yandex.ru'
-EMAIL_HOST_USER = 'te5tkp@yandex.ru'
-EMAIL_HOST_PASSWORD = 'werdmgockguyjave'
+DEFAULT_FROM_EMAIL = 'info@university-checker.ru'
+EMAIL_HOST_USER = 'info@university-checker.ru'
+EMAIL_HOST_PASSWORD = 'UCpassword23'
 
 #пути к медиа файлам
 MEDIA_URL = '/media/'

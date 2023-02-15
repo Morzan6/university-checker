@@ -188,7 +188,7 @@ def create_user(request):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = account_activation_token.make_token(user)
     activation_link = "http://{0}/activate/{1}/{2}".format(current_site, uid, token)
-    message = "Привет {0},\n {1}".format(user.username, activation_link)
+    message = "Привет {0}, активируй свой аккаунт по ссылке\n{1}".format(user.username, activation_link)
     to_email = email
     
     #Отправляем письмо
@@ -603,7 +603,7 @@ def add_feedback(request, slug):
     print(message, value)
     
     try:
-        raiting = get_object_or_404(Raiting, users_name=username)
+        raiting = Raiting.objects.get(users_name=username)
         if message != "":
             Raiting.objects.create(users_name=username, rate=value, message=message, service_name=slug)
     except (ObjectDoesNotExist, MultipleObjectsReturned):
@@ -618,9 +618,12 @@ def account(request):
 
     try:
         user = User.objects.get(username=username)
-        subscribes = user.subscribes.split(',')
-        subscribes = [i[:].strip() for i in subscribes]
-        del subscribes[-1]
+        try:
+            subscribes = user.subscribes.split(',')
+            subscribes = [i[:].strip() for i in subscribes]
+            del subscribes[-1]
+        except:
+            subscribes = "Нет подписок"
 
         print(subscribes)
         

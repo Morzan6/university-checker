@@ -2,11 +2,15 @@ FROM python:3.9
 
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /opt/app/
+
+WORKDIR /opt/app/scripts
+
 COPY  . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+CMD python3 handler.py
 
-CMD ["uwsgi", "--master", "--ini", "/opt/conf/mysite_uwsgi.ini"]
+
+
 

@@ -24,3 +24,20 @@ services:
       expose:
         - "8001"
         
+  scripts:
+      build: 
+        context: ./university-checker/scripts
+      container_name: scripts
+      volumes:
+        - ./university-checker:/opt/app
+      expose:
+        - "8001"
+
+  bot:
+      build: 
+        context: ./university-checker/tgbot
+      container_name: bot
+      volumes:
+        - ./university-checker:/opt/app
+      expose:
+        - "8001"
