@@ -20,6 +20,7 @@ dp = Dispatcher(bot)
 
 async def on_startup(_): #Функция при запуске бота
     await bot.send_message(admin_id, text='Bot has been started') #Отправка сообщения админу
+    await bot.send_message(596742400, text='Bot has been started')
     #sql_start() тут подключение к БД
 
 
@@ -45,6 +46,7 @@ async def commands(message: types.Message):
         await message.answer(HelpStart, parse_mode='HTML', reply_markup=main_markup)
     elif message.text == '/start':
         await message.answer(HelpStart, parse_mode='HTML', reply_markup=main_markup)
+        print(message.from_user.id)
     elif message.text =='/addService':
         await message.answer('Выберите сервисы, которые нужно добавить для оповещения', parse_mode='HTML', reply_markup=main_markup)
     elif message.text =='/removeService':
