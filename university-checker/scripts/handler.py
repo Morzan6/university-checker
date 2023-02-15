@@ -61,7 +61,7 @@ async def DDoS_checker():
                 service.save()
                 
 
-            time.sleep(10)
+        time.sleep(1200)
         await asyncio.sleep(1)
 
 async def error_codes():
@@ -92,7 +92,7 @@ async def error_codes():
                 await email_alert(slug, code)
                 await notification(slug, code)
             
-            time.sleep(10)      
+        time.sleep(10)      
         await asyncio.sleep(1) 
 
 async def main():
