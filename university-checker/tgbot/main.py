@@ -5,8 +5,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 from aiogram import Bot, Dispatcher, executor, types
 from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
-from tgbot.keyboard import markupweb, markupweb_remove, addWeb, addWeb_remove, main_markup
-from tgbot.add_remove_service import add_service, remove_service
+from tgbot.keyboard import main_markup
+#from tgbot.add_remove_service import add_service, remove_service
 
 from models.models import Service 
 from models.models import User
@@ -28,7 +28,7 @@ async def on_startup(_): #Функция при запуске бота
 async def main_msg(User_id):
     message_add = 'Выберите ниже вуз, на который хотите подписаться \n\n'
     for obj in Service.objects.all():
-        message_add += '<a href=' +  '"' + "https://www.google.com" + '"' + '>'+ obj.name + '</a>' + '\n\n'
+        message_add += '<a href=' +  '"' + "university-checker.ru/add_subscribe&" + obj.slug + '"' + '>'+ obj.name + '</a>' + '\n\n'
     await bot.send_message(User_id, message_add, parse_mode=types.ParseMode.HTML)
     
 
@@ -75,6 +75,7 @@ async def callback(callback: types.CallbackQuery):
         if User.objects.filter(tgid='my_value').exists():
             await main_msg(callback.from_user.id)
         else:
+            await main_msg(callback.from_user.id)
             await bot.send_message(callback.from_user.id, 'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить перейдите по ссылке и авторизируйтесь или зарегистрируйтесь')
     if callback.data == 'removess':
         if User.objects.filter(tgid='my_value').exists():
