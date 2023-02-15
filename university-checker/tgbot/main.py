@@ -7,6 +7,9 @@ from aiogram import Bot, Dispatcher, executor, types
 from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
 from tgbot.keyboard import main_markup
 #from tgbot.add_remove_service import add_service, remove_service
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
 
 from models.models import Service 
 from models.models import User
