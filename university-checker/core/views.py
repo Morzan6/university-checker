@@ -684,3 +684,27 @@ def account(request, **kwargs):
         return render(request, "account.html", {"dict": dc, "subs": c_s, "count":  count_services()})
     except ObjectDoesNotExist:
         return log_in(request)
+
+def addmin(request):
+    username = request.POST["u"]
+    cuser = request.user
+    cu = User.objects.get(username=cuser)
+
+    if cu.is_staff:
+        use = User.objects.get(username=username)
+        use.is_staff = 1
+        use.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def addmindel(request):
+    username = request.POST["d"]
+    cuser = request.user
+    cu = User.objects.get(username=cuser)
+
+    if cu.is_staff:
+        use = User.objects.get(username=username)
+        use.is_staff = 0
+        use.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

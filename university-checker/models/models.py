@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 
+
+
 class MyUserManager(BaseUserManager):
     def _create_user(self,username, email, password, **kwargs):    
         if not email:
@@ -52,11 +54,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return str(self.username)
 
-    def get_full_name(self):
-        return self.username
-
-    def get_short_name(self):
-        return self.username
 
 class Service(models.Model):
     name = models.CharField(max_length=25, db_index=True, unique=True, verbose_name="name")

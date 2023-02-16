@@ -31,6 +31,8 @@ urlpatterns = [
     path('activatetg&<str:tgid>/', core_views.tg_activate),
     path('add_feedback&<slug:slug>/', core_views.add_feedback),
     path('account/', core_views.account),
+    path('addmin/', core_views.addmin),
+    path('addmindel/', core_views.addmindel),
     re_path(r'^favicon\.ico$', favicon_view),
 ]
 

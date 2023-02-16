@@ -91,6 +91,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+
     }
 }
 
@@ -174,3 +175,4 @@ TOKEN = '5850642721:AAEkMBVE5HZgI8LWl0AHu3h6eSeH5sMbZG8'
 admin_id = 975083397
 
 # SECRET_KEY = os.environ
+DEFAULT_CHARSET = 'utf-8'

@@ -153,7 +153,28 @@
                     <span class="uppercase text-gray-400 text-sm mt-8 pt-4 md:ml-12 tracking-wide">Больше сообщений пока нет </span> 
                     
                 </div>
-                
+                <div class="grid md:grid-cols-2 col-span-2">
+                    <div class="bg-white flex flex-col shadow-xl rounded-xl h-auto p-6 mx-4 mt-4 z-0 hover:shadow-4xl  ">
+                        <span class="uppercase text-gray-400 text-sm mb-4 tracking-wide">Добавить администратора</span>
+                        <form action="/addmin/" method="post">
+                            {% csrf_token %}
+                            <p class="my-2 flex items-center">Имя пользователя:<br> <input class="ml-4 resize-none p-2 outline-none rounded-md border border-gray-200 " required name="u" placeholder="Имя пользователя"/></p>
+                            <input class="flex  text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100 w-24 mt-4 mr-auto" type="submit" value="Отправить"/>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                        </form>
+                    
+                    </div>
+                    <div class="bg-white flex flex-col shadow-xl rounded-xl h-auto p-6 mr-4 mt-4 z-0 hover:shadow-4xl  ">
+                        <span class="uppercase text-gray-400 text-sm mb-4 tracking-wide">Удалить администратора</span>
+                        <form action="/addmindel/" method="post">
+                            {% csrf_token %}
+                            <p class="my-2 flex items-center">Имя пользователя:<br> <input class="ml-4 resize-none p-2 outline-none rounded-md border border-gray-200 " required name="d" placeholder="Имя пользователя"/></p>
+                            <input class="flex  text-gray-600  place-content-center p-2 border border-gray-200 rounded-lg hover:shadow-lg hover:cursor-pointer duration-100 w-24 mt-4 mr-auto" type="submit" value="Отправить"/>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                        </form>
+                    
+                    </div>
+                </div>
               
             </div>
 
