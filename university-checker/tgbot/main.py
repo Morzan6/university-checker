@@ -20,7 +20,7 @@ bot = Bot(TOKEN)
 dp = Dispatcher(bot)
 
 
-HelpStart = 'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов' + '\n\nДля работы с ботом вам необходимо зарегистрироваться на сайте по этой ссылке:\n' #Текст при команде start/help + добавить описание команд
+HelpStart = 'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов' + '\n\nДля работы с ботом вам необходимо на сайте по этой ссылке:\n' #Текст при команде start/help + добавить описание команд
 
 async def confirm_url(User_id):
     User_id = str(User_id)
@@ -35,7 +35,9 @@ async def on_startup(_): #Функция при запуске бота
     #sql_start() тут подключение к БД
 
 
-
+async def HelpStart(User_id):
+    await bot.send_message(User_id, f'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов \n\nДля работы с ботом <a href= "{str(await confirm_url(User_id))}"> привяжите </a> telegram аккаунт к аккаунту на сайте привяжите аккаунт' , parse_mode=types.ParseMode.HTML, reply_markup=main_markup)
+    
 
 
 async def main_msg_add(User_id):
@@ -56,13 +58,18 @@ async def get_values_by_column(User_id):
 
 
 async def main_msg_delete(User_id):
-    message_remove = 'Выберите ниже вуз, от сервиса которого хотите отписаться \n\n'
+    message_remove = 'Список вузов, на которые вы подписаны, вы также можете удалить вуз, перейдя по его ссылке \n\n'
     slugs = await get_values_by_column(User_id)
-    slugs.pop()
-    for slug in slugs:
-        service = Service.objects.get(slug = slug)
-        message_remove += '<a href=' +  '"' + "university-checker.ru/remove_subscribe&" + slug + '"' + '>'+ service.name + '</a>' + '\n\n'
-    await bot.send_message(User_id, message_remove, parse_mode=types.ParseMode.HTML)
+    test123 = ['']
+    print(slugs)
+    if slugs != test123:
+        del slugs[-1]
+        for slug in slugs:
+            service = Service.objects.get(slug = slug)
+            message_remove += '<a href=' +  '"' + "university-checker.ru/delete_subscribe&" + slug + '"' + '>'+ service.name + '</a>' + '\n\n'
+        await bot.send_message(User_id, message_remove, parse_mode=types.ParseMode.HTML)
+    else:
+        await bot.send_message(User_id, 'Вы не подписаны ни на один вуз!')
     
 
 
@@ -72,10 +79,12 @@ async def main_msg_delete(User_id):
 @dp.message_handler(commands=['help', 'start', 'addService', 'removeService'])
 async def commands(message: types.Message):
     if message.text == '/help':
-        await message.answer(HelpStart + await confirm_url(message.from_user.id),  parse_mode='HTML', reply_markup=main_markup)
+        await HelpStart(message.from_user.id)
+        #await message.answer(HelpStart + await confirm_url(message.from_user.id),  parse_mode='HTML', reply_markup=main_markup)
         #await message.answer(await confirm_url(message.from_user.id), parse_mode='HTML', reply_markup=main_markup)
     elif message.text == '/start':
-        await message.answer(HelpStart + await confirm_url(message.from_user.id), parse_mode='HTML', reply_markup=main_markup)
+        await HelpStart(message.from_user.id)
+        #await message.answer(HelpStart + await confirm_url(message.from_user.id), parse_mode='HTML', reply_markup=main_markup)
 
 
 # @dp.callback_query_handler() #Обработка запросов
@@ -102,15 +111,16 @@ async def commands(message: types.Message):
 @dp.callback_query_handler() #Обработка запросов
 async def callback(callback: types.CallbackQuery):
     if callback.data == 'addss':
-        if User.objects.filter(tgid='my_value').exists():
+        if User.objects.filter(tgid=callback.from_user.id).exists():
             await main_msg_add(callback.from_user.id)
         else:
-            await bot.send_message(callback.from_user.id, 'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить перейдите по ссылке и авторизируйтесь или зарегистрируйтесь\n\n' + str(await confirm_url(callback.from_user.id)))
+            #                                                                                                                                            message_remove += '<a href=' +  '"' + "university-checker.ru/delete_subscribe&" + slug + '"' + '>'+ service.name + '</a>' + '\n\n'
+            await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}"> привяжите аккаунт</a>' , parse_mode=types.ParseMode.HTML)
     if callback.data == 'removess':
-        if User.objects.filter(tgid='my_value').exists():
+        if User.objects.filter(tgid=callback.from_user.id).exists():
             await main_msg_delete(callback.from_user.id)
         else:
-            await bot.send_message(callback.from_user.id, 'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить перейдите по ссылке и авторизируйтесь или зарегистрируйтесь\n\n' + str(await confirm_url(callback.from_user.id)))
+            await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}"> привяжите аккаунт</a>' , parse_mode=types.ParseMode.HTML)
 
 async def notification(service_slug, error_code): # Оповещает о неработе сервиса
     # notif = 'Внимание, сервис ' + str(service) + ' не работает' #Можно добавить условие на ddos, краш и другие ошибки
