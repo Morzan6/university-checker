@@ -170,7 +170,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-TOKEN = '5628470712:AAFPdkjgvx41Z8dJpFd7RFjFaaC7XnNOUxw'
+TOKEN = '5850642721:AAEkMBVE5HZgI8LWl0AHu3h6eSeH5sMbZG8'
 admin_id = 975083397
 
 # SECRET_KEY = os.environ
