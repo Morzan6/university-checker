@@ -583,14 +583,27 @@ def search(request, **kwargs):
 
 def tg_activate(request, tgid):
     username = request.user
-    tgid = str(base64.b64decode(tgid))
+    tgid = str(base64.b64decode(tgid).decode('utf-8'))
     try:
         user = User.objects.get(username=username)
-        if tgid in user.tgid:
-            return  HttpResponse(f'уже привязан')
+
+        if not user.is_confirmed:
+            return account(request, **{'please_confirm': True})
+        
+
+       
+        user_tgid = user.tgid
+        print(user_tgid, tgid)
+        if user_tgid == None:
+            user_tgid = ""
+            
+        if tgid == user_tgid:
+            return  account(request, **{'already_exist': True})
+
         user.tgid = tgid
         user.save()
-        return HttpResponse(f'{user}')
+        return account(request, **{'tg': True})
+
     except ObjectDoesNotExist:
         return log_in(request)
 
@@ -613,9 +626,10 @@ def add_feedback(request, slug):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def account(request):
+def account(request, **kwargs):
     username = request.user
-
+    
+    print(kwargs)
     try:
         user = User.objects.get(username=username)
 
@@ -648,6 +662,25 @@ def account(request):
 
         dc = model_to_dict(user)
 
+        try:
+            please_confirm = kwargs['please_confirm']
+            dc['please_confirm'] = please_confirm            
+        except:
+            pass
+
+        try:
+            already_exist = kwargs['already_exist']
+            dc['already_exist'] = already_exist
+        except:
+            pass
+       
+        try:
+            tg = kwargs['tg']
+            dc['tg'] = tg
+        except:
+            pass
+        
+            print(dc)
         return render(request, "account.html", {"dict": dc, "subs": c_s, "count":  count_services()})
     except ObjectDoesNotExist:
         return log_in(request)
