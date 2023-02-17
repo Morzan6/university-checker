@@ -46,7 +46,7 @@ def func_chunk(lst, n):
 
 #обработчик главной страницы
 def index(request):
-    services = Service.objects.all()[:5]
+    services = Service.objects.all()
 
     full_array = []
     for s in services:
