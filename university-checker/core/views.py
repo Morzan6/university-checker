@@ -339,7 +339,9 @@ def add_service(request):
     # to_slug = "".join(word[0] for word in name.upper().split())
     # slug = translit(to_slug, "ru", reversed=True).lower()
     slug = re.sub(r'https://', '', url)
+    slug = re.sub(r'www.', '', slug)
     slug = re.sub(r'.ru/', '', slug)
+    slug = re.sub(r'.ru', '', slug)
     #получаем картинку из формы
     handle_uploaded_file(request.FILES['img'], slug)
     #создаем путь для картинки с названием от слага
