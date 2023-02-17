@@ -345,7 +345,7 @@ def add_service(request):
     #создаем путь для картинки с названием от слага
     image = "/media/services_images/" + slug + ".png"
     #добавляеет в БД данные
-    Service.objects.update_or_create(name=name, url=url, slug=slug, abbriviation=abbriviation, image=image, status='200,', reports='|', time=f'{str(datetime.now().replace(microsecond=0))},')
+    Service.objects.update_or_create(name=name, url=url, slug=slug, abbreviation=abbriviation, image=image, status='200,', reports='|', time=f'{str(datetime.now().replace(microsecond=0))},')
     return redirect(admin_panel)
 
 
