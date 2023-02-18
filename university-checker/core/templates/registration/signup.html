@@ -167,8 +167,9 @@
                     <div class="flex justify-center">
                         <form class="flex flex-col" method="post" action={% url 'create_user' %} onSubmit = "return check(this)">
                             {% csrf_token %}
-                            <p class="my-2 ">Имя пользователя: <input accept-charset="utf-8" required class="ml-3 resize-none p-2 outline-none rounded-md border border-gray-200 " name="username" placeholder="Имя пользователя"/></p><p class="w-96 text-sm italic font-semibold" id="username_error"></p>
-                            <p class="my-2">Почта: <input accept-charset="utf-8" required class="ml-[102px] resize-none p-2 outline-none rounded-md border border-gray-200 " name="email" placeholder="Почта"/></p>  <p class="italic  text-sm font-semibold"id="email_error"></p>
+                            
+                            <p class="my-2 ">Имя пользователя: <input accept-charset="utf-8" required class="ml-3 resize-none p-2 outline-none rounded-md border border-gray-200 " name="username" placeholder="Имя пользователя"/></p><p class="w-96 text-sm italic font-semibold" id="username_error">{%if user_exist%}Пользователь с таким именем уже существует{%endif%}</p>
+                            <p class="my-2">Почта: <input accept-charset="utf-8" required class="ml-[102px] resize-none p-2 outline-none rounded-md border border-gray-200 " name="email" placeholder="Почта"/></p>  <p class="italic  text-sm font-semibold"id="email_error">{%if email_exist%}Почта занята{%endif%}</p>
                             <p class="my-2 flex items-center">Пароль: <input accept-charset="utf-8" required class="ml-24 resize-none p-2 outline-none rounded-md border border-gray-200 " type="password" name="password" id="pwd"  placeholder="Введите пароль"/>
                             
                             <button type="button" class="flex  active:scale-90 mx-2 justify-center fill-gray-600 h-6 w-6" onclick="if (pwd.type == 'text') pwd.type = 'password', pwd2.type = 'password'; else pwd.type = 'text', pwd2.type = 'text';">

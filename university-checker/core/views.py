@@ -24,6 +24,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.datastructures import MultiValueDictKeyError
 import base64
 from scripts.time_delta import time_dif
+from django.db import IntegrityError
 
 User = get_user_model()
 
@@ -160,8 +161,22 @@ def index(request):
 
     
 #рендер страницы с регистрацией нового пользователя
-def signup(request):
-    return render(request, "registration/signup.html", {"count":  count_services()})
+def signup(request, **kwargs):
+
+    print(kwargs)
+
+    try:
+        email_exist = kwargs['email_exist']
+    except:
+        email_exist = 0
+    
+    try:
+        user_exist = kwargs['user_exist']
+    except :
+        user_exist = 0
+
+    
+    return render(request, "registration/signup.html", {"count":  count_services(), "email_exist": email_exist, "user_exist":user_exist})
 
 #добавление нового пользователя
 def create_user(request):
@@ -170,8 +185,21 @@ def create_user(request):
     email = request.POST.get("email", "Undefined")
     password = request.POST.get("password", "Undefined")
 
+    errors = {"email_exist": 0, "user_exist": 0}
+
+    try:
+        user = User.objects._create_user(email=email, username=username, password=password)
+    except IntegrityError as e:
+        if 'username' in e.args[0]:
+            errors['user_exist'] = 1
+            return signup(request, **errors)
+        if 'email' in e.args[0]:
+            errors['email_exist'] = 1
+            return signup(request, **errors)
+
+
     # Создаем пользователя и сохраните его в базе данных, делаем его не активированным и входим
-    user = User.objects._create_user(username, email, password)
+   
     user.is_confirmed = False
     user.save()
     
