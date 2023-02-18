@@ -28,18 +28,18 @@ async def confirm_url(User_id):
     return f'university-checker.ru/activatetg&{base64_user_id}'
 
 
-#Запускает бота и уведомляет админа о том, что бот запущен()
+#Запускает бота и уведомляет админа о том, что бот запущен(admin_id берется из university-checker/university-checker/config/settings.py)
 async def on_startup(_):
     await bot.send_message(admin_id, text='Bot has been started')
 
-
+#Функция нужна для генерации и отправки сообщения,в котором есть гиперссылка на подключение аккаунта телеграм к аккаунту на сайте 
 async def HelpStart(User_id):
     print(User_id)
     await bot.send_message(User_id, f'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов🏛️ \n\nДля работы с ботом <a href= "{str(await confirm_url(User_id))}">привяжите</a> telegram аккаунт к аккаунту на сайте\n\nВы также можете посетить <a href= "https://university-checker.ru/">наш сайт</a> ', parse_mode=types.ParseMode.HTML, reply_markup=main_markup)
     
 
 
-
+# получает вузы из бд и отправляет сообщение, в котором есть все вузы в виде гиперссылки, которая активирует функцию на сайте, которая добавляет вуз в избранное
 async def main_msg_add(User_id):
     message_add = 'Выберите ниже вуз🏛️, на сервис которого хотите подписаться \n\n'
     for obj in Service.objects.all():
@@ -77,7 +77,7 @@ async def main_msg_add(User_id):
 
 
 
-
+# Функция получает список вузов, на которые подписан пользватель по его ID в телегам
 async def get_values_by_column(User_id):
     queryset = User.objects.all()
     filtered_queryset = queryset.filter(**{'tgid': User_id})
@@ -86,7 +86,7 @@ async def get_values_by_column(User_id):
     value_list = [s.strip() for s in value.split(',')] if value else []
     return value_list
 
-
+# получает вузы из бд и отправляет сообщение, в котором есть все вузы, на которые подписан пользователь, в виде гиперссылки, которая активирует функцию на сайте, которая удаляет вуз из избранного
 async def main_msg_delete(User_id):
     message_remove = 'Список вузов🏛️, на которые вы подписаны, при проблеме в работе сервиса одного из них вы будете получать уведомление🔔.\n\n\nВы также можете удалить вуз🏛️, перейдя по гиперссылке \n\n\n'
     slugs = await get_values_by_column(User_id)
@@ -134,39 +134,17 @@ async def main_msg_delete(User_id):
 
 
 #Обработка команд бота
-@dp.message_handler(commands=['help', 'start', 'addService', 'removeService'])
+@dp.message_handler(commands=['help', 'start'])
 async def commands(message: types.Message):
     if message.text == '/help':
         await HelpStart(message.from_user.id)
-        #await message.answer(HelpStart + await confirm_url(message.from_user.id),  parse_mode='HTML', reply_markup=main_markup)
-        #await message.answer(await confirm_url(message.from_user.id), parse_mode='HTML', reply_markup=main_markup)
     elif message.text == '/start':
         await HelpStart(message.from_user.id)
-        #await message.answer(HelpStart + await confirm_url(message.from_user.id), parse_mode='HTML', reply_markup=main_markup)
 
 
-# @dp.callback_query_handler() #Обработка запросов
-# async def callback(callback: types.CallbackQuery):
-#     if callback.data in addWeb: #добавляет сервис
-#         user_login = str(callback.from_user.id)
-#         service = str(callback.data)
-#         print(user_login, service)
-#         first_name = str(callback.from_user.first_name) #данные о пользователе, можно удалять крч
-#         user_name = str(callback.from_user.username) #данные о пользователе, можно удалять крч
-#         last_name = str(callback.from_user.last_name) #данные о пользователе, можно удалять крч
-#         await add_service(user_login, service)
-#         await bot.send_message(callback.from_user.id, 'Сервис добавлен')
-#     elif callback.data in addWeb_remove: #Удаляет сервис
-#         user_login = str(callback.from_user.id)
-#         service = str(callback.data)
-#         print(user_login, service)
-#         first_name = str(callback.from_user.first_name) #данные о пользователе, можно удалять крч
-#         user_name = str(callback.from_user.username) #данные о пользователе, можно удалять крч
-#         last_name = str(callback.from_user.last_name) #данные о пользователе, можно удалять крч
-#         await remove_service(user_login, service)
-#         await bot.send_message(callback.from_user.id, 'Сервис удален')
 
-@dp.callback_query_handler() #Обработка запросов
+#Обработка запросов с проверкой, связал ли пользователь аккаунт тг с аккаунтом на сайте
+@dp.callback_query_handler()
 async def callback(callback: types.CallbackQuery):
     if callback.data == 'addss':
         if User.objects.filter(tgid=callback.from_user.id).exists():
@@ -180,10 +158,9 @@ async def callback(callback: types.CallbackQuery):
         else:
             await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт <u>не привязан</u> к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}">привяжите аккаунт</a>, для этого нужно сначала авторизироваться' , parse_mode=types.ParseMode.HTML)
 
-async def notification(service_slug, error_code): # Оповещает о неработе сервиса
-    # notif = 'Внимание, сервис ' + str(service) + ' не работает' #Можно добавить условие на ddos, краш и другие ошибки
-    # for i in range(len(user_logins)):
-    #     await bot.send_message(user_logins[i], notif)
+
+# Функция оповещения пользователя о неработающем сервисе и ошибке, отправляет только тем пользователям, которые подписаны на сервис
+async def notification(service_slug, error_code):
     users = User.objects.filter(subscribes__icontains = service_slug)
     service = Service.objects.get(slug = service_slug)
     for user in users:
@@ -193,6 +170,8 @@ async def notification(service_slug, error_code): # Оповещает о нер
             notif = '⚠️обнаружена ошибка в работе сервиса: ' + str(service.name) + "\n\nОшибка " + str(error_code) + ': '+ str(Dict_error[error_code]) + '\n\nСсылка на сервис - ' + str(service.url)
             await bot.send_message(user.tgid, notif)
 
+
+# Словарь с расшифровкой кодов ошибок
 Dict_error={
     '100':'Возможна DDoS атака',
     '300': 'Затребованный url обозначает более одного ресурса, и сервер не смог однозначно определить, к какой странице url относится.',
@@ -229,6 +208,6 @@ Dict_error={
     '507': 'Сервер не может обработать запрос из-за недостатка места на диске.'
 }
 
-
+# запуск файла
 if __name__ == '__main__':
     executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
