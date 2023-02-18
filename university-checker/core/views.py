@@ -597,6 +597,7 @@ def tg_activate(request, tgid):
         if not user.is_confirmed:
             return account(request, **{'please_confirm': True})
         
+        
 
        
         user_tgid = user.tgid
