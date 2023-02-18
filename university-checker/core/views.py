@@ -577,9 +577,14 @@ def search(request, **kwargs):
     print(query)
     #делаем запросы к БД через регулярки
     queryset = Service.objects.filter(Q(name__iregex=rf"{query}") | Q(url__iregex=rf"{query}") | Q(abbreviation__iregex=rf"{query}"))
-    print(queryset[0])
+    print(queryset)
+    msg = ""
+    msgf = 0
+    if list(queryset) == []:
+        msg = 'Нет результатов'
+        msgf = 1
     
-    return render(request, "search.html", {"queryset":queryset, "search_query": query, "count":  count_services()})
+    return render(request, "search.html", {"queryset":queryset, "search_query": query, "count":  count_services(), "msg":msg, "msgf":msgf})
 
 
 

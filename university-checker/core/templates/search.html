@@ -103,6 +103,11 @@
           <div class="grow flex flex-col w-full mb-2">
               <!--List-->
               <div class="bg-white shadow-xl rounded-xl h-auto cursor-pointer p-4 m-4 z-0 hover:shadow-4xl ">
+                {% if msgf %}
+                
+                  {{ msg }}
+               
+                {% endif %}
                   
               {% for query in queryset %}
               <a href="/service/{{ query.slug }}">
