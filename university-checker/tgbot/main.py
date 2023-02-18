@@ -36,7 +36,7 @@ async def on_startup(_): #Функция при запуске бота
 
 
 async def HelpStart(User_id):
-    await bot.send_message(User_id, f'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов \n\nДля работы с ботом <a href= "{str(await confirm_url(User_id))}"> привяжите </a> telegram аккаунт к аккаунту на сайте привяжите аккаунт' , parse_mode=types.ParseMode.HTML, reply_markup=main_markup)
+    await bot.send_message(User_id, f'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов \n\nДля работы с ботом <a href= "{str(await confirm_url(User_id))}">привяжите</a> telegram аккаунт к аккаунту на сайте\n\nВы также можете посетить <a href= "https://university-checker.ru/">наш сайт</a> ', parse_mode=types.ParseMode.HTML, reply_markup=main_markup)
     
 
 
@@ -58,7 +58,7 @@ async def get_values_by_column(User_id):
 
 
 async def main_msg_delete(User_id):
-    message_remove = 'Список вузов, на которые вы подписаны, вы также можете удалить вуз, перейдя по его ссылке \n\n'
+    message_remove = 'Список вузов, на которые вы подписаны, при проблеме в работе сервиса одного из них вы будете получать уведомление.\n\nВы также можете удалить вуз, перейдя по его ссылке \n\n'
     slugs = await get_values_by_column(User_id)
     test123 = ['']
     print(slugs)
@@ -115,12 +115,12 @@ async def callback(callback: types.CallbackQuery):
             await main_msg_add(callback.from_user.id)
         else:
             #                                                                                                                                            message_remove += '<a href=' +  '"' + "university-checker.ru/delete_subscribe&" + slug + '"' + '>'+ service.name + '</a>' + '\n\n'
-            await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}"> привяжите аккаунт</a>' , parse_mode=types.ParseMode.HTML)
+            await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт <u>не привязан</u> к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}">привяжите аккаунт</a>, для этого нужно сначала авторизироваться' , parse_mode=types.ParseMode.HTML)
     if callback.data == 'removess':
         if User.objects.filter(tgid=callback.from_user.id).exists():
             await main_msg_delete(callback.from_user.id)
         else:
-            await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт не привязан к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}"> привяжите аккаунт</a>' , parse_mode=types.ParseMode.HTML)
+            await bot.send_message(callback.from_user.id, f'Извините, кажется, что ваш telegram аккаунт <u>не привязан</u> к аккаунту на нашем сайте, чтобы это исправить <a href= "{str(await confirm_url(callback.from_user.id))}">привяжите аккаунт</a>' , parse_mode=types.ParseMode.HTML)
 
 async def notification(service_slug, error_code): # Оповещает о неработе сервиса
     # notif = 'Внимание, сервис ' + str(service) + ' не работает' #Можно добавить условие на ddos, краш и другие ошибки

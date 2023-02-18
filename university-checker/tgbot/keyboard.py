@@ -30,6 +30,6 @@ addWeb_remove = ['mpti_remove', 'bmstu_remove']
 
 # add_service
 main_markup = InlineKeyboardMarkup(row_width=1)
-main_markup_add = types.InlineKeyboardButton('Добавить вуз в избранное для отслеживания его статуса', callback_data = 'addss')
+main_markup_add = types.InlineKeyboardButton('Добавить вуз в избранное', callback_data = 'addss')
 main_markup_remove = types.InlineKeyboardButton('Посмотреть избранное', callback_data = 'removess')
 main_markup.add(main_markup_add, main_markup_remove)
