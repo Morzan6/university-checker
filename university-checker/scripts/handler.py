@@ -47,12 +47,14 @@ async def DDoS_checker():
             url = service['url']
             print(url)
             try:
-                response = requests.get(url, timeout=30)  # добавляем параметр timeout
+                response = requests.get(url, timeout=35)
                 print(response.elapsed.total_seconds())
+                if response.elapsed.total_seconds() > 30:
+                    print('DDoS')
+                    await email_alert(service['slug'], 100)
+                    await notification(service['slug'], 100)
             except Timeout:
-                print(f'Request timed out for {url}')  
-                await email_alert(service['slug'], 100)
-                await notification(service['slug'], 100)
+                print(f'Request timed out for {url}')
             if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
                 status = service.status
