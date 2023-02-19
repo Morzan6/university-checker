@@ -54,20 +54,20 @@ async def DDoS_checker():
                 await email_alert(service['slug'], 100)
                 await notification(service['slug'], 100)
                 print(f'Request timed out for {url}')
-                service = Service.objects.get(url=url)
-                status = service.status
-                status = status + " " + str("100") + ","
-                service.status = status
+#                 service = Service.objects.get(url=url)
+#                 status = service.status
+#                 status = status + " " + str("100") + ","
+#                 service.status = status
 
-                reports = service.reports
-                reports = reports + " |"
-                service.reports = reports
+#                 reports = service.reports
+#                 reports = reports + " |"
+#                 service.reports = reports
 
-                current_time = service.time
-                current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
-                service.time = current_time
+#                 current_time = service.time
+#                 current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
+#                 service.time = current_time
 
-                service.save()
+#                 service.save()
                 
 
         time.sleep(1200)
