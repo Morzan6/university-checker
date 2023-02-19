@@ -7,6 +7,7 @@ import threading
 import asyncio
 #просто настройки джанги
 import requests
+from requests.exceptions import Timeout
 import time
 from datetime import datetime, timezone, timedelta
 import os, django
@@ -32,18 +33,26 @@ print(Dict)
 
 async def DDoS_checker():
     while True:
+        # for service in Dict:
+        #     url = service['url']
+        #     print(url)
+        #     response = requests.get(url) 
+        #     print(response.elapsed.total_seconds())
+        #     if response.elapsed.total_seconds() > 30:
+        #         print('DDoS')
+        #     if response.elapsed.total_seconds() > 30:
+        #       await email_alert(service['slug'],100)
+        #       await notification(service['slug'],100)
         for service in Dict:
             url = service['url']
             print(url)
-            response = requests.get(url) 
-            print(response.elapsed.total_seconds())
-            if response.elapsed.total_seconds() > 30:
-                print('DDoS')
-            if response.elapsed.total_seconds() > 30:
-              await email_alert(service['slug'],100)
-              await notification(service['slug'],100)
-            
-
+            try:
+                response = requests.get(url, timeout=30)  # добавляем параметр timeout
+                print(response.elapsed.total_seconds())
+            except Timeout:
+                print(f'Request timed out for {url}')  
+                await email_alert(service['slug'], 100)
+                await notification(service['slug'], 100)
             if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
                 status = service.status
