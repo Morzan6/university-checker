@@ -55,7 +55,6 @@ async def DDoS_checker():
                     await notification(service['slug'], 100)
             except Timeout:
                 print(f'Request timed out for {url}')
-            if response.elapsed.total_seconds() > 30:
                 service = Service.objects.get(url=url)
                 status = service.status
                 status = status + " " + str("100") + ","
