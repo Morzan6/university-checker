@@ -134,7 +134,7 @@ def index(request):
         elif all_info[-1]["y"] <= -20:
             all_info[0]['info_status'] = "Серьёзный сбой"
             all_info[0]['color'] = "#F08080"
-        elif all_info[-1]["y"] <= -15:
+        elif all_info[-1]["y"] <= -10:
             all_info[0]['info_status'] = "Есть проблемы"
             all_info[0]['color'] = "#f5c71a"
             
@@ -508,7 +508,7 @@ def show_service(request, service_slug, **kwargs):
     elif all_info[-1]["y"] <= -20:
         content['info_status'] = "Серьёзный сбой"
         content['color'] = "#F08080"
-    elif all_info[-1]["y"] <= -15:
+    elif all_info[-1]["y"] <= -10:
         content['info_status'] = "Есть проблемы"
         content['color'] = "#f5c71a"
     
