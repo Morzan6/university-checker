@@ -78,7 +78,10 @@ async def error_codes():
         for service in Dict:
             url = service['url']
             slug = service['slug']
-            response = requests.get(f"{url}", timeout=5)
+            try:
+                response = requests.get(f"{url}", timeout=15)
+            except:
+                pass
             code = response.status_code
             print("Code:", code)
 

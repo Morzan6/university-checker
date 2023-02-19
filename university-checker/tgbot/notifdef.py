@@ -1,4 +1,4 @@
-from main import bot
+from tgbot.main import bot
 from models.models import Service 
 from models.models import User
 
