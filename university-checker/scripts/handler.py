@@ -20,7 +20,7 @@ django.setup()
 #импорт модели сервиса
 from models.models import Service
 from models.models import User
-from tgbot.main import notification
+from tgbot.notifdef import notification
 from scripts.sending import email_alert
 
 
