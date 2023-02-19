@@ -11,7 +11,10 @@ async def notification(service_slug, error_code):
         print(service.name)
         if user.tgid != None:
             notif = '⚠️обнаружена ошибка в работе сервиса: ' + str(service.name) + "\n\nОшибка " + str(error_code) + ': '+ str(Dict_error[str(error_code)]) + '\n\nСсылка на сервис - ' + str(service.url)
-            await bot.send_message(user.tgid, notif)
+            try:
+                await bot.send_message(user.tgid, notif)
+            except:
+                print('Сообщение не отправилось!', user.tgid)
 
 Dict_error={
     '100':'Возможна DDoS атака',
