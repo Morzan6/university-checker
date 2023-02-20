@@ -38,7 +38,8 @@ $ cd university-checker-master
 
 ```
 $ nano ./nginx/mysite_nginx.conf
-
+```
+```
 9      listen     80;  #порт, который будет слушать веб-сервер в ожидании запросов от пользователей
 
 11    server_name     localhost; # замените на собственный домен или IP адрес
@@ -47,8 +48,8 @@ $ nano ./nginx/mysite_nginx.conf
 Добавляем наш домен или IP адрес в разрешенные хосты в файле . /university-checker/config/settings.py
 ```
 $ nano ./university-checker/config/settings.py
-
-
+```
+```
 28    ALLOWED_HOSTS = ['university-checker.ru', 'localhost', ‘ваш домен или IP’]
 29    main_url = 'ваш домен или IP адрес'
 ```
