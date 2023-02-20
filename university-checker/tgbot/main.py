@@ -4,7 +4,7 @@ sys.path.append('../../')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 from aiogram import Bot, Dispatcher, executor, types
-from config.settings import TOKEN, admin_id  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
+from config.settings import TOKEN, admin_id, main_url  #Админ id из токен файла, можно добавить нескольно, чтобы бот при старте писал админу, что запущен и т. д.
 from tgbot.keyboard import main_markup
 #from tgbot.add_remove_service import add_service, remove_service
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
@@ -25,7 +25,7 @@ dp = Dispatcher(bot)
 async def confirm_url(User_id):
     User_id = str(User_id)
     base64_user_id = base64.b64encode(bytes(User_id, 'utf-8')).decode('utf-8')
-    return f'university-checker.ru/activatetg&{base64_user_id}'
+    return f'{main_url}/activatetg&{base64_user_id}'
 
 
 #Запускает бота и уведомляет админа о том, что бот запущен(admin_id берется из university-checker/university-checker/config/settings.py)
