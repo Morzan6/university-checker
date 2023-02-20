@@ -16,7 +16,7 @@ $ sudo apt upgrade
 Выполняем команды с установкой всех необходимых утилит:
 
 ```
-$ sudo apt install python3 apt-transport-https  ca-certificates  curl  gnupg  lsb-release nano
+$ sudo apt-get install python3 apt-transport-https  ca-certificates  curl  gnupg  lsb-release nano
 
 $ curl -fsSL https://get.docker.com -o get-docker.sh
 
