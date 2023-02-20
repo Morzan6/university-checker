@@ -35,7 +35,7 @@ async def on_startup(_):
 #Функция нужна для генерации и отправки сообщения,в котором есть гиперссылка на подключение аккаунта телеграм к аккаунту на сайте 
 async def HelpStart(User_id):
     print(User_id)
-    await bot.send_message(User_id, f'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов🏛️ \n\nДля работы с ботом <a href= "{str(await confirm_url(User_id))}">привяжите</a> telegram аккаунт к аккаунту на сайте\n\nВы также можете посетить <a href= "https://university-checker.ru/">наш сайт</a> ', parse_mode=types.ParseMode.HTML, reply_markup=main_markup)
+    await bot.send_message(User_id, f'Здравствуйте, бот присылает уведомления о состонии сервисов Российских ВУЗов🏛️ \n\nДля работы с ботом <a href= "{str(await confirm_url(User_id))}">привяжите</a> telegram аккаунт к аккаунту на сайте\n\nВы также можете посетить <a href= "{main_url}/">наш сайт</a> ', parse_mode=types.ParseMode.HTML, reply_markup=main_markup)
     
 
 
@@ -43,7 +43,7 @@ async def HelpStart(User_id):
 async def main_msg_add(User_id):
     message_add = 'Выберите ниже вуз🏛️, на сервис которого хотите подписаться \n\n'
     for obj in Service.objects.all():
-        message_add += '<a href=' +  '"' + "university-checker.ru/add_subscribe&" + obj.slug + '"' + '>'+ '• '+obj.name + '</a>' + '\n\n'
+        message_add += '<a href=' +  '"' + main_url +"/add_subscribe&" + obj.slug + '"' + '>'+ '• '+obj.name + '</a>' + '\n\n'
 
     max_message_length = 4096
     current_length = 0
@@ -97,7 +97,7 @@ async def main_msg_delete(User_id):
         for slug in slugs:
             service = Service.objects.get(slug = slug)
             # message_remove += '<a href=' +  '"' + "university-checker.ru/delete_subscribe&" + slug + '"' + '>'+ '• '+service.name + '</a>' + '\n\n'
-            message_remove += '• '+'<b>'+service.name+'</b>' + '<a href=' + '"' + "university-checker.ru/delete_subscribe&" + slug + '"' + '>' + "\nУДАЛИТЬ" +  '</a>' + '\n\n\n'
+            message_remove += '• '+'<b>'+service.name+'</b>' + '<a href=' + '"' + main_url + "/delete_subscribe&" + slug + '"' + '>' + "\nУДАЛИТЬ" +  '</a>' + '\n\n\n'
         #await bot.send_message(User_id, message_remove, parse_mode=types.ParseMode.HTML)
     else:
         message_remove = 'Вы не подписаны ни на один вуз🏛️!'
