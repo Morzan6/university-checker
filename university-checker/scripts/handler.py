@@ -110,6 +110,6 @@ async def error_codes():
 async def main():
     await asyncio.gather(error_codes(),DDoS_checker())
 
-asyncio.run(main())
 
-
+if __name__ == "__main__":
+    asyncio.run(main())
