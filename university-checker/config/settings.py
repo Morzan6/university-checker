@@ -27,7 +27,7 @@ DEBUG = True
 
 
 main_url = 'university-checker.ru'
-ALLOWED_HOSTS = ['university-checker.ru', 'localhost']
+ALLOWED_HOSTS = ['university-checker.ru', 'localhost', '127.0.0.1']
 
 if 'CODESPACE_NAME' in os.environ:
     codespace_name = os.getenv("CODESPACE_NAME")
