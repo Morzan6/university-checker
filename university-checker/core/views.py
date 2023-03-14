@@ -83,9 +83,9 @@ def index(request):
             if status[s] >= 200 and status[s] < 300:
                 status[s] = 1
             elif status[s] >= 500 and status[s] < 600:
-                status[s] = 20
+                status[s] = 25
             elif status[s] >= 400 and status[s] < 500:
-                status[s] = 15
+                status[s] = 20
             elif status[s] >= 300 and status[s] < 400:
                 status[s] = 5
             elif status[s] >= 100 and status[s] < 200:
@@ -131,7 +131,7 @@ def index(request):
         if all_info[-1]["y"] > -10:
             all_info[0]['info_status'] = "Работает"
             all_info[0]['color'] = "#3CB371"
-        elif all_info[-1]["y"] <= -20:
+        elif all_info[-1]["y"] <= -15:
             all_info[0]['info_status'] = "Серьёзный сбой"
             all_info[0]['color'] = "#F08080"
         elif all_info[-1]["y"] <= -10:
@@ -422,9 +422,9 @@ def show_service(request, service_slug, **kwargs):
         if status[s] >= 200 and status[s] < 300:
                 status[s] = 1
         elif status[s] >= 500 and status[s] < 600:
-                status[s] = 20
+                status[s] = 25
         elif status[s] >= 400 and status[s] < 500:
-                status[s] = 15
+                status[s] = 20
         elif status[s] >= 300 and status[s] < 400:
                 status[s] = 5
         elif status[s] >= 100 and status[s] < 200:
@@ -509,7 +509,7 @@ def show_service(request, service_slug, **kwargs):
     if all_info[-1]["y"] > -10:
         content['info_status'] = "Работает"
         content['color'] = "#3CB371"
-    elif all_info[-1]["y"] <= -20:
+    elif all_info[-1]["y"] <= -15:
         content['info_status'] = "Серьёзный сбой"
         content['color'] = "#F08080"
     elif all_info[-1]["y"] <= -10:

@@ -33,16 +33,6 @@ print(Dict)
 
 async def DDoS_checker():
     while True:
-        # for service in Dict:
-        #     url = service['url']
-        #     print(url)
-        #     response = requests.get(url) 
-        #     print(response.elapsed.total_seconds())
-        #     if response.elapsed.total_seconds() > 30:
-        #         print('DDoS')
-        #     if response.elapsed.total_seconds() > 30:
-        #       await email_alert(service['slug'],100)
-        #       await notification(service['slug'],100)
         for service in Dict:
             url = service['url']
             print(url)
@@ -53,22 +43,7 @@ async def DDoS_checker():
                 print('DDoS')
                 await email_alert(service['slug'], 100)
                 await notification(service['slug'], 100)
-                print(f'Request timed out for {url}')
-#                 service = Service.objects.get(url=url)
-#                 status = service.status
-#                 status = status + " " + str("100") + ","
-#                 service.status = status
-
-#                 reports = service.reports
-#                 reports = reports + " |"
-#                 service.reports = reports
-
-#                 current_time = service.time
-#                 current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
-#                 service.time = current_time
-
-#                 service.save()
-                
+                print(f'Request timed out for {url}')               
 
         time.sleep(1200)
         await asyncio.sleep(1)
@@ -77,11 +52,28 @@ async def error_codes():
     while True:
         for service in Dict:
             url = service['url']
+            print(url)
             slug = service['slug']
             try:
-                response = requests.get(f"{url}", timeout=15)
-            except:
-                pass
+                response = requests.get(f"{url}", timeout=35)
+                print(response.elapsed.total_seconds())
+            except Timeout:
+                print('DDoS')
+                print(f'Request timed out for {url}')
+                service = Service.objects.get(url=url)
+                status = service.status
+                status = status + " " + "100" + ","
+                service.status = status
+
+                reports = service.reports
+                reports = reports + " |"
+                service.reports = reports
+
+                current_time = service.time
+                current_time = current_time + " "+ str(datetime.now().replace(microsecond=0))+","
+                service.time = current_time
+
+                service.save()
             code = response.status_code
             print("Code:", code)
 
