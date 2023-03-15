@@ -10,7 +10,7 @@ favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
     path("", core_views.index, name="index"),
-    #path("admin/", admin.site.urls),
+    path("service/university-checker/", core_views.redirect_main),
     path("__reload__/", include("django_browser_reload.urls")),
     path("signup/", core_views.signup), #рендер страницы регистрации
     path("login/", core_views.log_in), #рендер страницы входа

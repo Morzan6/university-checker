@@ -42,6 +42,8 @@ def func_chunk(lst, n):
         yield e_c
 
 
+def redirect_main(request):
+    return redirect(index)
 
     
 
