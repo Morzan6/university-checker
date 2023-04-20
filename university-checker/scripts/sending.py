@@ -55,3 +55,13 @@ async def email_alert(service_slug,Error):
 
         email = EmailMessage(f"{service.name} - Сбой в работе сервиса.", f'Внимание, замечен сбой в {service.url}. Приносим свои извинения!\n\n{Dict_error[f"{Error}"]}', to=[user.email])
         email.send() 
+
+
+async def good_email_alert(service_slug,Error):
+    users = User.objects.filter( subscribes__icontains = service_slug )
+    service = Service.objects.get(slug = service_slug)
+    print(service.name)
+    for user in users: 
+
+        email = EmailMessage(f"{service.name} - Сервис снова доступен.", f'Внимание, замечен сбой в {service.url}. Приносим свои извинения!\n\n{Dict_error[f"{Error}"]}', to=[user.email])
+        email.send()

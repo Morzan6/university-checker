@@ -18,6 +18,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 #импорт модели сервиса
+from scripts.new_sending import new_sending
 from models.models import Service
 from models.models import User
 from tgbot.notifdef import notification
@@ -92,9 +93,7 @@ async def error_codes():
             service.time = current_time
 
             service.save()
-            if response.status_code >= 300:
-                await email_alert(slug, code)
-                await notification(slug, code)
+            await new_sending()
             
         time.sleep(10)      
         await asyncio.sleep(1) 
