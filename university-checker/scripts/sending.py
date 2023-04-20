@@ -63,5 +63,5 @@ async def good_email_alert(service_slug,Error):
     print(service.name)
     for user in users: 
 
-        email = EmailMessage(f"{service.name} - Сервис снова доступен.", f'Внимание, замечен сбой в {service.url}. Приносим свои извинения!\n\n{Dict_error[f"{Error}"]}', to=[user.email])
+        email = EmailMessage(f"{service.name} - Сервис снова доступен.", f'Внимание, сревис {service.url} снова работает. Приятного пользования!\n\n{Dict_error[f"{Error}"]}', to=[user.email])
         email.send()
