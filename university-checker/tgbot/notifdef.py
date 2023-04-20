@@ -9,12 +9,31 @@ async def notification(service_slug, error_code):
     for user in users:
         print(user.tgid)
         print(service.name)
+        notif = '⚠️обнаружена ошибка в работе сервиса: ' + str(service.name) + "\n\nОшибка " + str(error_code) + ': '+ str(Dict_error[str(error_code)]) + '\n\nСсылка на сервис - ' + str(service.url)
         if user.tgid != None:
-            notif = '⚠️обнаружена ошибка в работе сервиса: ' + str(service.name) + "\n\nОшибка " + str(error_code) + ': '+ str(Dict_error[str(error_code)]) + '\n\nСсылка на сервис - ' + str(service.url)
+            #notif = '⚠️обнаружена ошибка в работе сервиса: ' + str(service.name) + "\n\nОшибка " + str(error_code) + ': '+ str(Dict_error[str(error_code)]) + '\n\nСсылка на сервис - ' + str(service.url)
             try:
                 await bot.send_message(user.tgid, notif)
             except:
                 print('Сообщение не отправилось!', user.tgid)
+
+async def good_notification(service_slug):
+    users = User.objects.filter(subscribes__icontains = service_slug)
+    service = Service.objects.get(slug = service_slug)
+    for user in users:
+        print(user.tgid)
+        print(service.name)
+        notif = f'✅Сервис снова работает: {str(service.name)}\n\nСсылка на сервис - {str(service.url)}'
+        if user.tgid != None:
+            try:
+                await bot.send_message(user.tgid, notif)
+            except:
+                print('Сообщение не отправилось!', user.tgid)
+
+            
+
+
+
 
 
 
