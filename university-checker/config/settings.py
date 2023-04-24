@@ -166,7 +166,7 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'info@university-checker.ru'
 EMAIL_HOST_USER = 'info@university-checker.ru'
-EMAIL_HOST_PASSWORD = 'UCpassword23'
+EMAIL_HOST_PASSWORD = 'asfyqcrUNb4,'
 
 #пути к медиа файлам
 MEDIA_URL = '/media/'

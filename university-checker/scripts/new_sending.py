@@ -35,5 +35,3 @@ async def new_sending():
         elif codes[-2] > 300 and codes[-1] < 300:
             await good_email_alert(slug, codes[-1])
             await good_notification(slug, codes[-1])
-
-asyncio.run(new_sending())
