@@ -32,22 +32,22 @@ tzinfo = timezone(timedelta(hours=timezone_offset))
 Dict = Service.objects.values("name", "url","slug")
 print(Dict)
 
-async def DDoS_checker():
-    while True:
-        for service in Dict:
-            url = service['url']
-            print(url)
-            try:
-                response = requests.get(url, timeout=35)
-                print(response.elapsed.total_seconds())
-            except Timeout:
-                print('DDoS')
-                await email_alert(service['slug'], 100)
-                await notification(service['slug'], 100)
-                print(f'Request timed out for {url}')               
+# async def DDoS_checker():
+#     while True:
+#         for service in Dict:
+#             url = service['url']
+#             print(url)
+#             try:
+#                 response = requests.get(url, timeout=35)
+#                 print(response.elapsed.total_seconds())
+#             except Timeout:
+#                 print('DDoS')
+#                 # await email_alert(service['slug'], 100)
+#                 # await notification(service['slug'], 100)
+#                 print(f'Request timed out for {url}')               
 
-        time.sleep(1200)
-        await asyncio.sleep(1)
+#         time.sleep(10)
+#         await asyncio.sleep(1)
 
 async def error_codes():
     while True:
@@ -95,11 +95,11 @@ async def error_codes():
             service.save()
             await new_sending()
             
-        time.sleep(10)      
+        time.sleep(1200)      
         await asyncio.sleep(1) 
 
 async def main():
-    await asyncio.gather(error_codes(),DDoS_checker())
+    await asyncio.gather(error_codes())
 
 
 if __name__ == "__main__":

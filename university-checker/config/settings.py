@@ -162,10 +162,11 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 #Настройки SMTP (почтового-клиента)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.jino.ru'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'info@university-checker.ru'
-EMAIL_HOST_USER = 'info@university-checker.ru'
+EMAIL_PORT = 587
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'in@university-checker.ru'
+EMAIL_HOST_USER = 'alert@university-checker.ru'
 EMAIL_HOST_PASSWORD = 'asfyqcrUNb4,'
 
 #пути к медиа файлам

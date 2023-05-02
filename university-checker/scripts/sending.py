@@ -57,7 +57,7 @@ async def email_alert(service_slug,Error):
         email.send() 
 
 
-async def good_email_alert(service_slug,Error):
+async def good_email_alert(service_slug):
     users = User.objects.filter( subscribes__icontains = service_slug )
     service = Service.objects.get(slug = service_slug)
     print(service.name)

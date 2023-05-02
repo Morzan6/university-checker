@@ -26,6 +26,7 @@ async def new_sending():
     for service in Dict:
         slug = service['slug']
         codes = service['status']
+        
         if len(codes) <= 1 and codes[-1] >= 300:
             await email_alert(slug, codes[-1])
             await notification(slug, codes[-1])
@@ -33,5 +34,6 @@ async def new_sending():
             await email_alert(slug, codes[-1])
             await notification(slug, codes[-1])
         elif codes[-2] > 300 and codes[-1] < 300:
-            await good_email_alert(slug, codes[-1])
-            await good_notification(slug, codes[-1])
+            await good_email_alert(slug)
+            await good_notification(slug)
+            
