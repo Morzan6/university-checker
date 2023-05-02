@@ -30,10 +30,11 @@ async def new_sending():
         if len(codes) <= 1 and codes[-1] >= 300:
             await email_alert(slug, codes[-1])
             await notification(slug, codes[-1])
-        elif codes[-2] < 300 and codes[-1] >= 300:
-            await email_alert(slug, codes[-1])
-            await notification(slug, codes[-1])
-        elif codes[-2] > 300 and codes[-1] < 300:
-            await good_email_alert(slug)
-            await good_notification(slug)
-            
+        elif len(codes) >= 2:    
+            if codes[-2] < 300 and codes[-1] >= 300:
+                await email_alert(slug, codes[-1])
+                await notification(slug, codes[-1])
+            elif codes[-2] > 300 and codes[-1] < 300:
+                await good_email_alert(slug)
+                await good_notification(slug)
+                
