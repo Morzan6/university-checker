@@ -15,7 +15,7 @@ from models.models import Service
 from models.models import User
 import base64
 #Подключение библиотек и импортирование модулей из других файлов
-
+# хуй
 #Создание самого бота
 bot = Bot(TOKEN)
 dp = Dispatcher(bot)
