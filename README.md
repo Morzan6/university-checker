@@ -1,4 +1,7 @@
+# ARCHIVED - Project for Predprof Olympiad 2023
+## Tool to check accessibility of university websites
 
+## Установка 
 Создаем нового пользователя
 
 ```
